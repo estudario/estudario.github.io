@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Estudário — estudo por matéria</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --tinta:#12343B; --tinta-fraca:#4A6B72; --papel:#F2F6F0;
+  --agar:#BEE3C0; --agar-escuro:#8FC79A;
+  --uva:#6C4AB6; --uva-clara:#EDE6FB;
+  --sol:#FFC145; --coral:#EE6C4D; --coral-claro:#FDE7E0;
+  --verde-ok:#2E8B57; --verde-claro:#E1F3E6;
+  --branco:#fff; --sombra:0 4px 0 rgba(18,52,59,.15); --raio:18px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--papel);
+  background-image:radial-gradient(circle at 12% 8%, rgba(190,227,192,.55) 0 220px, transparent 221px),
+                   radial-gradient(circle at 92% 78%, rgba(237,230,251,.7) 0 260px, transparent 261px);
+  background-attachment:fixed; color:var(--tinta);
+  font-family:"Atkinson Hyperlegible","Trebuchet MS",Verdana,sans-serif; font-size:17px; line-height:1.5;
+  -webkit-text-size-adjust:100%;
+}
+h1,h2,h3{font-family:"Baloo 2","Trebuchet MS",sans-serif;font-weight:800;line-height:1.15;margin:0}
+#app{max-width:660px;margin:0 auto;padding:20px 16px 64px}
+
+.topo{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+.topo-texto{flex:1;min-width:0}
+.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--tinta-fraca);margin:0 0 2px}
+.topo h1{font-size:25px}
+.topo .sub{margin:2px 0 0;font-size:14px;color:var(--tinta-fraca)}
+.placa{width:80px;height:80px;flex:0 0 80px;border-radius:50%;
+  background:radial-gradient(circle at 34% 28%,#DCF0DB 0%,var(--agar) 62%,var(--agar-escuro) 100%);
+  border:5px solid rgba(18,52,59,.14);position:relative;overflow:hidden;
+  box-shadow:inset 0 0 0 3px rgba(255,255,255,.45)}
+.placa .brilho{position:absolute;top:8%;left:10%;width:38%;height:26%;border-radius:50%;background:rgba(255,255,255,.5);transform:rotate(-25deg)}
+.colonia{position:absolute;width:11px;height:11px;border-radius:50%;transform:translate(-50%,-50%) scale(0);animation:brotar .35s cubic-bezier(.34,1.56,.64,1) forwards}
+.colonia.certa{background:var(--sol);box-shadow:0 0 0 3px rgba(255,193,69,.35)}
+.colonia.errada{background:#B9C4BD;box-shadow:0 0 0 3px rgba(185,196,189,.3)}
+@keyframes brotar{to{transform:translate(-50%,-50%) scale(1)}}
+
+.cartao{background:var(--branco);border-radius:var(--raio);border:2px solid rgba(18,52,59,.1);box-shadow:var(--sombra);padding:18px;margin-bottom:14px}
+.intro{background:var(--uva-clara);border-color:rgba(108,74,182,.2)}
+.intro p{margin:0;font-size:15px}
+.intro strong{color:var(--uva)}
+
+.item{display:flex;gap:14px;align-items:flex-start;width:100%;text-align:left;cursor:pointer;font:inherit;color:inherit;transition:transform .12s,box-shadow .12s}
+.item:hover,.item:focus-visible{transform:translateY(-2px);box-shadow:0 7px 0 rgba(18,52,59,.15)}
+.item .icone{flex:0 0 46px;height:46px;border-radius:14px;display:grid;place-items:center;font-size:23px;background:var(--agar)}
+.item.final .icone{background:var(--sol)}
+.item h3{font-size:19px}
+.item .desc{margin:2px 0 0;font-size:14px;color:var(--tinta-fraca)}
+.selo{display:inline-block;margin-top:8px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:var(--verde-claro);color:var(--verde-ok)}
+.selo.vazio{background:#EEF1EE;color:var(--tinta-fraca)}
+.medalha{font-size:19px;margin-left:6px;vertical-align:-2px}
+.divisor{display:flex;align-items:center;gap:10px;margin:24px 0 12px}
+.divisor span{font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--tinta-fraca);white-space:nowrap}
+.divisor::before,.divisor::after{content:"";height:2px;background:rgba(18,52,59,.12);flex:1;border-radius:2px}
+
+/* chips */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.chip{font:inherit;font-size:14px;font-weight:700;padding:8px 15px;border-radius:99px;cursor:pointer;
+  background:var(--branco);border:2px solid rgba(18,52,59,.14);color:var(--tinta-fraca)}
+.chip[aria-pressed="true"]{background:var(--uva);border-color:var(--uva);color:#fff}
+
+/* perfil */
+.perfil{background:linear-gradient(160deg,#20515C 0%,#12343B 100%);border-color:rgba(18,52,59,.3);color:#EAF3EE;box-shadow:0 4px 0 rgba(18,52,59,.3)}
+.perfil-topo{display:flex;align-items:center;gap:12px}
+.nivel-num{flex:0 0 52px;height:52px;border-radius:16px;background:var(--sol);color:var(--tinta);display:grid;place-items:center;font-family:"Baloo 2",sans-serif;font-weight:800;font-size:13px;line-height:1;text-align:center}
+.nivel-num b{display:block;font-size:21px}
+.perfil-topo .quem{flex:1;min-width:0}
+.perfil-topo h3{font-size:19px;color:#fff}
+.perfil-topo .desc{margin:1px 0 0;font-size:13px;color:rgba(234,243,238,.72)}
+.xp-total{font-family:"Baloo 2",sans-serif;font-weight:800;font-size:17px;color:var(--sol);white-space:nowrap}
+.perfil .trilho{background:rgba(255,255,255,.16);margin:13px 0 12px}
+.perfil .trilho i{background:var(--sol)}
+.stats{display:flex;gap:8px;text-align:center}
+.stats span{flex:1;background:rgba(255,255,255,.09);border-radius:12px;padding:7px 4px;font-size:12px;color:rgba(234,243,238,.75);line-height:1.3}
+.stats b{display:block;font-family:"Baloo 2",sans-serif;font-size:19px;color:#fff;font-weight:800}
+.conquistas{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
+.conq{font-size:12px;display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.12);border-radius:99px;padding:5px 11px;color:#fff}
+.conq.bloqueada{opacity:.38}
+.conq em{font-style:normal;font-size:15px}
+.aviso{font-size:12px;color:rgba(234,243,238,.6);margin:10px 0 0}
+
+/* entrada */
+.avatares{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 4px}
+.av{font-size:24px;width:48px;height:48px;border-radius:14px;border:2px solid rgba(18,52,59,.14);background:#fff;cursor:pointer;display:grid;place-items:center}
+.av[aria-pressed="true"]{border-color:var(--uva);background:var(--uva-clara)}
+label{display:block;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--tinta-fraca);margin:14px 0 5px}
+input{width:100%;font:inherit;padding:12px 14px;border-radius:14px;border:2px solid rgba(18,52,59,.16);background:#fff;color:var(--tinta)}
+input:focus{outline:none;border-color:var(--uva)}
+.erro-form{color:var(--coral);font-size:14px;font-weight:700;margin:10px 0 0}
+.dica{font-size:13px;color:var(--tinta-fraca);margin:8px 0 0}
+.linha-perfil{display:flex;align-items:center;gap:12px;width:100%;text-align:left;font:inherit;color:inherit;cursor:pointer;background:var(--branco);border:2px solid rgba(18,52,59,.14);border-radius:14px;padding:12px;box-shadow:0 3px 0 rgba(18,52,59,.12);transition:transform .1s ease}
+.linha-perfil:hover,.linha-perfil:focus-visible{transform:translateY(-2px);border-color:var(--uva)}
+.linha-perfil .av{cursor:pointer;pointer-events:none;flex:0 0 48px}
+.linha-perfil b{font-family:"Baloo 2",sans-serif;font-size:19px;display:block}
+.linha-perfil small{color:var(--tinta-fraca)}
+.linha-perfil .entrar{margin-left:auto;font-family:"Baloo 2",sans-serif;font-weight:800;font-size:16px;color:#fff;background:var(--uva);border-radius:99px;padding:7px 16px;white-space:nowrap}
+.lista-perfis{display:grid;gap:10px}
+.admin-card{margin-top:24px;background:var(--papel);border-style:dashed;border-color:rgba(18,52,59,.3)}
+.admin-card .icone{background:var(--uva-clara)}
+
+/* quiz */
+.barra-topo{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px}
+.contador{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--tinta-fraca)}
+.voltar{background:none;border:none;font:inherit;font-size:14px;font-weight:700;color:var(--uva);cursor:pointer;padding:4px 2px}
+.voltar:hover{text-decoration:underline}
+.nome-rodada{margin:0 0 12px;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--tinta-fraca)}
+.trilho{height:9px;background:rgba(18,52,59,.1);border-radius:99px;overflow:hidden;margin-bottom:16px}
+.trilho i{display:block;height:100%;width:0;background:var(--uva);border-radius:99px;transition:width .3s}
+.pergunta{font-size:20px;font-family:"Baloo 2",sans-serif;font-weight:700;margin:0 0 14px}
+.opcoes{display:grid;gap:9px}
+.resposta-num input{width:100%;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:24px;text-align:center;padding:14px;border-radius:14px;border:2px solid rgba(18,52,59,.16);background:#fff;color:var(--tinta)}
+.resposta-num input:focus{outline:none;border-color:var(--uva)}
+.resposta-num input:disabled{background:var(--papel)}
+.opcao{display:flex;gap:11px;align-items:flex-start;background:#fff;border:2px solid rgba(18,52,59,.14);border-radius:14px;padding:12px 13px;font:inherit;color:inherit;text-align:left;cursor:pointer;transition:border-color .12s,background .12s,transform .08s}
+.opcao:hover:not(:disabled){border-color:var(--uva)}
+.opcao:active:not(:disabled){transform:scale(.99)}
+.opcao .letra{flex:0 0 26px;height:26px;border-radius:8px;background:var(--uva-clara);color:var(--uva);display:grid;place-items:center;font-weight:700;font-size:14px}
+.opcao.marcada{border-color:var(--uva);background:var(--uva-clara)}
+.opcao.acerto{border-color:var(--verde-ok);background:var(--verde-claro)}
+.opcao.acerto .letra{background:var(--verde-ok);color:#fff}
+.opcao.erro{border-color:var(--coral);background:var(--coral-claro)}
+.opcao.erro .letra{background:var(--coral);color:#fff}
+.opcao:disabled{cursor:default;opacity:1}
+.feedback{margin-top:14px;border-radius:14px;padding:14px;border:2px solid;animation:subir .25s ease}
+.feedback.ok{background:var(--verde-claro);border-color:var(--verde-ok)}
+.feedback.nok{background:var(--coral-claro);border-color:var(--coral)}
+.feedback h4{margin:0 0 6px;font-family:"Baloo 2",sans-serif;font-size:18px}
+.feedback p{margin:0 0 8px;font-size:15px}
+.feedback p:last-child{margin-bottom:0}
+@keyframes subir{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.btn{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:18px;border:none;border-radius:14px;padding:13px 22px;cursor:pointer;background:var(--uva);color:#fff;box-shadow:0 4px 0 #4E3288;transition:transform .08s,box-shadow .08s}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 #4E3288}
+.btn.secundario{background:#fff;color:var(--tinta);box-shadow:0 4px 0 rgba(18,52,59,.18);border:2px solid rgba(18,52,59,.14)}
+.btn.secundario:active{box-shadow:0 1px 0 rgba(18,52,59,.18)}
+.btn[disabled]{opacity:.45;cursor:not-allowed;transform:none}
+.acoes{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.acoes .btn{flex:1 1 auto}
+.link-fraco{display:block;margin:20px auto 0;background:none;border:none;font:inherit;font-size:13px;color:var(--tinta-fraca);text-decoration:underline;cursor:pointer}
+
+.placar{text-align:center;padding:24px 18px}
+.placar .nota{font-family:"Baloo 2",sans-serif;font-size:56px;font-weight:800;line-height:1;color:var(--uva)}
+.placar .nota small{font-size:22px;color:var(--tinta-fraca)}
+.placar h2{font-size:24px;margin:10px 0 6px}
+.placar p{margin:0;color:var(--tinta-fraca)}
+.estrelas{font-size:26px;letter-spacing:4px;margin-top:8px}
+.ganho{background:var(--sol);color:var(--tinta);display:inline-block;font-family:"Baloo 2",sans-serif;font-weight:800;padding:5px 14px;border-radius:99px;margin-top:10px}
+.nova-conq{background:var(--uva-clara);border:2px dashed var(--uva);border-radius:12px;padding:10px;margin-top:12px;font-size:15px}
+.nova-conq b{color:var(--uva)}
+.revisao h3{font-size:19px;margin-bottom:10px}
+.item-revisao{border-left:5px solid var(--coral);background:#fff;border-radius:0 12px 12px 0;padding:12px 14px;margin-bottom:10px;border-top:2px solid rgba(18,52,59,.08);border-right:2px solid rgba(18,52,59,.08);border-bottom:2px solid rgba(18,52,59,.08)}
+.item-revisao.ok{border-left-color:var(--verde-ok)}
+.item-revisao .q{font-weight:700;margin:0 0 6px}
+.item-revisao p{margin:0 0 5px;font-size:15px}
+.item-revisao .marcou{color:var(--coral)}
+.item-revisao .certa{color:var(--verde-ok)}
+.item-revisao .porque{background:var(--papel);border-radius:10px;padding:9px 11px;margin-top:7px;font-size:15px}
+.vazio-msg{text-align:center;color:var(--tinta-fraca);padding:26px 10px}
+.codigo-grande{font-family:"Baloo 2",sans-serif;font-weight:800;font-size:34px;letter-spacing:.18em;text-align:center;background:var(--uva-clara);border:2px dashed var(--uva);border-radius:14px;padding:14px;color:var(--uva);margin-top:14px}
+.copiar-texto{background:var(--papel);border-radius:12px;padding:11px 13px;font-size:14px;margin-top:10px;color:var(--tinta-fraca)}
+.painel-linha{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 2px;border-bottom:2px solid rgba(18,52,59,.07);font-size:15px}
+.painel-linha:last-child{border-bottom:none}
+.painel-linha small{color:var(--tinta-fraca)}
+.apagar{background:none;border:2px solid var(--coral);border-radius:99px;padding:5px 12px;font:inherit;font-size:13px;font-weight:700;color:var(--coral);cursor:pointer;white-space:nowrap}
+.apagar.bloq{border-color:var(--tinta-fraca);color:var(--tinta-fraca)}
+.painel-acoes{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.tag-ok{font-size:12px;font-weight:700;color:var(--verde-ok)}
+.tag-bloq{font-size:12px;font-weight:700;color:var(--coral)}
+.tag-pend{font-size:12px;font-weight:700;color:var(--tinta-fraca)}
+.apagar.aprovar{border-color:var(--verde-ok);color:var(--verde-ok)}
+.btn.secundario{background:var(--papel);color:var(--tinta);border:2px solid rgba(18,52,59,.2);box-shadow:none}
+.painel-linha.eu{background:var(--uva-clara);border-radius:12px;padding:8px}
+.resumo ul{margin:12px 0 0;padding-left:20px}
+.resumo li{margin-bottom:9px;font-size:15px}
+.resumo li::marker{color:var(--uva)}
+.rodape{margin-top:26px;text-align:center;font-size:13px;color:var(--tinta-fraca)}
+[hidden]{display:none!important}
+:focus-visible{outline:3px solid var(--uva);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media (max-width:420px){.topo h1{font-size:22px}.placa{width:64px;height:64px;flex-basis:64px}.pergunta{font-size:18px}}
+</style>
+</head>
+<body>
+<div id="app">
+  <header class="topo">
+    <div class="placa" id="placa" aria-hidden="true"><div class="brilho"></div></div>
+    <div class="topo-texto">
+      <p class="eyebrow" id="eyebrow">Estudário</p>
+      <h1 id="titulo">Estudário</h1>
+      <p class="sub" id="subtitulo">Escolha o ano e a matéria para treinar</p>
+    </div>
+  </header>
+  <main>
+    <section id="tela-entrada"></section>
+    <section id="tela-estante" hidden></section>
+    <section id="tela-menu" hidden></section>
+    <section id="tela-quiz" hidden></section>
+    <section id="tela-fim" hidden></section>
+  </main>
+  <p class="rodape">A cada acerto nasce uma colônia na placa de Petri lá em cima.</p>
+</div>
+
+<!-- ====== REGISTRO DAS MATÉRIAS ======
+     Cada arquivo em dados/ se registra sozinho. Para adicionar uma matéria
+     nova, coloque o arquivo na pasta dados/ e acrescente uma linha aqui. -->
+<script>
+const QUIZ = {
+  catalogo: [],
+  controle: { bloqueios: [] },
+  registrar(q){ this.catalogo.push(q); }
+};
+</script>
+<script src="dados/4ano-ciencias-3bim.js"></script>
+<script src="dados/4ano-matematica-3bim.js"></script>
+<script src="dados/4ano-portugues-3bim.js"></script>
+<script src="dados/4ano-historia-3bim.js"></script>
+<script src="dados/4ano-geografia-3bim.js"></script>
+<script src="dados/4ano-ingles-3bim.js"></script>
+<script src="dados/8ano-matematica-3bim.js"></script>
+<script src="dados/8ano-biologia-3bim.js"></script>
+<script src="dados/8ano-fisica-3bim.js"></script>
+<script src="dados/8ano-quimica-3bim.js"></script>
+<script src="dados/8ano-portugues-3bim.js"></script>
+<script src="dados/8ano-historia-3bim.js"></script>
+<script src="dados/8ano-geografia-3bim.js"></script>
+<script src="dados/8ano-ingles-3bim.js"></script>
+<script src="dados/8ano-espanhol-3bim.js"></script>
+
+<script>
+/* =========================== MOTOR ===========================
+   Não precisa mexer aqui para acrescentar matérias.
+   ============================================================ */
+
+const APP = {
+  nome:"Estudário",
+  xpPorAcerto:10,
+  bonusGabarito:50,
+  notaParaPassar:0.7,
+  avatares:["🦊","🐼","🦄","🐙","🐝","🦋","🐢","🐨","🦖","🌻","🚀","🎨"],
+  niveis:[
+    {xp:0,nome:"Aprendiz"},{xp:150,nome:"Observadora"},{xp:400,nome:"Investigadora"},
+    {xp:750,nome:"Pesquisadora"},{xp:1200,nome:"Especialista"},{xp:1800,nome:"Mestra"}
+  ]
+};
+
+/* --- Nuvem (fase 2) -------------------------------------------------
+   O Estudário agora vive num banco de dados (Supabase). Cadastro, login,
+   aprovação, bloqueio e progresso são centralizados: a Luiza administra
+   tudo pelo painel, de qualquer aparelho — e a senha dela mora no banco,
+   não neste arquivo. */
+const NUVEM = {
+  url: "https://opzhkmdpmutayaivzyck.supabase.co",
+  chave: "sb_publishable_NnmY2Ox-E1zp6Tvx-RvJpg_UBKgYKVL"
+};
+const ADMIN = { nome: "Luiza" };
+const SEM_REDE = "Não consegui falar com o servidor. Confira a internet e tente de novo.";
+function msgRede(e){ if(!e || !e.status) return SEM_REDE; return SEM_REDE+" (código "+e.status+(e.detalhe?" — "+String(e.detalhe).slice(0,160):"")+")"; }
+
+async function rpc(fn, args){
+  const cab = { "Content-Type":"application/json", "apikey":NUVEM.chave };
+  // chaves antigas (JWT, começam com eyJ) também vão no Authorization; as novas (sb_...) não
+  if(NUVEM.chave.startsWith("eyJ")) cab["Authorization"] = "Bearer " + NUVEM.chave;
+  const r = await fetch(NUVEM.url + "/rest/v1/rpc/" + fn, {
+    method: "POST", headers: cab, body: JSON.stringify(args || {})
+  });
+  if(!r.ok){
+    let corpo = null; try{ corpo = await r.json(); }catch(e){}
+    console.error("rpc", fn, r.status, corpo);
+    const e = new Error("rpc "+fn+" http "+r.status);
+    e.status = r.status;
+    e.detalhe = corpo ? (corpo.message || corpo.hint || corpo.error_description || "") : "";
+    throw e;
+  }
+  return await r.json();
+}
+
+function hash32(s){ let h=2166136261>>>0; for(let i=0;i<s.length;i++){ h^=s.charCodeAt(i); h=Math.imul(h,16777619)>>>0; } return h>>>0; }
+function normalizarNome(n){ return n.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/\s+/g," "); }
+function qid(q){ return "q"+hash32(q.p); }
+
+const CONQUISTAS = [
+  {id:"primeira", emoji:"🧪", nome:"Primeira rodada",  dica:"Terminar uma rodada",              teste:d=>d.partidas>=1},
+  {id:"gabarito", emoji:"🎯", nome:"Sem errar uma",    dica:"Gabaritar qualquer rodada",        teste:d=>d.gabaritos>=1},
+  {id:"aprovada", emoji:"🏅", nome:"Aprovada",         dica:"Passar em um teste final",         teste:d=>d.testesPassados>=1},
+  {id:"sequencia",emoji:"⚡", nome:"Sequência de 10",  dica:"Acertar 10 seguidas",              teste:d=>d.melhorSequencia>=10},
+  {id:"explora",  emoji:"🧭", nome:"Exploradora",      dica:"Jogar 3 matérias diferentes",      teste:d=>Object.keys(d.porQuiz).length>=3},
+  {id:"ouro3",    emoji:"👑", nome:"Três ouros",       dica:"Ganhar 3 medalhas de ouro",        teste:d=>contarMedalhas(d,"ouro")>=3},
+  {id:"maratona", emoji:"🏃", nome:"Maratona",         dica:"Completar 10 partidas",            teste:d=>d.partidas>=10},
+  {id:"cem",      emoji:"🦠", nome:"100 acertos",      dica:"Acertar 100 questões no total",    teste:d=>d.acertosTotais>=100}
+];
+
+const $ = s=>document.querySelector(s);
+const telas = {
+  entrada:$("#tela-entrada"), estante:$("#tela-estante"), menu:$("#tela-menu"),
+  quiz:$("#tela-quiz"), fim:$("#tela-fim")
+};
+const placa = $("#placa");
+const LETRAS=["A","B","C","D","E"];
+const POSICOES=[[30,26],[62,22],[46,44],[22,58],[70,52],[38,72],[64,74],[52,14],[18,38],[80,36],
+                [34,88],[76,64],[14,72],[50,60],[86,50],[26,44],[58,88],[40,34],[70,88],[12,52]];
+
+/* ---------- cache do aparelho + sessão ---------- */
+const CHAVE = "estudario:v2";      // contas lembradas neste aparelho
+const CHAVE_V1 = "estudario:v1";   // dados da fase 1, importados no 1º login
+const Armazem = {
+  async ler(ch){
+    try{ if(window.storage){ const r = await window.storage.get(ch); if(r&&r.value) return JSON.parse(r.value); } }catch(e){}
+    try{ const v = localStorage.getItem(ch); if(v) return JSON.parse(v); }catch(e){}
+    return null;
+  },
+  async gravar(ch, d){
+    try{ if(window.storage){ await window.storage.set(ch, JSON.stringify(d)); return true; } }catch(e){}
+    try{ localStorage.setItem(ch, JSON.stringify(d)); return true; }catch(e){}
+    return false;
+  }
+};
+
+let cache = { contas:{} };   // contas conhecidas por este aparelho
+let perfil = null;           // sessão ativa {id, nome, ano, avatar, senha, dados}
+let salvaOk = true;
+let filtroAno = null, filtroBim = "todos", quizAtual = null;
+
+const estado = { rodada:null, lista:[], indice:0, respostas:[], respondida:false, modo:"aquecimento", escolhaAtual:undefined };
+
+function dadosZero(){
+  return {xp:0, partidas:0, acertosTotais:0, questoesTotais:0, melhorSequencia:0,
+          gabaritos:0, testesPassados:0, conquistas:[], porQuiz:{}};
+}
+function contarMedalhas(d, tipo){
+  let n=0;
+  Object.values(d.porQuiz).forEach(q=>Object.values(q.medalhas||{}).forEach(m=>{ if(m===tipo) n++; }));
+  return n;
+}
+function chaveDe(nome, ano){ return normalizarNome(nome)+"|"+ano; }
+
+async function salvar(){
+  if(!perfil) return;
+  cache.contas[chaveDe(perfil.nome, perfil.ano)] = {
+    id:perfil.id, nome:perfil.nome, ano:perfil.ano, avatar:perfil.avatar,
+    senha:perfil.senha, dados:perfil.dados
+  };
+  await Armazem.gravar(CHAVE, cache);
+  try{
+    const r = await rpc("salvar_progresso", {p_id:perfil.id, p_senha:perfil.senha, p_dados:perfil.dados});
+    salvaOk = !!(r && r.ok);
+  }catch(e){ salvaOk = false; }
+}
+
+function nivelDe(xp){
+  let i=0; for(let k=0;k<APP.niveis.length;k++) if(xp>=APP.niveis[k].xp) i=k;
+  const atual=APP.niveis[i], prox=APP.niveis[i+1]||null;
+  const pct = prox ? Math.round(((xp-atual.xp)/(prox.xp-atual.xp))*100) : 100;
+  return {numero:i+1, nome:atual.nome, faltam: prox?prox.xp-xp:0, pct};
+}
+function medalhaDe(pct){ return pct===1?"ouro":pct>=.8?"prata":pct>=.6?"bronze":null; }
+const ICONE_MEDALHA={ouro:"🥇",prata:"🥈",bronze:"🥉"};
+
+function mostrar(nome){
+  Object.entries(telas).forEach(([k,el])=>el.hidden = (k!==nome));
+  window.scrollTo({top:0,behavior:"instant"});
+}
+function cabecalho(titulo, sub){
+  $("#titulo").textContent = titulo;
+  $("#subtitulo").textContent = sub;
+  $("#eyebrow").textContent = perfil ? perfil.nome + " · Nv " + nivelDe(perfil.dados.xp).numero : APP.nome;
+}
+function limparPlaca(){ placa.querySelectorAll(".colonia").forEach(e=>e.remove()); }
+function plantarColonia(ok,i){
+  const p=POSICOES[i%POSICOES.length], d=document.createElement("div");
+  d.className="colonia "+(ok?"certa":"errada"); d.style.left=p[0]+"%"; d.style.top=p[1]+"%";
+  placa.appendChild(d);
+}
+function embaralhar(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+function prepararQuestao(q){
+  if(q.t === "num"){
+    return {tipo:"num", p:q.p, r:String(q.r), aceita:(q.aceita||[]).map(String), exp:q.exp};
+  }
+  return {tipo:"mc", p:q.p, exp:q.exp, opcoes:embaralhar(q.alt.map((t,i)=>({texto:t, correta:i===q.c, motivo:(q.err&&q.err[i])||null})))};
+}
+function normalizarNum(v){ return String(v).trim().toLowerCase().replace(/\s+/g,"").replace(/\./g, m=>m).replace(",","."); }
+function acertoNum(q, v){
+  const dado = normalizarNum(v);
+  const alvos = [q.r, ...q.aceita].map(normalizarNum);
+  const nf = parseFloat(dado);
+  return alvos.some(a=>{
+    const af = parseFloat(a);
+    if(!isNaN(nf) && !isNaN(af) && String(nf) === dado.replace(/,/,".").replace(/^\+/,"") ) return Math.abs(nf-af) < 1e-9;
+    if(!isNaN(nf) && !isNaN(af) && /^[-+]?\d+([.,]\d+)?$/.test(dado)) return Math.abs(nf-af) < 1e-9;
+    return a === dado;
+  });
+}
+function sortear(b,n){ return embaralhar(b).slice(0,Math.min(n,b.length)).map(prepararQuestao); }
+
+/* ================= TELA 1: entrada ================= */
+function telaEntrada(){
+  perfil = null;
+  limparPlaca();
+  cabecalho(APP.nome, "Quem vai estudar hoje?");
+  const chaves = Object.keys(cache.contas);
+  let html = "";
+
+  if(chaves.length){
+    html += `<div class="cartao" style="background:transparent;border:none;box-shadow:none;padding:0"><h3 style="margin-bottom:10px">Quem vai estudar hoje?</h3><div class="lista-perfis">`;
+    chaves.forEach(k=>{
+      const c = cache.contas[k];
+      const nv = nivelDe((c.dados||dadosZero()).xp||0);
+      html += `<button class="linha-perfil" data-perfil="${k}">
+        <span class="av">${c.avatar}</span>
+        <span><b>${c.nome}</b><small>${c.ano} · Nível ${nv.numero} · ${(c.dados&&c.dados.xp)||0} XP${c.pendente?' · ⏳ aguardando aprovação':''}</small></span>
+        <span class="entrar">Entrar ›</span>
+      </button>`;
+    });
+    html += `</div></div><div class="divisor"><span>ou</span></div>`;
+  } else {
+    html += `<div class="cartao intro"><p>Bem-vinda ao <strong>${APP.nome}</strong>! Crie seu perfil e comece a treinar. Sua pontuação fica guardada e te acompanha em qualquer aparelho.</p></div>`;
+  }
+
+  html += `<button class="cartao item" id="btn-login" style="margin-bottom:14px">
+      <span class="icone">👋</span>
+      <span><h3>Já tenho conta</h3>
+      <p class="desc">Entrar com meu nome e senha neste aparelho.</p></span>
+    </button>
+    <div class="cartao">
+      <h3>${chaves.length?"Ou crie um perfil novo":"Criar meu perfil"}</h3>
+      <label for="n-nome">Seu nome</label>
+      <input id="n-nome" maxlength="18" placeholder="Ex.: Carol" autocomplete="off">
+      <label>Escolha seu bichinho</label>
+      <div class="avatares" id="n-avatares">${APP.avatares.map((a,i)=>`<button class="av" data-av="${a}" aria-pressed="${i===0}">${a}</button>`).join("")}</div>
+      <label>Seu ano</label>
+      <div class="chips" id="n-anos">${anosDisponiveis().map((a,i)=>`<button class="chip" data-ano="${a}" aria-pressed="${i===0}">${a}</button>`).join("")}</div>
+      <label for="n-senha">Senha de 4 números</label>
+      <input id="n-senha" type="password" inputmode="numeric" maxlength="4" placeholder="••••" autocomplete="off">
+      <p class="dica">Depois de criar o perfil, a ${ADMIN.nome} aprova o seu acesso — sem códigos: ela toca em aprovar e pronto.</p>
+      <div class="acoes"><button class="btn" id="btn-criar">Criar perfil</button></div>
+      <p class="erro-form" id="erro-criar" hidden></p>
+    </div>
+    <button class="cartao item admin-card" id="btn-admin">
+      <span class="icone">🔑</span>
+      <span><h3>Painel da ${ADMIN.nome}</h3>
+      <p class="desc">Aprovar, bloquear e acompanhar todas as usuárias — de qualquer aparelho.</p></span>
+    </button>`;
+
+  telas.entrada.innerHTML = html;
+  mostrar("entrada");
+
+  telas.entrada.querySelectorAll("[data-perfil]").forEach(b=>b.addEventListener("click",()=>pedirSenha(b.dataset.perfil)));
+  ligarGrupo("#n-avatares","[data-av]");
+  ligarGrupo("#n-anos","[data-ano]");
+  $("#btn-criar").addEventListener("click", criarPerfil);
+  $("#btn-admin").addEventListener("click", telaAdmin);
+  $("#btn-login").addEventListener("click", telaLogin);
+}
+function ligarGrupo(sel, itens){
+  const g = $(sel); if(!g) return;
+  g.querySelectorAll(itens).forEach(b=>b.addEventListener("click",()=>{
+    g.querySelectorAll(itens).forEach(o=>o.setAttribute("aria-pressed","false"));
+    b.setAttribute("aria-pressed","true");
+  }));
+}
+function selecionado(sel, attr){
+  const el = $(sel+' [aria-pressed="true"]');
+  return el ? el.dataset[attr] : null;
+}
+function anosDisponiveis(){
+  const anos = new Set(["4º ano","8º ano"]);
+  QUIZ.catalogo.forEach(q=>anos.add(q.ano));
+  return [...anos].sort();
+}
+function falha(el,msg){ el.textContent = msg; el.hidden = false; }
+
+/* ---------- entrar com conta existente (aparelho novo) ---------- */
+function telaLogin(){
+  cabecalho("Que bom te ver de novo!", "Entre com sua conta");
+  telas.entrada.innerHTML = `
+    <div class="cartao">
+      <button class="voltar" id="btn-volta-entrada">← Voltar</button>
+      <h3 style="margin:10px 0 0">👋 Entrar na minha conta</h3>
+      <label for="e-nome">Seu nome (igual ao cadastro)</label>
+      <input id="e-nome" maxlength="18" autocomplete="off">
+      <label>Seu ano</label>
+      <div class="chips" id="e-anos">${anosDisponiveis().map((a,i)=>`<button class="chip" data-ano="${a}" aria-pressed="${i===0}">${a}</button>`).join("")}</div>
+      <label for="e-senha">Senha de 4 números</label>
+      <input id="e-senha" type="password" inputmode="numeric" maxlength="4" placeholder="••••" autocomplete="off">
+      <div class="acoes"><button class="btn" id="btn-logar">Entrar</button></div>
+      <p class="erro-form" id="erro-logar" hidden></p>
+    </div>`;
+  mostrar("entrada");
+  ligarGrupo("#e-anos","[data-ano]");
+  $("#btn-volta-entrada").addEventListener("click", telaEntrada);
+  const tentar = ()=>{
+    const nome = $("#e-nome").value.trim();
+    const senha = $("#e-senha").value.trim();
+    const ano = selecionado("#e-anos","ano")||anosDisponiveis()[0];
+    if(nome.length < 2) return falha($("#erro-logar"),"Escreva seu nome.");
+    const k = chaveDe(nome, ano);
+    if(!cache.contas[k]) cache.contas[k] = {nome, ano, avatar:"🦊", dados:dadosZero()};
+    entrarNuvem(k, senha, $("#erro-logar"), $("#btn-logar"));
+  };
+  $("#btn-logar").addEventListener("click", tentar);
+  $("#e-senha").addEventListener("keydown", e=>{ if(e.key==="Enter") tentar(); });
+}
+
+/* ---------- cadastro ---------- */
+async function criarPerfil(){
+  const nome = $("#n-nome").value.trim();
+  const senha = $("#n-senha").value.trim();
+  const erro = $("#erro-criar");
+  const ano = selecionado("#n-anos","ano")||anosDisponiveis()[0];
+  const avatar = selecionado("#n-avatares","av")||"🦊";
+  if(nome.length < 2) return falha(erro,"Escreva seu nome.");
+  if(!/^\d{4}$/.test(senha)) return falha(erro,"A senha precisa ter 4 números.");
+  const btn = $("#btn-criar"); btn.disabled = true; btn.textContent = "Criando...";
+  let r;
+  try{ r = await rpc("cadastrar", {p_nome:nome, p_ano:ano, p_avatar:avatar, p_senha:senha}); }
+  catch(e){ btn.disabled=false; btn.textContent="Criar perfil"; return falha(erro, msgRede(e)); }
+  btn.disabled=false; btn.textContent="Criar perfil";
+  if(r.erro === "existe") return falha(erro,"Já existe uma conta com esse nome e ano. Se é você, use o botão “Já tenho conta” para entrar; se esqueceu a senha, peça à "+ADMIN.nome+" para redefinir.");
+  if(r.erro) return falha(erro,"Não deu para criar o perfil. Confira o nome e a senha.");
+  const k = chaveDe(nome, ano);
+  cache.contas[k] = {id:r.id, nome, ano, avatar, senha, dados:dadosZero(), pendente:true};
+  await Armazem.gravar(CHAVE, cache);
+  telaPendente(k);
+}
+
+/* ---------- aguardando aprovação ---------- */
+function telaPendente(chave, aviso){
+  const c = cache.contas[chave];
+  cabecalho("Quase lá, "+c.nome+"!", "Falta a aprovação da "+ADMIN.nome);
+  telas.entrada.innerHTML = `
+    <button class="voltar" id="btn-volta-entrada">← Voltar</button>
+    <div class="cartao intro" style="margin-top:10px">
+      <p><strong>Seu perfil foi criado</strong> e está aguardando aprovação. ⏳</p>
+      <p style="margin-top:8px">Avise a <b>${ADMIN.nome}</b> que você se cadastrou: <b>${c.nome} (${c.ano})</b>. Ela aprova no painel dela — do celular mesmo — e aí é só tocar no botão abaixo.</p>
+    </div>
+    <div class="cartao">
+      <div class="acoes"><button class="btn" id="btn-tentar">Já fui aprovada — entrar</button></div>
+      <p class="erro-form" id="erro-pendente" ${aviso?"":"hidden"}>${aviso||""}</p>
+    </div>`;
+  mostrar("entrada");
+  $("#btn-volta-entrada").addEventListener("click", telaEntrada);
+  $("#btn-tentar").addEventListener("click", ()=>entrarNuvem(chave, cache.contas[chave].senha, $("#erro-pendente"), $("#btn-tentar")));
+}
+
+/* ---------- login ---------- */
+function importarLegadoV1(nome, ano){
+  try{
+    const bruto = localStorage.getItem(CHAVE_V1);
+    if(!bruto) return null;
+    const v1 = JSON.parse(bruto);
+    if(!v1 || !v1.perfis) return null;
+    const alvo = Object.values(v1.perfis).find(p => normalizarNome(p.nome)===normalizarNome(nome) && p.ano===ano);
+    return alvo ? alvo.dados : null;
+  }catch(e){ return null; }
+}
+
+async function entrarNuvem(chave, senha, elErro, btn){
+  if(btn){ btn.disabled = true; btn.dataset.rotulo = btn.textContent; btn.textContent = "Entrando..."; }
+  const solta = ()=>{ if(btn){ btn.disabled=false; btn.textContent = btn.dataset.rotulo; } };
+  const c = cache.contas[chave];
+  let r;
+  try{ r = await rpc("entrar", {p_nome:c.nome, p_ano:c.ano, p_senha:senha}); }
+  catch(e){ solta(); return falha(elErro, msgRede(e)); }
+  solta();
+  if(r.erro === "senha")     return falha(elErro,"Senha errada. Tenta de novo.");
+  if(r.erro === "pendente"){ c.pendente = true; Armazem.gravar(CHAVE, cache); return falha(elErro,"Ainda aguardando: a "+ADMIN.nome+" ainda não aprovou seu acesso."); }
+  if(r.erro === "bloqueada") return falha(elErro,"Seu acesso está bloqueado. Fale com a "+ADMIN.nome+".");
+  if(r.erro === "nao_existe"){
+    delete cache.contas[chave]; Armazem.gravar(CHAVE, cache);
+    return falha(elErro,"Essa conta não existe mais no servidor. Crie um perfil novo.");
+  }
+  if(r.erro) return falha(elErro, SEM_REDE);
+
+  // dados: servidor é a fonte; se ele estiver zerado, importa o que houver no aparelho (fase 1 ou cache)
+  let dados = Object.assign(dadosZero(), r.dados || {});
+  if(!dados.xp){
+    const doCache = c.dados && c.dados.xp ? c.dados : null;
+    const doV1 = importarLegadoV1(c.nome, c.ano);
+    const local = (doCache && (!doV1 || doCache.xp >= (doV1.xp||0))) ? doCache : doV1;
+    if(local && local.xp) dados = Object.assign(dadosZero(), local);
+  }
+  perfil = {id:r.id, nome:r.nome, ano:r.ano, avatar:r.avatar || c.avatar, senha, dados};
+  migrarPerfil(perfil);
+  delete c.pendente;
+  c.senha = senha; c.avatar = perfil.avatar;
+  await salvar();               // grava cache + empurra para a nuvem
+  filtroAno = perfil.ano;
+  telaEstante();
+}
+
+function pedirSenha(chave){
+  const c = cache.contas[chave];
+  cabecalho(c.nome, "Digite sua senha para entrar");
+  telas.entrada.innerHTML = `
+    <div class="cartao">
+      <button class="voltar" id="btn-volta-entrada">← Trocar de perfil</button>
+      <h3 style="margin:10px 0 0">${c.avatar} Oi, ${c.nome}!</h3>
+      <label for="s-senha">Senha de 4 números</label>
+      <input id="s-senha" type="password" inputmode="numeric" maxlength="4" placeholder="••••" autocomplete="off">
+      <div class="acoes"><button class="btn" id="btn-entrar">Entrar</button></div>
+      <p class="erro-form" id="erro-senha" hidden></p>
+      <button class="link-fraco" id="btn-esqueci">Esqueci minha senha</button>
+    </div>`;
+  const campo = $("#s-senha");
+  campo.focus();
+  const tentar = ()=>entrarNuvem(chave, campo.value.trim(), $("#erro-senha"), $("#btn-entrar"));
+  $("#btn-entrar").addEventListener("click", tentar);
+  campo.addEventListener("keydown", e=>{ if(e.key==="Enter") tentar(); });
+  $("#btn-volta-entrada").addEventListener("click", telaEntrada);
+  $("#btn-esqueci").addEventListener("click", e=>{
+    if(e.target.dataset.c !== "sim"){
+      e.target.dataset.c = "sim";
+      e.target.textContent = "A "+ADMIN.nome+" redefine sua senha no painel dela. Ou toque aqui de novo para tirar este perfil da lista DESTE aparelho (a conta continua existindo).";
+      return;
+    }
+    delete cache.contas[chave];
+    Armazem.gravar(CHAVE, cache).then(telaEntrada);
+  });
+  mostrar("entrada");
+}
+
+/* ================= Painel da administradora ================= */
+function telaAdmin(){
+  cabecalho("Painel da "+ADMIN.nome, "Gestão de usuárias");
+  telas.entrada.innerHTML = `
+    <div class="cartao">
+      <button class="voltar" id="btn-volta-entrada">← Voltar</button>
+      <h3 style="margin:10px 0 0">🔑 Painel da ${ADMIN.nome}</h3>
+      <label for="a-senha">Senha do painel</label>
+      <input id="a-senha" type="password" autocomplete="off">
+      <div class="acoes"><button class="btn" id="btn-abrir">Abrir painel</button></div>
+      <p class="erro-form" id="erro-admin" hidden></p>
+    </div>`;
+  mostrar("entrada");
+  const tentar = async ()=>{
+    const senha = $("#a-senha").value;
+    const btn = $("#btn-abrir"); btn.disabled=true; btn.textContent="Abrindo...";
+    let r;
+    try{ r = await rpc("admin_listar", {p_senha:senha}); }
+    catch(e){ btn.disabled=false; btn.textContent="Abrir painel"; return falha($("#erro-admin"), msgRede(e)); }
+    btn.disabled=false; btn.textContent="Abrir painel";
+    if(r && r.erro) return falha($("#erro-admin"),"Senha do painel errada.");
+    painelAdmin(senha, r || []);
+  };
+  $("#btn-abrir").addEventListener("click", tentar);
+  $("#a-senha").addEventListener("keydown", e=>{ if(e.key==="Enter") tentar(); });
+  $("#a-senha").focus();
+  $("#btn-volta-entrada").addEventListener("click", telaEntrada);
+}
+
+async function recarregarPainel(senha){
+  try{
+    const r = await rpc("admin_listar", {p_senha:senha});
+    if(r && !r.erro) return painelAdmin(senha, r);
+  }catch(e){}
+  telaAdmin();
+}
+
+function painelAdmin(senha, lista){
+  cabecalho("Painel da "+ADMIN.nome, "Todas as usuárias, de todos os aparelhos");
+  const pendentes = lista.filter(u=>u.status==="pendente");
+  const demais = lista.filter(u=>u.status!=="pendente");
+  const linha = u=>{
+    const status = u.status==="pendente" ? `<span class="tag-pend">⏳ pendente</span>`
+                 : u.status==="bloqueada" ? `<span class="tag-bloq">⛔ bloqueada</span>`
+                 : `<span class="tag-ok">✔ ativa</span>`;
+    return `<div class="painel-linha">
+      <span>${u.avatar||"🦊"} <b>${u.nome}</b> ${status}<br>
+      <small>${u.ano} · ${u.xp||0} XP</small></span>
+      <span class="painel-acoes">
+        ${u.status==="pendente" ? `<button class="apagar aprovar" data-acao="ativa" data-id="${u.id}">aprovar</button>` : ""}
+        ${u.status==="ativa" ? `<button class="apagar bloq" data-acao="bloqueada" data-id="${u.id}">bloquear</button>` : ""}
+        ${u.status==="bloqueada" ? `<button class="apagar aprovar" data-acao="ativa" data-id="${u.id}">desbloquear</button>` : ""}
+        <button class="apagar bloq" data-senha-de="${u.id}" data-nome="${u.nome}">senha</button>
+        <button class="apagar" data-apagar="${u.id}">apagar</button>
+      </span>
+    </div>`;
+  };
+  telas.entrada.innerHTML = `
+    <button class="voltar" id="btn-volta-entrada">← Sair do painel</button>
+    ${pendentes.length?`<div class="cartao" style="margin-top:10px"><h3>⏳ Aguardando aprovação (${pendentes.length})</h3>${pendentes.map(linha).join("")}</div>`:""}
+    <div class="cartao" style="margin-top:10px">
+      <h3>Usuárias (${demais.length})</h3>
+      ${demais.length?demais.map(linha).join(""):`<p class="dica">Ninguém ainda. Assim que alguém se cadastrar, aparece aqui.</p>`}
+      <p class="dica"><b>Aprovar</b> libera o acesso na hora, em qualquer aparelho. <b>Bloquear</b> impede a entrada em todos. <b>Senha</b> redefine a senha de quem esqueceu. <b>Apagar</b> remove a conta e a pontuação (pede confirmação).</p>
+    </div>`;
+  mostrar("entrada");
+  $("#btn-volta-entrada").addEventListener("click", telaEntrada);
+  telas.entrada.querySelectorAll("[data-acao]").forEach(b=>b.addEventListener("click", async ()=>{
+    b.disabled = true;
+    try{ await rpc("admin_definir_status", {p_senha:senha, p_id:b.dataset.id, p_status:b.dataset.acao}); }catch(e){}
+    recarregarPainel(senha);
+  }));
+  telas.entrada.querySelectorAll("[data-senha-de]").forEach(b=>b.addEventListener("click", async ()=>{
+    const nova = (window.prompt("Nova senha de 4 números para "+b.dataset.nome+":")||"").trim();
+    if(!/^\d{4}$/.test(nova)) return;
+    try{ await rpc("admin_redefinir_senha", {p_senha:senha, p_id:b.dataset.senhaDe, p_nova:nova}); }catch(e){}
+    recarregarPainel(senha);
+  }));
+  telas.entrada.querySelectorAll("[data-apagar]").forEach(b=>b.addEventListener("click", async ()=>{
+    if(b.dataset.c !== "sim"){ b.dataset.c="sim"; b.textContent="apagar mesmo?"; return; }
+    b.disabled = true;
+    try{ await rpc("admin_apagar", {p_senha:senha, p_id:b.dataset.apagar}); }catch(e){}
+    recarregarPainel(senha);
+  }));
+}
+
+/* ================= Ranking ================= */
+async function telaRanking(){
+  limparPlaca();
+  cabecalho("🏆 Ranking", "Quem está treinando mais?");
+  let lista = [];
+  try{ lista = await rpc("ranking") || []; }catch(e){ lista = null; }
+  let corpo;
+  if(lista === null) corpo = `<p class="dica">${SEM_REDE}</p>`;
+  else if(!lista.length) corpo = `<p class="dica">Ninguém pontuou ainda — seja a primeira!</p>`;
+  else corpo = lista.map((u,i)=>`<div class="painel-linha ${perfil && normalizarNome(u.nome)===normalizarNome(perfil.nome) && u.ano===perfil.ano ? "eu":""}">
+      <span><b>${i+1}º</b> ${u.avatar||"🦊"} <b>${u.nome}</b><br><small>${u.ano}</small></span>
+      <span class="xp-total">${u.xp} XP</span>
+    </div>`).join("");
+  telas.estante.innerHTML = `
+    <button class="voltar" id="btn-volta-estante">← Voltar</button>
+    <div class="cartao" style="margin-top:10px">${corpo}</div>`;
+  mostrar("estante");
+  $("#btn-volta-estante").addEventListener("click", telaEstante);
+}
+
+/* ================= TELA 2: estante de matérias ================= */
+function telaEstante(){
+  limparPlaca();
+  cabecalho(perfil.nome, perfil.ano+" · escolha a matéria para treinar");
+  const d = perfil.dados;
+  const nv = nivelDe(d.xp);
+  const aprov = d.questoesTotais ? Math.round(d.acertosTotais/d.questoesTotais*100)+"%" : "—";
+  const conqHtml = CONQUISTAS.map(c=>{
+    const tem = d.conquistas.includes(c.id);
+    return `<span class="conq ${tem?"":"bloqueada"}"><em>${c.emoji}</em>${tem?c.nome:c.dica}</span>`;
+  }).join("");
+
+  // cada perfil enxerga apenas o próprio ano
+  const doAno = QUIZ.catalogo.filter(q=>q.ano===perfil.ano);
+  const bims = ["todos", ...new Set(doAno.map(q=>q.bimestre))];
+  if(!bims.includes(filtroBim)) filtroBim = "todos";
+  const lista = doAno.filter(q=>filtroBim==="todos" || q.bimestre===filtroBim);
+
+  let html = `
+    <div class="cartao perfil">
+      <div class="perfil-topo">
+        <span class="nivel-num">Nv<b>${nv.numero}</b></span>
+        <span class="quem"><h3>${perfil.avatar} ${perfil.nome} — ${nv.nome}</h3>
+        <p class="desc">${perfil.ano} · ${nv.faltam? nv.faltam+" XP para o próximo nível":"Nível máximo!"}</p></span>
+        <span class="xp-total">${d.xp} XP</span>
+      </div>
+      <div class="trilho"><i style="width:${nv.pct}%"></i></div>
+      <div class="stats">
+        <span><b>${d.partidas}</b>partidas</span>
+        <span><b>${d.acertosTotais}</b>acertos</span>
+        <span><b>${aprov}</b>aproveitamento</span>
+        <span><b>${d.melhorSequencia}</b>seguidas</span>
+      </div>
+      <div class="conquistas">${conqHtml}</div>
+      <div class="acoes" style="margin-top:10px"><button class="btn secundario" id="btn-ranking">🏆 Ranking das amigas</button></div>
+      ${salvaOk?"":`<p class="aviso">Sem conexão com o servidor — seu progresso está guardado neste aparelho e será enviado quando a internet voltar.</p>`}
+    </div>
+
+    <div class="divisor"><span>Bimestre</span></div>
+    <div class="chips" id="f-bim">${bims.map(b=>`<button class="chip" data-bim="${b}" aria-pressed="${b===filtroBim}">${b==="todos"?"Todos":b}</button>`).join("")}</div>`;
+
+  if(!lista.length){
+    html += `<div class="cartao vazio-msg">As matérias do ${perfil.ano} ainda estão sendo preparadas.<br>Assim que o material entrar, elas aparecem aqui sozinhas.</div>`;
+  } else {
+    lista.forEach(q=>{
+      const pq = d.porQuiz[q.id];
+      const feitas = pq ? Object.keys(pq.recordes).length : 0;
+      const totalRod = q.rodadas.length + 1;
+      const medOuro = pq ? Object.values(pq.medalhas).filter(m=>m==="ouro").length : 0;
+      const selo = feitas
+        ? `<span class="selo">${feitas} de ${totalRod} rodadas jogadas</span>${medOuro?`<span class="medalha">🥇 ${medOuro}</span>`:""}`
+        : `<span class="selo vazio">Ainda não começou</span>`;
+      html += `<button class="cartao item" data-quiz="${q.id}">
+          <span class="icone">${q.emoji||"📘"}</span>
+          <span><h3>${q.materia}</h3>
+            <p class="desc">${q.bimestre} · ${q.tema}</p>${selo}</span>
+        </button>`;
+    });
+  }
+  html += `<button class="link-fraco" id="btn-sair-perfil">Sair do perfil de ${perfil.nome}</button>`;
+
+  telas.estante.innerHTML = html;
+  mostrar("estante");
+  telas.estante.querySelectorAll("#f-bim [data-bim]").forEach(b=>b.addEventListener("click",()=>{ filtroBim=b.dataset.bim; telaEstante(); }));
+  telas.estante.querySelectorAll("[data-quiz]").forEach(b=>b.addEventListener("click",()=>telaMenu(b.dataset.quiz)));
+  $("#btn-sair-perfil").addEventListener("click", telaEntrada);
+  $("#btn-ranking").addEventListener("click", telaRanking);
+}
+
+/* ================= TELA 3: menu do quiz ================= */
+function progressoQuiz(id){
+  if(!perfil.dados.porQuiz[id]) perfil.dados.porQuiz[id] = {recordes:{}, medalhas:{}, erros:{}};
+  const pq = perfil.dados.porQuiz[id];
+  if(!pq.erros) pq.erros = {};
+  return pq;
+}
+function telaMenu(id){
+  quizAtual = QUIZ.catalogo.find(q=>q.id===id);
+  limparPlaca();
+  cabecalho(quizAtual.materia, quizAtual.ano+" · "+quizAtual.bimestre);
+  const pq = progressoQuiz(id);
+  const total = quizAtual.rodadas.length;
+  const feitas = quizAtual.rodadas.filter(r=>pq.recordes[r.id]).length;
+
+  let html = `<button class="voltar" id="btn-volta-estante">← Todas as matérias</button>
+    <div class="cartao intro" style="margin-top:10px">
+      <p><strong>${quizAtual.tema}</strong>. Cada rodada começa com um resumo do que cai. Nas rodadas de aquecimento você descobre na hora se acertou e por quê. Depois encare o teste final, que só mostra o resultado no fim.</p>
+    </div>
+    <div class="divisor"><span>Aquecimento — ${feitas} de ${total} feitas</span></div>`;
+
+  quizAtual.rodadas.forEach(r=>{
+    const rec = pq.recordes[r.id], med = pq.medalhas[r.id];
+    const selo = rec ? `<span class="selo">Recorde: ${rec.acertos}/${rec.total}</span>${med?`<span class="medalha">${ICONE_MEDALHA[med]}</span>`:""}`
+                     : `<span class="selo vazio">Ainda não jogou</span>`;
+    html += `<button class="cartao item" data-rodada="${r.id}">
+        <span class="icone">${r.emoji||"📗"}</span>
+        <span><h3>${r.nome}</h3><p class="desc">${r.desc||""}</p>${selo}</span></button>`;
+  });
+
+  const nErros = Object.keys(pq.erros).length;
+  if(nErros){
+    html += `<div class="divisor"><span>Só suas</span></div>
+      <button class="cartao item" data-rodada="revisao">
+        <span class="icone">🩹</span>
+        <span><h3>Revisão dos meus erros</h3>
+        <p class="desc">As questões que você já errou nesta matéria voltam aqui. Acerte cada uma duas vezes para tirá-la da lista.</p>
+        <span class="selo">${nErros} ${nErros===1?"questão":"questões"} para dominar</span></span>
+      </button>`;
+  }
+
+  const recT = pq.recordes["final"], medT = pq.medalhas["final"];
+  const seloT = recT ? `<span class="selo">Recorde: ${recT.acertos}/${recT.total}</span>${medT?`<span class="medalha">${ICONE_MEDALHA[medT]}</span>`:""}`
+                     : `<span class="selo vazio">Aquece primeiro e depois vem</span>`;
+  html += `<div class="divisor"><span>Valendo</span></div>
+    <button class="cartao item final" data-rodada="final">
+      <span class="icone">🏆</span>
+      <span><h3>Teste final</h3>
+      <p class="desc">${quizAtual.qtdTeste||15} questões de toda a matéria. Sem dica no meio: o gabarito comentado sai no fim.</p>${seloT}</span>
+    </button>`;
+
+  telas.menu.innerHTML = html;
+  mostrar("menu");
+  $("#btn-volta-estante").addEventListener("click", telaEstante);
+  telas.menu.querySelectorAll("[data-rodada]").forEach(b=>b.addEventListener("click",()=>{
+    const rid = b.dataset.rodada;
+    const r = quizAtual.rodadas.find(x=>x.id===rid);
+    if(r && r.resumo && r.resumo.length) telaResumo(rid);
+    else iniciar(rid);
+  }));
+}
+
+/* Resumo da rodada: estudar antes de responder */
+function telaResumo(id){
+  const r = quizAtual.rodadas.find(x=>x.id===id);
+  cabecalho(quizAtual.materia, r.nome);
+  telas.menu.innerHTML = `
+    <button class="voltar" id="btn-volta-menu">← Rodadas</button>
+    <div class="cartao resumo" style="margin-top:10px">
+      <h3>📖 O que você precisa saber</h3>
+      <ul>${r.resumo.map(x=>`<li>${x}</li>`).join("")}</ul>
+    </div>
+    <div class="acoes">
+      <button class="btn" id="btn-comecar">Já li, começar a rodada</button>
+    </div>`;
+  mostrar("menu");
+  $("#btn-volta-menu").addEventListener("click", ()=>telaMenu(quizAtual.id));
+  $("#btn-comecar").addEventListener("click", ()=>iniciar(id));
+}
+
+/* ================= TELA 4: quiz ================= */
+function iniciar(id){
+  limparPlaca();
+  if(id === "final"){
+    const todas = quizAtual.rodadas.reduce((a,r)=>a.concat(r.questoes),[]);
+    estado.rodada = {id:"final", nome:"Teste final"};
+    estado.lista = sortear(todas, quizAtual.qtdTeste||15);
+    estado.modo = "teste";
+  } else if(id === "revisao"){
+    const pq = progressoQuiz(quizAtual.id);
+    const todas = quizAtual.rodadas.reduce((a,r)=>a.concat(r.questoes),[]);
+    const alvo = todas.filter(q=>pq.erros[qid(q)]);
+    estado.rodada = {id:"revisao", nome:"Revisão dos erros"};
+    estado.lista = sortear(alvo, quizAtual.qtdAquecimento||8);
+    estado.modo = "aquecimento";
+  } else {
+    const r = quizAtual.rodadas.find(x=>x.id===id);
+    estado.rodada = r;
+    estado.lista = sortear(r.questoes, quizAtual.qtdAquecimento||8);
+    estado.modo = "aquecimento";
+  }
+  estado.indice = 0; estado.respostas = []; estado.escolhaAtual = undefined;
+  mostrar("quiz");
+  desenharQuestao();
+}
+
+function desenharQuestao(){
+  estado.respondida = false;
+  const q = estado.lista[estado.indice], n = estado.indice+1, t = estado.lista.length;
+  telas.quiz.innerHTML = `
+    <div class="barra-topo">
+      <button class="voltar" id="btn-sair">← Sair da rodada</button>
+      <span class="contador">${n} de ${t}</span>
+    </div>
+    <p class="nome-rodada">${quizAtual.materia} · ${estado.rodada.nome}</p>
+    <div class="trilho"><i style="width:${((n-1)/t)*100}%"></i></div>
+    <div class="cartao">
+      <h2 class="pergunta">${q.p}</h2>
+      <div id="area-resposta"></div>
+      <div id="area-feedback"></div>
+      <div class="acoes" id="acoes"></div>
+    </div>`;
+  $("#btn-sair").addEventListener("click", ()=>telaMenu(quizAtual.id));
+  const area = $("#area-resposta");
+
+  if(q.tipo === "num"){
+    area.innerHTML = `<div class="resposta-num"><input id="resp-num" inputmode="decimal" autocomplete="off" placeholder="Digite a resposta"></div>
+      <p class="dica">Pode usar vírgula ou ponto nos decimais.</p>`;
+    const campo = $("#resp-num");
+    if(estado.modo !== "teste"){
+      $("#acoes").innerHTML = `<button class="btn" id="btn-conferir">Conferir</button>`;
+      const conferir = ()=>{ if(campo.value.trim()) responderNum(campo.value.trim()); };
+      $("#btn-conferir").addEventListener("click", conferir);
+      campo.addEventListener("keydown", e=>{ if(e.key==="Enter") conferir(); });
+    } else {
+      $("#acoes").innerHTML = `<button class="btn" id="btn-proxima" disabled>${n===t?"Ver resultado":"Próxima"}</button>`;
+      $("#btn-proxima").addEventListener("click", avancar);
+      campo.addEventListener("input", ()=>{ $("#btn-proxima").disabled = !campo.value.trim(); });
+      campo.addEventListener("keydown", e=>{ if(e.key==="Enter" && campo.value.trim()) avancar(); });
+    }
+    campo.focus();
+    return;
+  }
+
+  area.innerHTML = `<div class="opcoes" id="opcoes"></div>`;
+  const cont = $("#opcoes");
+  q.opcoes.forEach((op,i)=>{
+    const b=document.createElement("button");
+    b.className="opcao";
+    b.innerHTML=`<span class="letra">${LETRAS[i]}</span><span>${op.texto}</span>`;
+    b.addEventListener("click",()=>escolher(i));
+    cont.appendChild(b);
+  });
+  if(estado.modo==="teste"){
+    $("#acoes").innerHTML = `<button class="btn" id="btn-proxima" disabled>${n===t?"Ver resultado":"Próxima"}</button>`;
+    $("#btn-proxima").addEventListener("click", avancar);
+  }
+}
+
+function responderNum(valor){
+  if(estado.respondida) return;
+  estado.respondida = true;
+  const q = estado.lista[estado.indice];
+  const acertou = acertoNum(q, valor);
+  $("#resp-num").disabled = true;
+  estado.respostas.push({q, escolha:valor, acertou});
+  plantarColonia(acertou, estado.respostas.length-1);
+  mostrarFeedback(q, valor, acertou);
+  const n=estado.indice+1, t=estado.lista.length;
+  $("#acoes").innerHTML = `<button class="btn" id="btn-proxima">${n===t?"Ver resultado":"Próxima"}</button>`;
+  $("#btn-proxima").addEventListener("click", avancar);
+  $("#btn-proxima").focus();
+}
+
+function escolher(i){
+  const q = estado.lista[estado.indice];
+  const botoes = telas.quiz.querySelectorAll(".opcao");
+  if(estado.modo==="teste"){
+    botoes.forEach(b=>b.classList.remove("marcada"));
+    botoes[i].classList.add("marcada");
+    estado.escolhaAtual = i;
+    $("#btn-proxima").disabled = false;
+    return;
+  }
+  if(estado.respondida) return;
+  estado.respondida = true;
+  const acertou = q.opcoes[i].correta;
+  const certo = q.opcoes.findIndex(o=>o.correta);
+  botoes.forEach((b,k)=>{ b.disabled=true; if(k===certo) b.classList.add("acerto"); if(k===i&&!acertou) b.classList.add("erro"); });
+  estado.respostas.push({q, escolha:i, acertou});
+  plantarColonia(acertou, estado.respostas.length-1);
+  mostrarFeedback(q,i,acertou);
+  const n=estado.indice+1, t=estado.lista.length;
+  $("#acoes").innerHTML = `<button class="btn" id="btn-proxima">${n===t?"Ver resultado":"Próxima"}</button>`;
+  $("#btn-proxima").addEventListener("click", avancar);
+  $("#btn-proxima").focus();
+}
+
+function mostrarFeedback(q, escolha, acertou){
+  const area = $("#area-feedback");
+  const certa = q.tipo==="num" ? q.r : q.opcoes.find(o=>o.correta).texto;
+  const sua   = q.tipo==="num" ? escolha : q.opcoes[escolha].texto;
+  const motivo = q.tipo==="num" ? null : q.opcoes[escolha].motivo;
+  if(acertou){
+    area.innerHTML = `<div class="feedback ok"><h4>Isso aí! ✅</h4><p>${q.exp}</p></div>`;
+  } else {
+    area.innerHTML = `<div class="feedback nok"><h4>Ainda não 🔎</h4>
+      <p>Você respondeu <strong>“${sua}”</strong>. ${motivo||""}</p>
+      <p>A resposta certa é <strong>“${certa}”</strong>.</p><p>${q.exp}</p></div>`;
+  }
+}
+
+function avancar(){
+  if(estado.modo==="teste"){
+    const q = estado.lista[estado.indice];
+    let escolha, acertou;
+    if(q.tipo==="num"){
+      escolha = $("#resp-num").value.trim();
+      acertou = acertoNum(q, escolha);
+    } else {
+      escolha = estado.escolhaAtual;
+      acertou = q.opcoes[escolha].correta;
+    }
+    estado.respostas.push({q, escolha, acertou});
+    plantarColonia(acertou, estado.respostas.length-1);
+    estado.escolhaAtual = undefined;
+  }
+  estado.indice++;
+  if(estado.indice >= estado.lista.length) finalizar();
+  else { desenharQuestao(); window.scrollTo({top:0,behavior:"smooth"}); }
+}
+
+/* ================= TELA 5: resultado ================= */
+async function finalizar(){
+  const acertos = estado.respostas.filter(r=>r.acertou).length;
+  const total = estado.respostas.length;
+  const pct = acertos/total;
+  const id = estado.rodada.id;
+  const d = perfil.dados;
+  const pq = progressoQuiz(quizAtual.id);
+
+  const ehRevisao = id === "revisao";
+  let seq=0, maior=0;
+  estado.respostas.forEach(r=>{ seq = r.acertou?seq+1:0; if(seq>maior) maior=seq; });
+
+  // memória de erros: errou → entra na lista (precisa acertar 2x para sair)
+  estado.respostas.forEach(r=>{
+    const k = "q"+hash32(r.q.p);
+    if(r.acertou){ if(pq.erros[k]){ pq.erros[k]--; if(pq.erros[k]<=0) delete pq.erros[k]; } }
+    else pq.erros[k] = 2;
+  });
+
+  let xpGanho = acertos*APP.xpPorAcerto;
+  if(pct===1 && !ehRevisao){ xpGanho += APP.bonusGabarito; d.gabaritos++; }
+  if(id==="final" && pct>=APP.notaParaPassar){ xpGanho += 25; d.testesPassados++; }
+
+  d.xp += xpGanho; d.partidas++; d.acertosTotais += acertos; d.questoesTotais += total;
+  if(maior > d.melhorSequencia) d.melhorSequencia = maior;
+
+  let novoRecorde = false, med = null;
+  if(!ehRevisao){
+    const rec = pq.recordes[id];
+    novoRecorde = !rec || acertos > rec.acertos;
+    if(novoRecorde) pq.recordes[id] = {acertos,total};
+    med = medalhaDe(pct);
+    const ordem={bronze:1,prata:2,ouro:3};
+    if(med && (!pq.medalhas[id] || ordem[med] > ordem[pq.medalhas[id]])) pq.medalhas[id] = med;
+  }
+
+  const novas = CONQUISTAS.filter(c=>!d.conquistas.includes(c.id) && c.teste(d));
+  novas.forEach(c=>d.conquistas.push(c.id));
+  await salvar();
+
+  let titulo,msg,estrelas;
+  const errosRestantes = Object.keys(pq.erros).length;
+  if(ehRevisao && errosRestantes===0){ titulo="Lista de erros zerada! 🩹✨"; msg="Você dominou tudo o que tinha errado nesta matéria. É assim que se aprende de verdade."; estrelas="🌟🌟🌟"; }
+  else if(pct===1){ titulo="Placa lotada de colônias!"; msg="Gabaritou. Essa parte está dominada."; estrelas="🌟🌟🌟"; }
+  else if(pct>=APP.notaParaPassar){ titulo="Muito bom!"; msg="Você já sabe a maior parte. Revise só o que está aqui embaixo."; estrelas="🌟🌟"; }
+  else if(pct>=0.5){ titulo="Está no caminho"; msg="Leia as explicações com calma e jogue de novo."; estrelas="🌟"; }
+  else { titulo="Bora treinar mais"; msg="Sem stress: leia as explicações, dê uma olhada no livro e repita."; estrelas="💪"; }
+
+  const paraRever = estado.modo==="teste" ? estado.respostas : estado.respostas.filter(r=>!r.acertou);
+  let revisao="";
+  if(paraRever.length){
+    revisao = `<div class="revisao"><h3>${estado.modo==="teste"?"Gabarito comentado":"O que revisar"}</h3>`;
+    paraRever.forEach(r=>{
+      const ehNum = r.q.tipo==="num";
+      const certa = ehNum ? r.q.r : r.q.opcoes.find(o=>o.correta).texto;
+      const sua = ehNum ? (r.escolha||"(em branco)") : r.q.opcoes[r.escolha].texto;
+      const motivo = ehNum ? null : r.q.opcoes[r.escolha].motivo;
+      revisao += `<div class="item-revisao ${r.acertou?"ok":""}">
+        <p class="q">${r.acertou?"✅":"❌"} ${r.q.p}</p>
+        ${r.acertou?`<p class="certa">Você respondeu: ${sua}</p>`
+                   :`<p class="marcou">Você marcou: ${sua}</p><p class="certa">Resposta certa: ${certa}</p>`}
+        <div class="porque">${!r.acertou&&motivo?motivo+" ":""}${r.q.exp}</div></div>`;
+    });
+    revisao += `</div>`;
+  }
+
+  const nv = nivelDe(d.xp);
+  const conqHtml = novas.length ? `<div class="nova-conq">Conquista desbloqueada: ${novas.map(c=>`${c.emoji} <b>${c.nome}</b>`).join(" · ")}</div>` : "";
+
+  telas.fim.innerHTML = `
+    <div class="cartao placar">
+      <div class="nota">${acertos}<small>/${total}</small></div>
+      <div class="estrelas">${estrelas}${med?" "+ICONE_MEDALHA[med]:""}</div>
+      <h2>${titulo}</h2><p>${msg}</p>
+      <div class="ganho">+${xpGanho} XP${novoRecorde?" · novo recorde!":""}</div>
+      <p style="margin-top:10px;font-size:14px">Total: ${d.xp} XP — Nível ${nv.numero}, ${nv.nome}${nv.faltam?` (faltam ${nv.faltam} XP)`:""}</p>
+      ${conqHtml}
+    </div>
+    ${revisao}
+    <div class="acoes">
+      ${ehRevisao && errosRestantes===0 ? "" : `<button class="btn" id="btn-denovo">${ehRevisao?"Revisar de novo":"Jogar de novo com outras questões"}</button>`}
+      <button class="btn secundario" id="btn-menu">Outras rodadas</button>
+      <button class="btn secundario" id="btn-estante">Outra matéria</button>
+    </div>`;
+  mostrar("fim");
+  cabecalho(quizAtual.materia, "Resultado");
+  const bd = $("#btn-denovo"); if(bd) bd.addEventListener("click", ()=>iniciar(id));
+  $("#btn-menu").addEventListener("click", ()=>telaMenu(quizAtual.id));
+  $("#btn-estante").addEventListener("click", telaEstante);
+}
+
+/* ================= migrações de progresso =================
+   Quando uma matéria muda de nome ou se divide, o progresso salvo nos
+   aparelhos é remapeado aqui — NUNCA descartado. Regra da casa: ids de
+   matéria e de rodada não mudam; se precisarem mudar, entra uma linha
+   nesta lista na mesma atualização. */
+const MIGRACOES = [
+  { de:"8ano-ciencias-3bim",
+    rodadas:{ r1:["8ano-biologia-3bim","r1"], r2:["8ano-quimica-3bim","r1"], r3:["8ano-fisica-3bim","r1"] } }
+];
+function casaDaQuestao(h){
+  for(const q of QUIZ.catalogo)
+    for(const r of q.rodadas)
+      for(const x of r.questoes)
+        if(qid(x) === h) return q.id;
+  return null;
+}
+function migrarPerfil(p){
+  let mudou = false;
+  MIGRACOES.forEach(m=>{
+    const antigo = p.dados.porQuiz && p.dados.porQuiz[m.de];
+    if(!antigo) return;
+    for(const rod in (antigo.recordes||{})){
+      const destino = m.rodadas[rod];
+      if(!destino) continue; // ex.: teste final não migra entre matérias
+      const [qN, rN] = destino;
+      const alvo = p.dados.porQuiz[qN] = p.dados.porQuiz[qN] || {recordes:{}, medalhas:{}, erros:{}};
+      if(!alvo.recordes[rN]) alvo.recordes[rN] = antigo.recordes[rod];
+      if(antigo.medalhas && antigo.medalhas[rod] && !alvo.medalhas[rN]) alvo.medalhas[rN] = antigo.medalhas[rod];
+    }
+    for(const h in (antigo.erros||{})){
+      const novoLar = casaDaQuestao(h);
+      if(!novoLar) continue;
+      const alvo = p.dados.porQuiz[novoLar] = p.dados.porQuiz[novoLar] || {recordes:{}, medalhas:{}, erros:{}};
+      if(!alvo.erros) alvo.erros = {};
+      if(!alvo.erros[h]) alvo.erros[h] = antigo.erros[h];
+    }
+    delete p.dados.porQuiz[m.de];
+    mudou = true;
+  });
+  return mudou;
+}
+
+/* ================= início ================= */
+(async function(){
+  const salvo = await Armazem.ler(CHAVE);
+  if(salvo && salvo.contas) cache = salvo;
+  telaEntrada();
+})();
+</script>
+</body>
+</html>
