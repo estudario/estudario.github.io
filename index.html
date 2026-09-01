@@ -262,6 +262,21 @@ const NUVEM = {
   chave: "sb_publishable_NnmY2Ox-E1zp6Tvx-RvJpg_UBKgYKVL"
 };
 const ADMIN = { nome: "Luiza" };
+const ESCOLAS = ["Colégio Progresso", "Colégio Fundamentum"];
+const ESCOLA_PADRAO = ESCOLAS[0];
+
+/* chama a nuvem enviando a escola; se o banco ainda não conhecer o campo
+   (migração pendente), repete a chamada no formato antigo */
+async function rpcEscola(fn, args){
+  try{ return await rpc(fn, args); }
+  catch(e){
+    if(e.status === 404 && args && "p_escola" in args){
+      const semEscola = Object.assign({}, args); delete semEscola.p_escola;
+      return await rpc(fn, semEscola);
+    }
+    throw e;
+  }
+}
 const SEM_REDE = "Não consegui falar com o servidor. Confira a internet e tente de novo.";
 function msgRede(e){ if(!e || !e.status) return SEM_REDE; return SEM_REDE+" (código "+e.status+(e.detalhe?" — "+String(e.detalhe).slice(0,160):"")+")"; }
 
@@ -340,13 +355,13 @@ function contarMedalhas(d, tipo){
   Object.values(d.porQuiz).forEach(q=>Object.values(q.medalhas||{}).forEach(m=>{ if(m===tipo) n++; }));
   return n;
 }
-function chaveDe(nome, ano){ return normalizarNome(nome)+"|"+ano; }
+function chaveDe(nome, ano, escola){ return normalizarNome(nome)+"|"+ano+"|"+(escola||ESCOLA_PADRAO); }
 
 async function salvar(){
   if(!perfil) return;
-  cache.contas[chaveDe(perfil.nome, perfil.ano)] = {
-    id:perfil.id, nome:perfil.nome, ano:perfil.ano, avatar:perfil.avatar,
-    senha:perfil.senha, dados:perfil.dados
+  cache.contas[chaveDe(perfil.nome, perfil.ano, perfil.escola)] = {
+    id:perfil.id, nome:perfil.nome, ano:perfil.ano, escola:perfil.escola,
+    avatar:perfil.avatar, senha:perfil.senha, dados:perfil.dados
   };
   await Armazem.gravar(CHAVE, cache);
   try{
@@ -415,7 +430,7 @@ function telaEntrada(){
       const nv = nivelDe((c.dados||dadosZero()).xp||0);
       html += `<button class="linha-perfil" data-perfil="${k}">
         <span class="av">${c.avatar}</span>
-        <span><b>${c.nome}</b><small>${c.ano} · Nível ${nv.numero} · ${(c.dados&&c.dados.xp)||0} XP${c.pendente?' · ⏳ aguardando aprovação':''}</small></span>
+        <span><b>${c.nome}</b><small>${c.escola||ESCOLA_PADRAO} · ${c.ano} · Nível ${nv.numero} · ${(c.dados&&c.dados.xp)||0} XP${c.pendente?' · ⏳ aguardando aprovação':''}</small></span>
         <span class="entrar">Entrar ›</span>
       </button>`;
     });
@@ -435,6 +450,8 @@ function telaEntrada(){
       <input id="n-nome" maxlength="18" placeholder="Ex.: Carol" autocomplete="off">
       <label>Escolha seu bichinho</label>
       <div class="avatares" id="n-avatares">${APP.avatares.map((a,i)=>`<button class="av" data-av="${a}" aria-pressed="${i===0}">${a}</button>`).join("")}</div>
+      <label>Sua escola</label>
+      <div class="chips" id="n-escolas">${ESCOLAS.map((e,i)=>`<button class="chip" data-escola="${e}" aria-pressed="${i===0}">${e}</button>`).join("")}</div>
       <label>Seu ano</label>
       <div class="chips" id="n-anos">${anosDisponiveis().map((a,i)=>`<button class="chip" data-ano="${a}" aria-pressed="${i===0}">${a}</button>`).join("")}</div>
       <label for="n-senha">Senha de 4 números</label>
@@ -454,6 +471,7 @@ function telaEntrada(){
 
   telas.entrada.querySelectorAll("[data-perfil]").forEach(b=>b.addEventListener("click",()=>pedirSenha(b.dataset.perfil)));
   ligarGrupo("#n-avatares","[data-av]");
+  ligarGrupo("#n-escolas","[data-escola]");
   ligarGrupo("#n-anos","[data-ano]");
   $("#btn-criar").addEventListener("click", criarPerfil);
   $("#btn-admin").addEventListener("click", telaAdmin);
@@ -486,6 +504,8 @@ function telaLogin(){
       <h3 style="margin:10px 0 0">👋 Entrar na minha conta</h3>
       <label for="e-nome">Seu nome (igual ao cadastro)</label>
       <input id="e-nome" maxlength="18" autocomplete="off">
+      <label>Sua escola</label>
+      <div class="chips" id="e-escolas">${ESCOLAS.map((e,i)=>`<button class="chip" data-escola="${e}" aria-pressed="${i===0}">${e}</button>`).join("")}</div>
       <label>Seu ano</label>
       <div class="chips" id="e-anos">${anosDisponiveis().map((a,i)=>`<button class="chip" data-ano="${a}" aria-pressed="${i===0}">${a}</button>`).join("")}</div>
       <label for="e-senha">Senha de 4 números</label>
@@ -495,14 +515,16 @@ function telaLogin(){
     </div>`;
   mostrar("entrada");
   ligarGrupo("#e-anos","[data-ano]");
+  ligarGrupo("#e-escolas","[data-escola]");
   $("#btn-volta-entrada").addEventListener("click", telaEntrada);
   const tentar = ()=>{
     const nome = $("#e-nome").value.trim();
     const senha = $("#e-senha").value.trim();
     const ano = selecionado("#e-anos","ano")||anosDisponiveis()[0];
+    const escola = selecionado("#e-escolas","escola")||ESCOLA_PADRAO;
     if(nome.length < 2) return falha($("#erro-logar"),"Escreva seu nome.");
-    const k = chaveDe(nome, ano);
-    if(!cache.contas[k]) cache.contas[k] = {nome, ano, avatar:"🦊", dados:dadosZero()};
+    const k = chaveDe(nome, ano, escola);
+    if(!cache.contas[k]) cache.contas[k] = {nome, ano, escola, avatar:"🦊", dados:dadosZero()};
     entrarNuvem(k, senha, $("#erro-logar"), $("#btn-logar"));
   };
   $("#btn-logar").addEventListener("click", tentar);
@@ -515,18 +537,19 @@ async function criarPerfil(){
   const senha = $("#n-senha").value.trim();
   const erro = $("#erro-criar");
   const ano = selecionado("#n-anos","ano")||anosDisponiveis()[0];
+  const escola = selecionado("#n-escolas","escola")||ESCOLA_PADRAO;
   const avatar = selecionado("#n-avatares","av")||"🦊";
   if(nome.length < 2) return falha(erro,"Escreva seu nome.");
   if(!/^\d{4}$/.test(senha)) return falha(erro,"A senha precisa ter 4 números.");
   const btn = $("#btn-criar"); btn.disabled = true; btn.textContent = "Criando...";
   let r;
-  try{ r = await rpc("cadastrar", {p_nome:nome, p_ano:ano, p_avatar:avatar, p_senha:senha}); }
+  try{ r = await rpcEscola("cadastrar", {p_nome:nome, p_ano:ano, p_avatar:avatar, p_senha:senha, p_escola:escola}); }
   catch(e){ btn.disabled=false; btn.textContent="Criar perfil"; return falha(erro, msgRede(e)); }
   btn.disabled=false; btn.textContent="Criar perfil";
   if(r.erro === "existe") return falha(erro,"Já existe uma conta com esse nome e ano. Se é você, use o botão “Já tenho conta” para entrar; se esqueceu a senha, peça à "+ADMIN.nome+" para redefinir.");
   if(r.erro) return falha(erro,"Não deu para criar o perfil. Confira o nome e a senha.");
-  const k = chaveDe(nome, ano);
-  cache.contas[k] = {id:r.id, nome, ano, avatar, senha, dados:dadosZero(), pendente:true};
+  const k = chaveDe(nome, ano, escola);
+  cache.contas[k] = {id:r.id, nome, ano, escola, avatar, senha, dados:dadosZero(), pendente:true};
   await Armazem.gravar(CHAVE, cache);
   telaPendente(k);
 }
@@ -567,7 +590,7 @@ async function entrarNuvem(chave, senha, elErro, btn){
   const solta = ()=>{ if(btn){ btn.disabled=false; btn.textContent = btn.dataset.rotulo; } };
   const c = cache.contas[chave];
   let r;
-  try{ r = await rpc("entrar", {p_nome:c.nome, p_ano:c.ano, p_senha:senha}); }
+  try{ r = await rpcEscola("entrar", {p_nome:c.nome, p_ano:c.ano, p_senha:senha, p_escola:c.escola||ESCOLA_PADRAO}); }
   catch(e){ solta(); return falha(elErro, msgRede(e)); }
   solta();
   if(r.erro === "senha")     return falha(elErro,"Senha errada. Tenta de novo.");
@@ -587,7 +610,7 @@ async function entrarNuvem(chave, senha, elErro, btn){
     const local = (doCache && (!doV1 || doCache.xp >= (doV1.xp||0))) ? doCache : doV1;
     if(local && local.xp) dados = Object.assign(dadosZero(), local);
   }
-  perfil = {id:r.id, nome:r.nome, ano:r.ano, avatar:r.avatar || c.avatar, senha, dados};
+  perfil = {id:r.id, nome:r.nome, ano:r.ano, escola:r.escola || c.escola || ESCOLA_PADRAO, avatar:r.avatar || c.avatar, senha, dados};
   migrarPerfil(perfil);
   delete c.pendente;
   c.senha = senha; c.avatar = perfil.avatar;
@@ -674,7 +697,7 @@ function painelAdmin(senha, lista){
                  : `<span class="tag-ok">✔ ativa</span>`;
     return `<div class="painel-linha">
       <span>${u.avatar||"🦊"} <b>${u.nome}</b> ${status}<br>
-      <small>${u.ano} · ${u.xp||0} XP</small></span>
+      <small>${u.escola||ESCOLA_PADRAO} · ${u.ano} · ${u.xp||0} XP</small></span>
       <span class="painel-acoes">
         ${u.status==="pendente" ? `<button class="apagar aprovar" data-acao="ativa" data-id="${u.id}">aprovar</button>` : ""}
         ${u.status==="ativa" ? `<button class="apagar bloq" data-acao="bloqueada" data-id="${u.id}">bloquear</button>` : ""}
@@ -722,21 +745,33 @@ async function telaRanking(){
   let corpo;
   if(lista === null) corpo = `<p class="dica">${SEM_REDE}</p>`;
   else if(!lista.length) corpo = `<p class="dica">Ninguém pontuou ainda — seja a primeira!</p>`;
-  else corpo = lista.map((u,i)=>`<div class="painel-linha ${perfil && normalizarNome(u.nome)===normalizarNome(perfil.nome) && u.ano===perfil.ano ? "eu":""}">
-      <span><b>${i+1}º</b> ${u.avatar||"🦊"} <b>${u.nome}</b><br><small>${u.ano}</small></span>
+  else {
+    if(telaRanking.filtro === "minha" && perfil){
+      lista = lista.filter(u=>(u.escola||ESCOLA_PADRAO)===(perfil.escola||ESCOLA_PADRAO));
+    }
+    corpo = `<div class="chips" style="margin-bottom:12px">
+        <button class="chip" data-rf="minha" aria-pressed="${telaRanking.filtro==="minha"}">Minha escola</button>
+        <button class="chip" data-rf="todas" aria-pressed="${telaRanking.filtro!=="minha"}">Todas as escolas</button>
+      </div>` + (lista.length ? lista.map((u,i)=>`<div class="painel-linha ${perfil && normalizarNome(u.nome)===normalizarNome(perfil.nome) && u.ano===perfil.ano && (u.escola||ESCOLA_PADRAO)===(perfil.escola||ESCOLA_PADRAO) ? "eu":""}">
+      <span><b>${i+1}º</b> ${u.avatar||"🦊"} <b>${u.nome}</b><br><small>${u.escola||ESCOLA_PADRAO} · ${u.ano}</small></span>
       <span class="xp-total">${u.xp} XP</span>
-    </div>`).join("");
+    </div>`).join("") : `<p class="dica">Ninguém da sua escola pontuou ainda — seja a primeira!</p>`);
+  }
   telas.estante.innerHTML = `
     <button class="voltar" id="btn-volta-estante">← Voltar</button>
     <div class="cartao" style="margin-top:10px">${corpo}</div>`;
   mostrar("estante");
   $("#btn-volta-estante").addEventListener("click", telaEstante);
+  telas.estante.querySelectorAll("[data-rf]").forEach(b=>b.addEventListener("click",()=>{
+    telaRanking.filtro = b.dataset.rf; telaRanking();
+  }));
 }
+telaRanking.filtro = "minha";
 
 /* ================= TELA 2: estante de matérias ================= */
 function telaEstante(){
   limparPlaca();
-  cabecalho(perfil.nome, perfil.ano+" · escolha a matéria para treinar");
+  cabecalho(perfil.nome, (perfil.escola||ESCOLA_PADRAO)+" · "+perfil.ano);
   const d = perfil.dados;
   const nv = nivelDe(d.xp);
   const aprov = d.questoesTotais ? Math.round(d.acertosTotais/d.questoesTotais*100)+"%" : "—";
@@ -745,11 +780,13 @@ function telaEstante(){
     return `<span class="conq ${tem?"":"bloqueada"}"><em>${c.emoji}</em>${tem?c.nome:c.dica}</span>`;
   }).join("");
 
-  // cada perfil enxerga apenas o próprio ano
-  const doAno = QUIZ.catalogo.filter(q=>q.ano===perfil.ano);
+  // cada perfil enxerga apenas o próprio ano E a própria escola
+  const minhaEscola = perfil.escola || ESCOLA_PADRAO;
+  const doAno = QUIZ.catalogo.filter(q=>q.ano===perfil.ano && (q.escola||ESCOLA_PADRAO)===minhaEscola);
   const bims = ["todos", ...new Set(doAno.map(q=>q.bimestre))];
   if(!bims.includes(filtroBim)) filtroBim = "todos";
   const lista = doAno.filter(q=>filtroBim==="todos" || q.bimestre===filtroBim);
+  const estanteVazia = !doAno.length;
 
   let html = `
     <div class="cartao perfil">
@@ -771,11 +808,13 @@ function telaEstante(){
       ${salvaOk?"":`<p class="aviso">Sem conexão com o servidor — seu progresso está guardado neste aparelho e será enviado quando a internet voltar.</p>`}
     </div>
 
-    <div class="divisor"><span>Bimestre</span></div>
-    <div class="chips" id="f-bim">${bims.map(b=>`<button class="chip" data-bim="${b}" aria-pressed="${b===filtroBim}">${b==="todos"?"Todos":b}</button>`).join("")}</div>`;
+    ${estanteVazia ? "" : `<div class="divisor"><span>Bimestre</span></div>
+    <div class="chips" id="f-bim">${bims.map(b=>`<button class="chip" data-bim="${b}" aria-pressed="${b===filtroBim}">${b==="todos"?"Todos":b}</button>`).join("")}</div>`}`;
 
   if(!lista.length){
-    html += `<div class="cartao vazio-msg">As matérias do ${perfil.ano} ainda estão sendo preparadas.<br>Assim que o material entrar, elas aparecem aqui sozinhas.</div>`;
+    html += estanteVazia
+      ? `<div class="cartao vazio-msg">📦 As matérias do <b>${minhaEscola}</b> (${perfil.ano}) estão sendo preparadas com carinho.<br>Assim que o material entrar, elas aparecem aqui sozinhas — seu perfil e seus pontos já estão prontos esperando!</div>`
+      : `<div class="cartao vazio-msg">As matérias do ${perfil.ano} ainda estão sendo preparadas.<br>Assim que o material entrar, elas aparecem aqui sozinhas.</div>`;
   } else {
     lista.forEach(q=>{
       const pq = d.porQuiz[q.id];
@@ -1172,6 +1211,15 @@ function migrarPerfil(p){
 (async function(){
   const salvo = await Armazem.ler(CHAVE);
   if(salvo && salvo.contas) cache = salvo;
+  // contas guardadas antes da era das escolas ganham a escola padrão
+  Object.keys(cache.contas).forEach(k=>{
+    const c = cache.contas[k];
+    if(!c.escola){
+      c.escola = ESCOLA_PADRAO;
+      const kNovo = chaveDe(c.nome, c.ano, c.escola);
+      if(kNovo !== k){ cache.contas[kNovo] = c; delete cache.contas[k]; }
+    }
+  });
   telaEntrada();
 })();
 </script>
