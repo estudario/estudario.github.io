@@ -31,7 +31,7 @@ h1,h2,h3{font-family:"Baloo 2","Trebuchet MS",sans-serif;font-weight:800;line-he
 
 .topo{display:flex;align-items:center;gap:14px;margin-bottom:20px}
 .topo-texto{flex:1;min-width:0}
-.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--tinta-fraca);margin:0 0 2px}
+.eyebrow{font-size:14px;font-weight:700;color:var(--tinta-fraca);margin:0 0 2px}
 .topo h1{font-size:25px}
 .topo .sub{margin:2px 0 0;font-size:14px;color:var(--tinta-fraca)}
 .placa{width:80px;height:80px;flex:0 0 80px;border-radius:50%;
@@ -54,12 +54,12 @@ h1,h2,h3{font-family:"Baloo 2","Trebuchet MS",sans-serif;font-weight:800;line-he
 .item .icone{flex:0 0 46px;height:46px;border-radius:14px;display:grid;place-items:center;font-size:23px;background:var(--agar)}
 .item.final .icone{background:var(--sol)}
 .item h3{font-size:19px}
-.item .desc{margin:2px 0 0;font-size:14px;color:var(--tinta-fraca)}
-.selo{display:inline-block;margin-top:8px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:var(--verde-claro);color:var(--verde-ok)}
+.item .desc{margin:2px 0 0;font-size:15px;color:var(--tinta-fraca)}
+.selo{display:inline-block;margin-top:8px;font-size:14px;font-weight:800;font-family:"Baloo 2",sans-serif;padding:5px 12px;border-radius:99px;background:var(--verde-claro);color:var(--verde-ok)}
 .selo.vazio{background:#EEF1EE;color:var(--tinta-fraca)}
 .medalha{font-size:19px;margin-left:6px;vertical-align:-2px}
 .divisor{display:flex;align-items:center;gap:10px;margin:24px 0 12px}
-.divisor span{font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--tinta-fraca);white-space:nowrap}
+.divisor span{font-size:15px;font-weight:800;font-family:"Baloo 2",sans-serif;color:var(--tinta-fraca);white-space:nowrap}
 .divisor::before,.divisor::after{content:"";height:2px;background:rgba(18,52,59,.12);flex:1;border-radius:2px}
 
 /* chips */
@@ -71,37 +71,37 @@ h1,h2,h3{font-family:"Baloo 2","Trebuchet MS",sans-serif;font-weight:800;line-he
 /* perfil */
 .perfil{background:linear-gradient(160deg,#20515C 0%,#12343B 100%);border-color:rgba(18,52,59,.3);color:#EAF3EE;box-shadow:0 4px 0 rgba(18,52,59,.3)}
 .perfil-topo{display:flex;align-items:center;gap:12px}
-.nivel-num{flex:0 0 52px;height:52px;border-radius:16px;background:var(--sol);color:var(--tinta);display:grid;place-items:center;font-family:"Baloo 2",sans-serif;font-weight:800;font-size:13px;line-height:1;text-align:center}
+.nivel-num{flex:0 0 56px;height:56px;border-radius:16px;background:var(--sol);color:var(--tinta);display:grid;place-items:center;font-family:"Baloo 2",sans-serif;font-weight:800;font-size:15px;line-height:1.05;text-align:center}
 .nivel-num b{display:block;font-size:21px}
 .perfil-topo .quem{flex:1;min-width:0}
 .perfil-topo h3{font-size:19px;color:#fff}
-.perfil-topo .desc{margin:1px 0 0;font-size:13px;color:rgba(234,243,238,.72)}
+.perfil-topo .desc{margin:1px 0 0;font-size:14.5px;color:rgba(234,243,238,.72)}
 .xp-total{font-family:"Baloo 2",sans-serif;font-weight:800;font-size:17px;color:var(--sol);white-space:nowrap}
 .perfil .trilho{background:rgba(255,255,255,.16);margin:13px 0 12px}
 .perfil .trilho i{background:var(--sol)}
 .stats{display:flex;gap:8px;text-align:center}
-.stats span{flex:1;background:rgba(255,255,255,.09);border-radius:12px;padding:7px 4px;font-size:12px;color:rgba(234,243,238,.75);line-height:1.3}
+.stats span{flex:1;background:rgba(255,255,255,.09);border-radius:12px;padding:8px 4px;font-size:13.5px;color:rgba(234,243,238,.8);line-height:1.3}
 .stats b{display:block;font-family:"Baloo 2",sans-serif;font-size:19px;color:#fff;font-weight:800}
 .conquistas{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
-.conq{font-size:12px;display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.12);border-radius:99px;padding:5px 11px;color:#fff}
+.conq{font-size:13.5px;display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.12);border-radius:99px;padding:5px 11px;color:#fff}
 .conq.bloqueada{opacity:.38}
 .conq em{font-style:normal;font-size:15px}
-.aviso{font-size:12px;color:rgba(234,243,238,.6);margin:10px 0 0}
+.aviso{font-size:14px;color:rgba(234,243,238,.6);margin:10px 0 0}
 
 /* entrada */
 .avatares{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 4px}
 .av{font-size:24px;width:48px;height:48px;border-radius:14px;border:2px solid rgba(18,52,59,.14);background:#fff;cursor:pointer;display:grid;place-items:center}
 .av[aria-pressed="true"]{border-color:var(--uva);background:var(--uva-clara)}
-label{display:block;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--tinta-fraca);margin:14px 0 5px}
+label{display:block;font-size:15px;font-weight:800;font-family:"Baloo 2",sans-serif;color:var(--tinta);margin:14px 0 5px}
 input{width:100%;font:inherit;padding:12px 14px;border-radius:14px;border:2px solid rgba(18,52,59,.16);background:#fff;color:var(--tinta)}
 input:focus{outline:none;border-color:var(--uva)}
 .erro-form{color:var(--coral);font-size:14px;font-weight:700;margin:10px 0 0}
-.dica{font-size:13px;color:var(--tinta-fraca);margin:8px 0 0}
+.dica{font-size:15px;color:var(--tinta-fraca);margin:8px 0 0}
 .linha-perfil{display:flex;align-items:center;gap:12px;width:100%;text-align:left;font:inherit;color:inherit;cursor:pointer;background:var(--branco);border:2px solid rgba(18,52,59,.14);border-radius:14px;padding:12px;box-shadow:0 3px 0 rgba(18,52,59,.12);transition:transform .1s ease}
 .linha-perfil:hover,.linha-perfil:focus-visible{transform:translateY(-2px);border-color:var(--uva)}
 .linha-perfil .av{cursor:pointer;pointer-events:none;flex:0 0 48px}
 .linha-perfil b{font-family:"Baloo 2",sans-serif;font-size:19px;display:block}
-.linha-perfil small{color:var(--tinta-fraca)}
+.linha-perfil small{color:var(--tinta-fraca);font-size:14.5px}
 .linha-perfil .entrar{margin-left:auto;font-family:"Baloo 2",sans-serif;font-weight:800;font-size:16px;color:#fff;background:var(--uva);border-radius:99px;padding:7px 16px;white-space:nowrap}
 .lista-perfis{display:grid;gap:10px}
 .admin-card{margin-top:24px;background:var(--papel);border-style:dashed;border-color:rgba(18,52,59,.3)}
@@ -109,10 +109,11 @@ input:focus{outline:none;border-color:var(--uva)}
 
 /* quiz */
 .barra-topo{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px}
-.contador{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--tinta-fraca)}
-.voltar{background:none;border:none;font:inherit;font-size:14px;font-weight:700;color:var(--uva);cursor:pointer;padding:4px 2px}
-.voltar:hover{text-decoration:underline}
-.nome-rodada{margin:0 0 12px;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--tinta-fraca)}
+.contador{font-size:15px;font-weight:800;font-family:"Baloo 2",sans-serif;color:var(--tinta-fraca)}
+.voltar{display:inline-flex;align-items:center;gap:6px;background:#fff;border:2px solid var(--uva);color:var(--uva);font-family:"Baloo 2",sans-serif;font-weight:700;font-size:16px;border-radius:99px;padding:9px 18px;cursor:pointer;box-shadow:0 3px 0 rgba(124,77,190,.3);transition:transform .08s,box-shadow .08s}
+.voltar:hover{transform:translateY(-1px)}
+.voltar:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(124,77,190,.3)}
+.nome-rodada{margin:0 0 12px;font-size:15px;font-weight:800;font-family:"Baloo 2",sans-serif;color:var(--tinta-fraca)}
 .trilho{height:9px;background:rgba(18,52,59,.1);border-radius:99px;overflow:hidden;margin-bottom:16px}
 .trilho i{display:block;height:100%;width:0;background:var(--uva);border-radius:99px;transition:width .3s}
 .pergunta{font-size:20px;font-family:"Baloo 2",sans-serif;font-weight:700;margin:0 0 14px}
@@ -205,6 +206,7 @@ input:focus{outline:none;border-color:var(--uva)}
 :focus-visible{outline:3px solid var(--uva);outline-offset:3px}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 @media (max-width:420px){.topo h1{font-size:22px}.placa{width:64px;height:64px;flex-basis:64px}.pergunta{font-size:18px}}
+small{font-size:14px}
 </style>
 </head>
 <body>
