@@ -178,6 +178,11 @@ input:focus{outline:none;border-color:var(--uva)}
 .tag-pend{font-size:12px;font-weight:700;color:var(--tinta-fraca)}
 .apagar.aprovar{border-color:var(--verde-ok);color:var(--verde-ok)}
 .btn.secundario{background:var(--papel);color:var(--tinta);border:2px solid rgba(18,52,59,.2);box-shadow:none}
+.check{display:flex;gap:10px;align-items:flex-start;margin-top:14px;font-size:15px;cursor:pointer}
+.check input{width:20px;height:20px;margin-top:1px;accent-color:var(--uva)}
+.privacidade{margin-top:12px;background:var(--papel);border-radius:12px;padding:10px 14px;font-size:14px}
+.privacidade summary{cursor:pointer;font-weight:700}
+.privacidade p{margin-top:8px;color:var(--tinta-fraca)}
 .painel-linha.eu{background:var(--uva-clara);border-radius:12px;padding:8px}
 .resumo ul{margin:12px 0 0;padding-left:20px}
 .resumo li{margin-bottom:9px;font-size:15px}
@@ -254,14 +259,14 @@ const APP = {
 
 /* --- Nuvem (fase 2) -------------------------------------------------
    O Estudário agora vive num banco de dados (Supabase). Cadastro, login,
-   aprovação, bloqueio e progresso são centralizados: a Luiza administra
+   aprovação, bloqueio e progresso são centralizados: a administradora gerencia
    tudo pelo painel, de qualquer aparelho — e a senha dela mora no banco,
    não neste arquivo. */
 const NUVEM = {
   url: "https://opzhkmdpmutayaivzyck.supabase.co",
   chave: "sb_publishable_NnmY2Ox-E1zp6Tvx-RvJpg_UBKgYKVL"
 };
-const ADMIN = { nome: "Luiza" };
+const ADMIN = { nome: "equipe do Estudário" };
 const ESCOLAS = ["Colégio Progresso", "Colégio Fundamentum"];
 const ESCOLA_PADRAO = ESCOLAS[0];
 
@@ -446,8 +451,9 @@ function telaEntrada(){
     </button>
     <div class="cartao">
       <h3>${chaves.length?"Ou crie um perfil novo":"Criar meu perfil"}</h3>
-      <label for="n-nome">Seu nome</label>
+      <label for="n-nome">Seu nome ou apelido</label>
       <input id="n-nome" maxlength="18" placeholder="Ex.: Carol" autocomplete="off">
+      <p class="dica">Use só o primeiro nome ou um apelido — nunca o nome completo. É assim que você vai aparecer para as colegas no ranking. 😉</p>
       <label>Escolha seu bichinho</label>
       <div class="avatares" id="n-avatares">${APP.avatares.map((a,i)=>`<button class="av" data-av="${a}" aria-pressed="${i===0}">${a}</button>`).join("")}</div>
       <label>Sua escola</label>
@@ -456,14 +462,23 @@ function telaEntrada(){
       <div class="chips" id="n-anos">${anosDisponiveis().map((a,i)=>`<button class="chip" data-ano="${a}" aria-pressed="${i===0}">${a}</button>`).join("")}</div>
       <label for="n-senha">Senha de 4 números</label>
       <input id="n-senha" type="password" inputmode="numeric" maxlength="4" placeholder="••••" autocomplete="off">
-      <p class="dica">Depois de criar o perfil, a ${ADMIN.nome} aprova o seu acesso — sem códigos: ela toca em aprovar e pronto.</p>
+      <label for="n-senha2">Digite a senha de novo</label>
+      <input id="n-senha2" type="password" inputmode="numeric" maxlength="4" placeholder="••••" autocomplete="off">
+      <label class="check"><input type="checkbox" id="n-resp"> Um adulto responsável sabe deste cadastro e autorizou.</label>
+      <details class="privacidade">
+        <summary>🔒 Como cuidamos dos seus dados</summary>
+        <p>Guardamos só o necessário: seu nome ou apelido, escola, ano e a sua pontuação. Nada de sobrenome, foto, telefone ou endereço.</p>
+        <p>Quem vê o quê: as colegas veem seu nome/apelido e seus pontos no ranking; a equipe do Estudário vê seu cadastro para aprovar e cuidar da sua conta.</p>
+        <p>Seu responsável pode pedir a correção ou a exclusão da conta a qualquer momento à equipe do Estudário — apagar remove tudo, inclusive a pontuação.</p>
+      </details>
+      <p class="dica">Depois de criar o perfil, a equipe do Estudário aprova o seu acesso.</p>
       <div class="acoes"><button class="btn" id="btn-criar">Criar perfil</button></div>
       <p class="erro-form" id="erro-criar" hidden></p>
     </div>
     <button class="cartao item admin-card" id="btn-admin">
       <span class="icone">🔑</span>
-      <span><h3>Painel da ${ADMIN.nome}</h3>
-      <p class="desc">Aprovar, bloquear e acompanhar todas as usuárias — de qualquer aparelho.</p></span>
+      <span><h3>Administração</h3>
+      <p class="desc">Área restrita da equipe do Estudário.</p></span>
     </button>`;
 
   telas.entrada.innerHTML = html;
@@ -502,7 +517,7 @@ function telaLogin(){
     <div class="cartao">
       <button class="voltar" id="btn-volta-entrada">← Voltar</button>
       <h3 style="margin:10px 0 0">👋 Entrar na minha conta</h3>
-      <label for="e-nome">Seu nome (igual ao cadastro)</label>
+      <label for="e-nome">Seu nome ou apelido (igual ao cadastro)</label>
       <input id="e-nome" maxlength="18" autocomplete="off">
       <label>Sua escola</label>
       <div class="chips" id="e-escolas">${ESCOLAS.map((e,i)=>`<button class="chip" data-escola="${e}" aria-pressed="${i===0}">${e}</button>`).join("")}</div>
@@ -539,8 +554,12 @@ async function criarPerfil(){
   const ano = selecionado("#n-anos","ano")||anosDisponiveis()[0];
   const escola = selecionado("#n-escolas","escola")||ESCOLA_PADRAO;
   const avatar = selecionado("#n-avatares","av")||"🦊";
-  if(nome.length < 2) return falha(erro,"Escreva seu nome.");
+  if(nome.length < 2) return falha(erro,"Escreva seu nome ou apelido.");
+  if(nome.trim().split(/\s+/).length > 2) return falha(erro,"Só o primeiro nome ou apelido, sem nome completo. 😉");
   if(!/^\d{4}$/.test(senha)) return falha(erro,"A senha precisa ter 4 números.");
+  if(/^(\d)\1{3}$/.test(senha) || senha === "1234") return falha(erro,"Essa senha é fácil demais de adivinhar — escolha outra.");
+  if($("#n-senha2").value.trim() !== senha) return falha(erro,"As duas senhas não ficaram iguais. Digite de novo.");
+  if(!$("#n-resp").checked) return falha(erro,"Peça para um adulto responsável autorizar e marque a caixinha.");
   const btn = $("#btn-criar"); btn.disabled = true; btn.textContent = "Criando...";
   let r;
   try{ r = await rpcEscola("cadastrar", {p_nome:nome, p_ano:ano, p_avatar:avatar, p_senha:senha, p_escola:escola}); }
@@ -562,7 +581,7 @@ function telaPendente(chave, aviso){
     <button class="voltar" id="btn-volta-entrada">← Voltar</button>
     <div class="cartao intro" style="margin-top:10px">
       <p><strong>Seu perfil foi criado</strong> e está aguardando aprovação. ⏳</p>
-      <p style="margin-top:8px">Avise a <b>${ADMIN.nome}</b> que você se cadastrou: <b>${c.nome} (${c.ano})</b>. Ela aprova no painel dela — do celular mesmo — e aí é só tocar no botão abaixo.</p>
+      <p style="margin-top:8px">Peça ao <b>adulto responsável</b> que autorizou seu cadastro para avisar a equipe do Estudário: <b>${c.nome} — ${c.escola||ESCOLA_PADRAO}, ${c.ano}</b>. Assim que a aprovação sair, é só tocar no botão abaixo.</p>
     </div>
     <div class="cartao">
       <div class="acoes"><button class="btn" id="btn-tentar">Já fui aprovada — entrar</button></div>
@@ -594,7 +613,7 @@ async function entrarNuvem(chave, senha, elErro, btn){
   catch(e){ solta(); return falha(elErro, msgRede(e)); }
   solta();
   if(r.erro === "senha")     return falha(elErro,"Senha errada. Tenta de novo.");
-  if(r.erro === "pendente"){ c.pendente = true; Armazem.gravar(CHAVE, cache); return falha(elErro,"Ainda aguardando: a "+ADMIN.nome+" ainda não aprovou seu acesso."); }
+  if(r.erro === "pendente"){ c.pendente = true; Armazem.gravar(CHAVE, cache); return falha(elErro,"Ainda aguardando: a equipe do Estudário ainda não aprovou seu acesso."); }
   if(r.erro === "bloqueada") return falha(elErro,"Seu acesso está bloqueado. Fale com a "+ADMIN.nome+".");
   if(r.erro === "nao_existe"){
     delete cache.contas[chave]; Armazem.gravar(CHAVE, cache);
@@ -652,11 +671,11 @@ function pedirSenha(chave){
 
 /* ================= Painel da administradora ================= */
 function telaAdmin(){
-  cabecalho("Painel da "+ADMIN.nome, "Gestão de usuárias");
+  cabecalho("Administração", "Gestão de usuárias");
   telas.entrada.innerHTML = `
     <div class="cartao">
       <button class="voltar" id="btn-volta-entrada">← Voltar</button>
-      <h3 style="margin:10px 0 0">🔑 Painel da ${ADMIN.nome}</h3>
+      <h3 style="margin:10px 0 0">🔑 Administração</h3>
       <label for="a-senha">Senha do painel</label>
       <input id="a-senha" type="password" autocomplete="off">
       <div class="acoes"><button class="btn" id="btn-abrir">Abrir painel</button></div>
@@ -688,7 +707,7 @@ async function recarregarPainel(senha){
 }
 
 function painelAdmin(senha, lista){
-  cabecalho("Painel da "+ADMIN.nome, "Todas as usuárias, de todos os aparelhos");
+  cabecalho("Administração", "Todas as usuárias, de todos os aparelhos");
   const pendentes = lista.filter(u=>u.status==="pendente");
   const demais = lista.filter(u=>u.status!=="pendente");
   const linha = u=>{
