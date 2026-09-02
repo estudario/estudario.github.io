@@ -55,6 +55,7 @@ h1,h2,h3{font-family:"Baloo 2","Trebuchet MS",sans-serif;font-weight:800;line-he
 .item.final .icone{background:var(--sol)}
 .item h3{font-size:19px}
 .item .desc{margin:2px 0 0;font-size:15px;color:var(--tinta-fraca)}
+.selo-beta{display:inline-block;vertical-align:middle;margin-left:6px;font-family:"Baloo 2",sans-serif;font-size:14px;font-weight:800;background:var(--sol);color:var(--tinta);padding:3px 12px;border-radius:99px;letter-spacing:.02em}
 .selo{display:inline-block;margin-top:8px;font-size:14px;font-weight:800;font-family:"Baloo 2",sans-serif;padding:5px 12px;border-radius:99px;background:var(--verde-claro);color:var(--verde-ok)}
 .selo.vazio{background:#EEF1EE;color:var(--tinta-fraca)}
 .medalha{font-size:19px;margin-left:6px;vertical-align:-2px}
@@ -466,6 +467,7 @@ function telaEntrada(){
   perfil = null;
   limparPlaca();
   cabecalho(APP.nome, "Quem vai estudar hoje?");
+  $("#titulo").innerHTML = APP.nome + ' <span class="selo-beta">beta</span>';
   const chaves = Object.keys(cache.contas);
   let html = "";
 
@@ -513,6 +515,7 @@ function telaEntrada(){
         <p>Seu responsável pode pedir a correção ou a exclusão da conta a qualquer momento à equipe do EstudAI — apagar remove tudo, inclusive a pontuação.</p>
       </details>
       <p class="dica">Depois de criar o perfil, a equipe do EstudAI aprova o seu acesso.</p>
+      <p class="dica">O EstudAI está em fase <b>beta gratuita</b> — recursos e planos podem mudar.</p>
       <div class="acoes"><button class="btn" id="btn-criar">Criar perfil</button></div>
       <p class="erro-form" id="erro-criar" hidden></p>
     </div>
