@@ -502,7 +502,8 @@ function telaEntrada(){
       <label>Sua escola</label>
       <div class="chips" id="n-escolas">${ESCOLAS.map((e,i)=>`<button class="chip" data-escola="${e}" aria-pressed="${i===0}">${e}</button>`).join("")}</div>
       <label>Seu ano</label>
-      <div class="chips" id="n-anos">${anosDisponiveis().map((a,i)=>`<button class="chip" data-ano="${a}" aria-pressed="${i===0}">${a}</button>`).join("")}</div>
+      <div class="chips" id="n-anos">${chipsAnos("#n-anos", ESCOLA_PADRAO)}</div>
+      <p class="dica">Os anos com ✓ já têm as matérias prontas. Nos demais, o responsável envia as fotos da apostila e a equipe prepara tudo.</p>
       <label for="n-senha">Senha de 4 números</label>
       <input id="n-senha" type="password" inputmode="numeric" maxlength="4" placeholder="••••" autocomplete="off">
       <label for="n-senha2">Digite a senha de novo</label>
@@ -532,6 +533,7 @@ function telaEntrada(){
   ligarGrupo("#n-avatares","[data-av]");
   ligarGrupo("#n-escolas","[data-escola]");
   ligarGrupo("#n-anos","[data-ano]");
+  $("#n-escolas").querySelectorAll("[data-escola]").forEach(b=>b.addEventListener("click",()=>atualizarChipsAnos("#n-anos","#n-escolas")));
   $("#btn-criar").addEventListener("click", criarPerfil);
   $("#btn-admin").addEventListener("click", telaAdmin);
   $("#btn-login").addEventListener("click", telaLogin);
@@ -547,10 +549,22 @@ function selecionado(sel, attr){
   const el = $(sel+' [aria-pressed="true"]');
   return el ? el.dataset[attr] : null;
 }
+const ANOS = ["2º ano","3º ano","4º ano","5º ano","6º ano","7º ano","8º ano","9º ano","1º médio","2º médio","3º médio"];
 function anosDisponiveis(){
-  const anos = new Set(["4º ano","8º ano"]);
-  QUIZ.catalogo.forEach(q=>anos.add(q.ano));
-  return [...anos].sort();
+  const extras = QUIZ.catalogo.map(q=>q.ano).filter(a=>!ANOS.includes(a));
+  return ANOS.concat([...new Set(extras)]);
+}
+function temMaterial(ano, escola){
+  return QUIZ.catalogo.some(q=>q.ano===ano && (q.escola||ESCOLA_PADRAO)===(escola||ESCOLA_PADRAO));
+}
+function chipsAnos(prefixo, escolaSel){
+  return anosDisponiveis().map((a,i)=>`<button class="chip" data-ano="${a}" aria-pressed="${i===2}">${a}${temMaterial(a, escolaSel)?" ✓":""}</button>`).join("");
+}
+function atualizarChipsAnos(idAnos, idEscolas){
+  const escolaSel = selecionado(idEscolas,"escola")||ESCOLA_PADRAO;
+  const atual = selecionado(idAnos,"ano");
+  $(idAnos).innerHTML = anosDisponiveis().map(a=>`<button class="chip" data-ano="${a}" aria-pressed="${a===atual}">${a}${temMaterial(a, escolaSel)?" ✓":""}</button>`).join("");
+  ligarGrupo(idAnos,"[data-ano]");
 }
 function falha(el,msg){ el.textContent = msg; el.hidden = false; }
 
@@ -566,7 +580,7 @@ function telaLogin(){
       <label>Sua escola</label>
       <div class="chips" id="e-escolas">${ESCOLAS.map((e,i)=>`<button class="chip" data-escola="${e}" aria-pressed="${i===0}">${e}</button>`).join("")}</div>
       <label>Seu ano</label>
-      <div class="chips" id="e-anos">${anosDisponiveis().map((a,i)=>`<button class="chip" data-ano="${a}" aria-pressed="${i===0}">${a}</button>`).join("")}</div>
+      <div class="chips" id="e-anos">${chipsAnos("#e-anos", ESCOLA_PADRAO)}</div>
       <label for="e-senha">Senha de 4 números</label>
       <input id="e-senha" type="password" inputmode="numeric" maxlength="4" placeholder="••••" autocomplete="off">
       <div class="acoes"><button class="btn" id="btn-logar">Entrar</button></div>
@@ -575,6 +589,7 @@ function telaLogin(){
   mostrar("entrada");
   ligarGrupo("#e-anos","[data-ano]");
   ligarGrupo("#e-escolas","[data-escola]");
+  $("#e-escolas").querySelectorAll("[data-escola]").forEach(b=>b.addEventListener("click",()=>atualizarChipsAnos("#e-anos","#e-escolas")));
   $("#btn-volta-entrada").addEventListener("click", telaEntrada);
   const tentar = ()=>{
     const nome = $("#e-nome").value.trim();
@@ -913,7 +928,9 @@ function telaEstante(){
 
   if(!lista.length){
     html += estanteVazia
-      ? `<div class="cartao vazio-msg">📦 As matérias do <b>${minhaEscola}</b> (${perfil.ano}) estão sendo preparadas com carinho.<br>Assim que o material entrar, elas aparecem aqui sozinhas — seu perfil e seus pontos já estão prontos esperando!</div>`
+      ? `<div class="cartao vazio-msg">🪄 <b>O ${perfil.ano} do ${minhaEscola} ainda não tem matérias — e você pode destravar!</b><br><br>
+         Peça ao seu <b>adulto responsável</b> para enviar à equipe do EstudAI as <b>fotos da apostila</b> deste bimestre (páginas nítidas, matéria por matéria). A equipe faz a mágica e as matérias aparecem aqui — para você e para <b>todo o seu ano</b>. ✨<br><br>
+         Seu perfil e seus pontos já estão prontos esperando. Assim que o material entrar, é só abrir o app.</div>`
       : `<div class="cartao vazio-msg">As matérias do ${perfil.ano} ainda estão sendo preparadas.<br>Assim que o material entrar, elas aparecem aqui sozinhas.</div>`;
   } else {
     lista.forEach(q=>{
