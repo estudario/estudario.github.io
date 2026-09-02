@@ -178,6 +178,15 @@ input:focus{outline:none;border-color:var(--uva)}
 .tag-pend{font-size:12px;font-weight:700;color:var(--tinta-fraca)}
 .apagar.aprovar{border-color:var(--verde-ok);color:var(--verde-ok)}
 .btn.secundario{background:var(--papel);color:var(--tinta);border:2px solid rgba(18,52,59,.2);box-shadow:none}
+.ofensiva{margin-top:12px;padding:10px 14px;border-radius:12px;font-weight:700;font-size:15px}
+.ofensiva.quente{background:#FFE8CC;color:#B45309}
+.ofensiva.alerta{background:#FFF3C4;color:#92400E;animation:pulsar 1.6s infinite}
+.ofensiva.fria{background:var(--papel);color:var(--tinta-fraca)}
+@keyframes pulsar{50%{transform:scale(1.015)}}
+.desafio-dia{border-color:var(--uva);border-style:solid}
+.desafio-dia .icone{background:var(--uva-clara)}
+.cronometro{font-weight:800;color:var(--uva)}
+.cronometro.urgente{color:var(--coral)}
 .av-troca{background:var(--uva-clara);border:2px dashed var(--uva);border-radius:12px;font:inherit;font-size:26px;cursor:pointer;padding:2px 8px;transition:transform .1s}
 .av-troca:hover{transform:scale(1.12)}
 .avatares.grande .av{font-size:34px;padding:10px}
@@ -251,6 +260,7 @@ const QUIZ = {
 
 const APP = {
   nome:"EstudAI",
+  tempoQuestao:15,
   xpPorAcerto:10,
   bonusGabarito:50,
   notaParaPassar:0.7,
@@ -379,11 +389,36 @@ async function salvar(){
   }catch(e){ salvaOk = false; }
 }
 
+function hojeStr(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+function diasEntre(a,b){ return Math.round((new Date(b+"T12:00")-new Date(a+"T12:00"))/86400000); }
+function mulberry32(s){ return function(){ s|=0; s=(s+0x6D2B79F5)|0; let x=Math.imul(s^s>>>15,1|s); x=(x+Math.imul(x^x>>>7,61|x))^x; return ((x^x>>>14)>>>0)/4294967296; }; }
+function garantirExtras(d){
+  if(!d.ofensiva) d.ofensiva = {atual:0, recorde:0, ultimoDia:null};
+  if(!d.desafios) d.desafios = {ultimoDia:null, feitos:0, perfeitos:0};
+  return d;
+}
+function ofensivaInfo(d){
+  const of = (d.ofensiva)||{atual:0,recorde:0,ultimoDia:null};
+  if(!of.ultimoDia) return {txt:"Comece sua ofensiva hoje!", classe:"fria", rec:of.recorde};
+  const dd = diasEntre(of.ultimoDia, hojeStr());
+  if(dd===0) return {txt:`${of.atual} ${of.atual===1?"dia":"dias"} de ofensiva — hoje garantido ✔`, classe:"quente", rec:of.recorde};
+  if(dd===1) return {txt:`${of.atual} ${of.atual===1?"dia":"dias"} de ofensiva — estude hoje para não apagar!`, classe:"alerta", rec:of.recorde};
+  return {txt:"A chama apagou — acenda de novo hoje!", classe:"fria", rec:of.recorde};
+}
+let cronometro = null;
+function pararCronometro(){ if(cronometro){ clearInterval(cronometro); cronometro = null; } }
+function semFeedback(){ return estado.modo==="teste" || estado.modo==="relogio"; }
+
 function nivelDe(xp){
-  let i=0; for(let k=0;k<APP.niveis.length;k++) if(xp>=APP.niveis[k].xp) i=k;
-  const atual=APP.niveis[i], prox=APP.niveis[i+1]||null;
-  const pct = prox ? Math.round(((xp-atual.xp)/(prox.xp-atual.xp))*100) : 100;
-  return {numero:i+1, nome:atual.nome, faltam: prox?prox.xp-xp:0, pct};
+  const N = APP.niveis, ult = N[N.length-1];
+  if(xp >= ult.xp){
+    const passo = 400, extra = xp - ult.xp, saltos = Math.floor(extra/passo), dentro = extra - saltos*passo;
+    return {numero: N.length + saltos, nome: ult.nome + (saltos>0 ? " ⭐" : ""),
+            faltam: passo - dentro, pct: Math.round(dentro/passo*100)};
+  }
+  let i=0; for(let k=0;k<N.length;k++) if(xp>=N[k].xp) i=k;
+  const atual=N[i], prox=N[i+1];
+  return {numero:i+1, nome:atual.nome, faltam: prox.xp-xp, pct: Math.round(((xp-atual.xp)/(prox.xp-atual.xp))*100)};
 }
 function medalhaDe(pct){ return pct===1?"ouro":pct>=.8?"prata":pct>=.6?"bronze":null; }
 const ICONE_MEDALHA={ouro:"🥇",prata:"🥈",bronze:"🥉"};
@@ -820,8 +855,10 @@ telaRanking.filtro = "minha";
 function telaEstante(){
   limparPlaca();
   cabecalho(perfil.nome, (perfil.escola||ESCOLA_PADRAO)+" · "+perfil.ano);
-  const d = perfil.dados;
+  const d = garantirExtras(perfil.dados);
   const nv = nivelDe(d.xp);
+  const ofe = ofensivaInfo(d);
+  const desafioFeito = d.desafios.ultimoDia === hojeStr();
   const aprov = d.questoesTotais ? Math.round(d.acertosTotais/d.questoesTotais*100)+"%" : "—";
   const conqHtml = CONQUISTAS.map(c=>{
     const tem = d.conquistas.includes(c.id);
@@ -831,6 +868,8 @@ function telaEstante(){
   // cada perfil enxerga apenas o próprio ano E a própria escola
   const minhaEscola = perfil.escola || ESCOLA_PADRAO;
   const doAno = QUIZ.catalogo.filter(q=>q.ano===perfil.ano && (q.escola||ESCOLA_PADRAO)===minhaEscola);
+  const dominada = q=>{ const p=progressoQuiz(q.id); return q.rodadas.every(r=>p.medalhas[r.id]==="ouro") && !!p.medalhas["final"]; };
+  const nDominadas = doAno.filter(dominada).length;
   const bims = ["todos", ...new Set(doAno.map(q=>q.bimestre))];
   if(!bims.includes(filtroBim)) filtroBim = "todos";
   const lista = doAno.filter(q=>filtroBim==="todos" || q.bimestre===filtroBim);
@@ -850,12 +889,20 @@ function telaEstante(){
         <span><b>${d.acertosTotais}</b>acertos</span>
         <span><b>${aprov}</b>aproveitamento</span>
         <span><b>${d.melhorSequencia}</b>seguidas</span>
+        <span><b>${nDominadas}</b>⭐ dominadas</span>
       </div>
+      <div class="ofensiva ${ofe.classe}">🔥 ${ofe.txt}${ofe.rec>1?` · recorde: ${ofe.rec} dias`:""}</div>
       <div class="conquistas">${conqHtml}</div>
       <div class="acoes" style="margin-top:10px"><button class="btn secundario" id="btn-ranking">🏆 Ranking das amigas</button></div>
       ${salvaOk?"":`<p class="aviso">Sem conexão com o servidor — seu progresso está guardado neste aparelho e será enviado quando a internet voltar.</p>`}
     </div>
 
+    ${estanteVazia ? "" : `<button class="cartao item desafio-dia" id="btn-desafio">
+      <span class="icone">🎲</span>
+      <span><h3>Desafio do dia</h3>
+      <p class="desc">5 questões de todas as matérias, novas a cada dia. +25 XP de bônus.</p>
+      ${desafioFeito?`<span class="selo">✔ feito hoje — pode treinar de novo!</span>`:`<span class="selo vazio">Ainda não feito hoje</span>`}</span>
+    </button>`}
     ${estanteVazia ? "" : `<div class="divisor"><span>Bimestre</span></div>
     <div class="chips" id="f-bim">${bims.map(b=>`<button class="chip" data-bim="${b}" aria-pressed="${b===filtroBim}">${b==="todos"?"Todos":b}</button>`).join("")}</div>`}`;
 
@@ -874,7 +921,7 @@ function telaEstante(){
         : `<span class="selo vazio">Ainda não começou</span>`;
       html += `<button class="cartao item" data-quiz="${q.id}">
           <span class="icone">${q.emoji||"📘"}</span>
-          <span><h3>${q.materia}</h3>
+          <span><h3>${dominada(q)?"⭐ ":""}${q.materia}</h3>
             <p class="desc">${q.bimestre} · ${q.tema}</p>${selo}</span>
         </button>`;
     });
@@ -888,6 +935,7 @@ function telaEstante(){
   $("#btn-sair-perfil").addEventListener("click", telaEntrada);
   $("#btn-ranking").addEventListener("click", telaRanking);
   $("#btn-avatar").addEventListener("click", telaAvatar);
+  const bde = $("#btn-desafio"); if(bde) bde.addEventListener("click", iniciarDesafio);
 }
 
 /* ================= TELA 3: menu do quiz ================= */
@@ -919,6 +967,17 @@ function telaMenu(id){
         <span class="icone">${r.emoji||"📗"}</span>
         <span><h3>${r.nome}</h3><p class="desc">${r.desc||""}</p>${selo}</span></button>`;
   });
+
+  const mod = pq.modos || {};
+  const seloRel = mod.relogio ? `<span class="selo">Recorde: ${mod.relogio.acertos}/${mod.relogio.total}</span>` : `<span class="selo vazio">Ainda não jogou</span>`;
+  const seloMor = mod.morte ? `<span class="selo">Recorde: ${mod.morte} seguidas</span>` : `<span class="selo vazio">Ainda não jogou</span>`;
+  html += `<div class="divisor"><span>⚡ Modos turbo</span></div>
+    <button class="cartao item" data-rodada="relogio">
+      <span class="icone">⏱️</span>
+      <span><h3>Contra o relógio</h3><p class="desc">10 questões, ${APP.tempoQuestao} segundos cada. O tempo não perdoa!</p>${seloRel}</span></button>
+    <button class="cartao item" data-rodada="morte">
+      <span class="icone">💀</span>
+      <span><h3>Morte súbita</h3><p class="desc">Vá acertando até errar a primeira. Até onde você chega?</p>${seloMor}</span></button>`;
 
   const nErros = Object.keys(pq.erros).length;
   if(nErros){
@@ -970,6 +1029,28 @@ function telaResumo(id){
   $("#btn-comecar").addEventListener("click", ()=>iniciar(id));
 }
 
+function iniciarDesafio(){
+  limparPlaca();
+  const minhaEscola = perfil.escola || ESCOLA_PADRAO;
+  const meus = QUIZ.catalogo.filter(q=>q.ano===perfil.ano && (q.escola||ESCOLA_PADRAO)===minhaEscola);
+  const marcadas = [];
+  meus.forEach(q=>q.rodadas.forEach(r=>r.questoes.forEach(x=>marcadas.push({x, id:q.id}))));
+  const rnd = mulberry32(hash32(hojeStr()+"|"+perfil.ano+"|"+minhaEscola));
+  const escolhidas = [];
+  const copia = marcadas.slice();
+  while(escolhidas.length < Math.min(5, copia.length)){
+    const i = Math.floor(rnd()*copia.length);
+    escolhidas.push(copia.splice(i,1)[0]);
+  }
+  quizAtual = null;
+  estado.rodada = {id:"desafio", nome:"🎲 Desafio do dia"};
+  estado.lista = escolhidas.map(m=>Object.assign(prepararQuestao(m.x), {origemId:m.id}));
+  estado.modo = "desafio";
+  estado.indice = 0; estado.respostas = []; estado.escolhaAtual = undefined;
+  mostrar("quiz");
+  desenharQuestao();
+}
+
 /* ================= TELA 4: quiz ================= */
 function iniciar(id){
   limparPlaca();
@@ -985,6 +1066,16 @@ function iniciar(id){
     estado.rodada = {id:"revisao", nome:"Revisão dos erros"};
     estado.lista = sortear(alvo, quizAtual.qtdAquecimento||8);
     estado.modo = "aquecimento";
+  } else if(id === "relogio"){
+    const todas = quizAtual.rodadas.reduce((a,r)=>a.concat(r.questoes),[]);
+    estado.rodada = {id:"relogio", nome:"⏱️ Contra o relógio"};
+    estado.lista = sortear(todas, 10);
+    estado.modo = "relogio";
+  } else if(id === "morte"){
+    const todas = quizAtual.rodadas.reduce((a,r)=>a.concat(r.questoes),[]);
+    estado.rodada = {id:"morte", nome:"💀 Morte súbita"};
+    estado.lista = sortear(todas, todas.length);
+    estado.modo = "morte";
   } else {
     const r = quizAtual.rodadas.find(x=>x.id===id);
     estado.rodada = r;
@@ -1002,9 +1093,9 @@ function desenharQuestao(){
   telas.quiz.innerHTML = `
     <div class="barra-topo">
       <button class="voltar" id="btn-sair">← Sair da rodada</button>
-      <span class="contador">${n} de ${t}</span>
+      <span class="contador">${estado.modo==="relogio"?`<span class="cronometro" id="cron">${APP.tempoQuestao}s</span> · `:""}${n} de ${t}</span>
     </div>
-    <p class="nome-rodada">${quizAtual.materia} · ${estado.rodada.nome}</p>
+    <p class="nome-rodada">${quizAtual ? quizAtual.materia+" · " : ""}${estado.rodada.nome}</p>
     <div class="trilho"><i style="width:${((n-1)/t)*100}%"></i></div>
     <div class="cartao">
       <h2 class="pergunta">${q.p}</h2>
@@ -1012,8 +1103,17 @@ function desenharQuestao(){
       <div id="area-feedback"></div>
       <div class="acoes" id="acoes"></div>
     </div>`;
-  $("#btn-sair").addEventListener("click", ()=>telaMenu(quizAtual.id));
+  $("#btn-sair").addEventListener("click", ()=>{ pararCronometro(); quizAtual ? telaMenu(quizAtual.id) : telaEstante(); });
   const area = $("#area-resposta");
+  pararCronometro();
+  if(estado.modo === "relogio"){
+    const fim = Date.now() + APP.tempoQuestao*1000;
+    cronometro = setInterval(()=>{
+      const resta = Math.max(0, Math.ceil((fim - Date.now())/1000));
+      const c = $("#cron"); if(c){ c.textContent = resta+"s"; c.classList.toggle("urgente", resta<=5); }
+      if(resta <= 0){ pararCronometro(); avancar(); }
+    }, 200);
+  }
 
   if(q.tipo === "num"){
     area.innerHTML = `<div class="resposta-num"><input id="resp-num" inputmode="decimal" autocomplete="off" placeholder="Digite a resposta"></div>
@@ -1043,7 +1143,7 @@ function desenharQuestao(){
     b.addEventListener("click",()=>escolher(i));
     cont.appendChild(b);
   });
-  if(estado.modo==="teste"){
+  if(semFeedback()){
     $("#acoes").innerHTML = `<button class="btn" id="btn-proxima" disabled>${n===t?"Ver resultado":"Próxima"}</button>`;
     $("#btn-proxima").addEventListener("click", avancar);
   }
@@ -1059,15 +1159,16 @@ function responderNum(valor){
   plantarColonia(acertou, estado.respostas.length-1);
   mostrarFeedback(q, valor, acertou);
   const n=estado.indice+1, t=estado.lista.length;
-  $("#acoes").innerHTML = `<button class="btn" id="btn-proxima">${n===t?"Ver resultado":"Próxima"}</button>`;
-  $("#btn-proxima").addEventListener("click", avancar);
+  const acabouMorte = estado.modo==="morte" && !acertou;
+  $("#acoes").innerHTML = `<button class="btn" id="btn-proxima">${(n===t||acabouMorte)?"Ver resultado":"Próxima"}</button>`;
+  $("#btn-proxima").addEventListener("click", acabouMorte ? finalizar : avancar);
   $("#btn-proxima").focus();
 }
 
 function escolher(i){
   const q = estado.lista[estado.indice];
   const botoes = telas.quiz.querySelectorAll(".opcao");
-  if(estado.modo==="teste"){
+  if(semFeedback()){
     botoes.forEach(b=>b.classList.remove("marcada"));
     botoes[i].classList.add("marcada");
     estado.escolhaAtual = i;
@@ -1083,8 +1184,9 @@ function escolher(i){
   plantarColonia(acertou, estado.respostas.length-1);
   mostrarFeedback(q,i,acertou);
   const n=estado.indice+1, t=estado.lista.length;
-  $("#acoes").innerHTML = `<button class="btn" id="btn-proxima">${n===t?"Ver resultado":"Próxima"}</button>`;
-  $("#btn-proxima").addEventListener("click", avancar);
+  const acabouMorte = estado.modo==="morte" && !acertou;
+  $("#acoes").innerHTML = `<button class="btn" id="btn-proxima">${(n===t||acabouMorte)?"Ver resultado":"Próxima"}</button>`;
+  $("#btn-proxima").addEventListener("click", acabouMorte ? finalizar : avancar);
   $("#btn-proxima").focus();
 }
 
@@ -1103,15 +1205,16 @@ function mostrarFeedback(q, escolha, acertou){
 }
 
 function avancar(){
-  if(estado.modo==="teste"){
+  pararCronometro();
+  if(semFeedback()){
     const q = estado.lista[estado.indice];
     let escolha, acertou;
     if(q.tipo==="num"){
-      escolha = $("#resp-num").value.trim();
-      acertou = acertoNum(q, escolha);
+      escolha = ($("#resp-num") && $("#resp-num").value.trim()) || "";
+      acertou = escolha ? acertoNum(q, escolha) : false;
     } else {
-      escolha = estado.escolhaAtual;
-      acertou = q.opcoes[escolha].correta;
+      escolha = (estado.escolhaAtual===undefined) ? null : estado.escolhaAtual;
+      acertou = escolha!==null && q.opcoes[escolha].correta;
     }
     estado.respostas.push({q, escolha, acertou});
     plantarColonia(acertou, estado.respostas.length-1);
@@ -1124,12 +1227,15 @@ function avancar(){
 
 /* ================= TELA 5: resultado ================= */
 async function finalizar(){
+  pararCronometro();
   const acertos = estado.respostas.filter(r=>r.acertou).length;
   const total = estado.respostas.length;
-  const pct = acertos/total;
+  const pct = total ? acertos/total : 0;
   const id = estado.rodada.id;
-  const d = perfil.dados;
-  const pq = progressoQuiz(quizAtual.id);
+  const d = garantirExtras(perfil.dados);
+  const pq = quizAtual ? progressoQuiz(quizAtual.id) : null;
+  const hoje = hojeStr();
+  const ehModoTurbo = id==="relogio" || id==="morte";
 
   const ehRevisao = id === "revisao";
   let seq=0, maior=0;
@@ -1137,20 +1243,50 @@ async function finalizar(){
 
   // memória de erros: errou → entra na lista (precisa acertar 2x para sair)
   estado.respostas.forEach(r=>{
+    const alvo = pq || progressoQuiz(r.q.origemId);
+    if(!alvo) return;
     const k = "q"+hash32(r.q.p);
-    if(r.acertou){ if(pq.erros[k]){ pq.erros[k]--; if(pq.erros[k]<=0) delete pq.erros[k]; } }
-    else pq.erros[k] = 2;
+    if(r.acertou){ if(alvo.erros[k]){ alvo.erros[k]--; if(alvo.erros[k]<=0) delete alvo.erros[k]; } }
+    else alvo.erros[k] = 2;
   });
 
   let xpGanho = acertos*APP.xpPorAcerto;
   if(pct===1 && !ehRevisao){ xpGanho += APP.bonusGabarito; d.gabaritos++; }
   if(id==="final" && pct>=APP.notaParaPassar){ xpGanho += 25; d.testesPassados++; }
 
+  // 🎲 desafio do dia: bônus uma vez por dia
+  let bonusDesafio = false;
+  if(id==="desafio" && d.desafios.ultimoDia !== hoje){
+    xpGanho += 25; bonusDesafio = true;
+    d.desafios.ultimoDia = hoje; d.desafios.feitos++;
+    if(pct===1) d.desafios.perfeitos++;
+  }
+
+  // 🔥 ofensiva: qualquer partida concluída conta o dia
+  const of = d.ofensiva;
+  if(of.ultimoDia !== hoje){
+    of.atual = (of.ultimoDia && diasEntre(of.ultimoDia, hoje)===1) ? of.atual+1 : 1;
+    of.ultimoDia = hoje;
+    if(of.atual > of.recorde) of.recorde = of.atual;
+  }
+
   d.xp += xpGanho; d.partidas++; d.acertosTotais += acertos; d.questoesTotais += total;
   if(maior > d.melhorSequencia) d.melhorSequencia = maior;
 
   let novoRecorde = false, med = null;
-  if(!ehRevisao){
+  if(pq && ehModoTurbo){
+    pq.modos = pq.modos || {};
+    if(id==="relogio"){
+      const rec = pq.modos.relogio;
+      if(!rec || acertos > rec.acertos){ pq.modos.relogio = {acertos,total}; novoRecorde = true; }
+    } else {
+      const ant = pq.modos.morte;
+      if(ant === undefined || maior > ant){
+        pq.modos.morte = maior;
+        novoRecorde = (ant === undefined) ? maior > 0 : true;
+      }
+    }
+  } else if(pq && !ehRevisao && id!=="desafio"){
     const rec = pq.recordes[id];
     novoRecorde = !rec || acertos > rec.acertos;
     if(novoRecorde) pq.recordes[id] = {acertos,total};
@@ -1164,8 +1300,11 @@ async function finalizar(){
   await salvar();
 
   let titulo,msg,estrelas;
-  const errosRestantes = Object.keys(pq.erros).length;
-  if(ehRevisao && errosRestantes===0){ titulo="Lista de erros zerada! 🩹✨"; msg="Você dominou tudo o que tinha errado nesta matéria. É assim que se aprende de verdade."; estrelas="🌟🌟🌟"; }
+  const errosRestantes = pq ? Object.keys(pq.erros).length : 0;
+  if(id==="morte"){ titulo=`Sobreviveu a ${maior} seguidas! 💀`; msg = novoRecorde?"Novo recorde de sobrevivência!":"Consegue ir mais longe na próxima?"; estrelas = maior>=10?"🌟🌟🌟":maior>=5?"🌟🌟":"🌟"; }
+  else if(id==="relogio"){ titulo="Contra o relógio! ⏱️"; msg = novoRecorde?"Novo recorde no modo turbo!":"Velocidade e precisão: continue treinando."; estrelas = pct===1?"🌟🌟🌟":pct>=0.7?"🌟🌟":"🌟"; }
+  else if(id==="desafio"){ titulo="Desafio do dia completo! 🎲"; msg = bonusDesafio?"+25 XP de bônus diário garantidos. Volte amanhã para o próximo!":"Você já tinha garantido o bônus de hoje — mas treinar nunca é demais!"; estrelas = pct===1?"🌟🌟🌟":pct>=0.6?"🌟🌟":"🌟"; }
+  else if(ehRevisao && errosRestantes===0){ titulo="Lista de erros zerada! 🩹✨"; msg="Você dominou tudo o que tinha errado nesta matéria. É assim que se aprende de verdade."; estrelas="🌟🌟🌟"; }
   else if(pct===1){ titulo="Placa lotada de colônias!"; msg="Gabaritou. Essa parte está dominada."; estrelas="🌟🌟🌟"; }
   else if(pct>=APP.notaParaPassar){ titulo="Muito bom!"; msg="Você já sabe a maior parte. Revise só o que está aqui embaixo."; estrelas="🌟🌟"; }
   else if(pct>=0.5){ titulo="Está no caminho"; msg="Leia as explicações com calma e jogue de novo."; estrelas="🌟"; }
@@ -1178,8 +1317,8 @@ async function finalizar(){
     paraRever.forEach(r=>{
       const ehNum = r.q.tipo==="num";
       const certa = ehNum ? r.q.r : r.q.opcoes.find(o=>o.correta).texto;
-      const sua = ehNum ? (r.escolha||"(em branco)") : r.q.opcoes[r.escolha].texto;
-      const motivo = ehNum ? null : r.q.opcoes[r.escolha].motivo;
+      const sua = ehNum ? (r.escolha||"(em branco)") : (r.escolha==null ? "(tempo esgotado)" : r.q.opcoes[r.escolha].texto);
+      const motivo = (ehNum || r.escolha==null) ? null : r.q.opcoes[r.escolha].motivo;
       revisao += `<div class="item-revisao ${r.acertou?"ok":""}">
         <p class="q">${r.acertou?"✅":"❌"} ${r.q.p}</p>
         ${r.acertou?`<p class="certa">Você respondeu: ${sua}</p>`
@@ -1204,13 +1343,13 @@ async function finalizar(){
     ${revisao}
     <div class="acoes">
       ${ehRevisao && errosRestantes===0 ? "" : `<button class="btn" id="btn-denovo">${ehRevisao?"Revisar de novo":"Jogar de novo com outras questões"}</button>`}
-      <button class="btn secundario" id="btn-menu">Outras rodadas</button>
+      <button class="btn secundario" id="btn-menu">${quizAtual?"Outras rodadas":"Voltar para a estante"}</button>
       <button class="btn secundario" id="btn-estante">Outra matéria</button>
     </div>`;
   mostrar("fim");
-  cabecalho(quizAtual.materia, "Resultado");
-  const bd = $("#btn-denovo"); if(bd) bd.addEventListener("click", ()=>iniciar(id));
-  $("#btn-menu").addEventListener("click", ()=>telaMenu(quizAtual.id));
+  cabecalho(quizAtual ? quizAtual.materia : "Desafio do dia", "Resultado");
+  const bd = $("#btn-denovo"); if(bd) bd.addEventListener("click", ()=>{ quizAtual ? iniciar(id) : iniciarDesafio(); });
+  $("#btn-menu").addEventListener("click", ()=>{ quizAtual ? telaMenu(quizAtual.id) : telaEstante(); });
   $("#btn-estante").addEventListener("click", telaEstante);
 }
 
