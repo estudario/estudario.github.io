@@ -1,4 +1,4 @@
-# Estudário — sistema de estudo
+# EstudAI — sistema de estudo
 
 Plataforma de treino por **ano → matéria → bimestre**, com perfil, senha,
 convites aprovados pela Luiza e progresso salvo. Um motor só; cada matéria é um
