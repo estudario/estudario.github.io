@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Estudário — estudo por matéria</title>
+<title>EstudAI — estudo por matéria</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
@@ -178,6 +178,10 @@ input:focus{outline:none;border-color:var(--uva)}
 .tag-pend{font-size:12px;font-weight:700;color:var(--tinta-fraca)}
 .apagar.aprovar{border-color:var(--verde-ok);color:var(--verde-ok)}
 .btn.secundario{background:var(--papel);color:var(--tinta);border:2px solid rgba(18,52,59,.2);box-shadow:none}
+.av-troca{background:var(--uva-clara);border:2px dashed var(--uva);border-radius:12px;font:inherit;font-size:26px;cursor:pointer;padding:2px 8px;transition:transform .1s}
+.av-troca:hover{transform:scale(1.12)}
+.avatares.grande .av{font-size:34px;padding:10px}
+.avatares.grande .av.atual{outline:3px solid var(--uva);border-radius:14px}
 .check{display:flex;gap:10px;align-items:flex-start;margin-top:14px;font-size:15px;cursor:pointer}
 .check input{width:20px;height:20px;margin-top:1px;accent-color:var(--uva)}
 .privacidade{margin-top:12px;background:var(--papel);border-radius:12px;padding:10px 14px;font-size:14px}
@@ -199,8 +203,8 @@ input:focus{outline:none;border-color:var(--uva)}
   <header class="topo">
     <div class="placa" id="placa" aria-hidden="true"><div class="brilho"></div></div>
     <div class="topo-texto">
-      <p class="eyebrow" id="eyebrow">Estudário</p>
-      <h1 id="titulo">Estudário</h1>
+      <p class="eyebrow" id="eyebrow">EstudAI</p>
+      <h1 id="titulo">EstudAI</h1>
       <p class="sub" id="subtitulo">Escolha o ano e a matéria para treinar</p>
     </div>
   </header>
@@ -246,7 +250,7 @@ const QUIZ = {
    ============================================================ */
 
 const APP = {
-  nome:"Estudário",
+  nome:"EstudAI",
   xpPorAcerto:10,
   bonusGabarito:50,
   notaParaPassar:0.7,
@@ -258,7 +262,7 @@ const APP = {
 };
 
 /* --- Nuvem (fase 2) -------------------------------------------------
-   O Estudário agora vive num banco de dados (Supabase). Cadastro, login,
+   O EstudAI agora vive num banco de dados (Supabase). Cadastro, login,
    aprovação, bloqueio e progresso são centralizados: a administradora gerencia
    tudo pelo painel, de qualquer aparelho — e a senha dela mora no banco,
    não neste arquivo. */
@@ -266,7 +270,7 @@ const NUVEM = {
   url: "https://opzhkmdpmutayaivzyck.supabase.co",
   chave: "sb_publishable_NnmY2Ox-E1zp6Tvx-RvJpg_UBKgYKVL"
 };
-const ADMIN = { nome: "equipe do Estudário" };
+const ADMIN = { nome: "equipe do EstudAI" };
 const ESCOLAS = ["Colégio Progresso", "Colégio Fundamentum"];
 const ESCOLA_PADRAO = ESCOLAS[0];
 
@@ -468,17 +472,17 @@ function telaEntrada(){
       <details class="privacidade">
         <summary>🔒 Como cuidamos dos seus dados</summary>
         <p>Guardamos só o necessário: seu nome ou apelido, escola, ano e a sua pontuação. Nada de sobrenome, foto, telefone ou endereço.</p>
-        <p>Quem vê o quê: as colegas veem seu nome/apelido e seus pontos no ranking; a equipe do Estudário vê seu cadastro para aprovar e cuidar da sua conta.</p>
-        <p>Seu responsável pode pedir a correção ou a exclusão da conta a qualquer momento à equipe do Estudário — apagar remove tudo, inclusive a pontuação.</p>
+        <p>Quem vê o quê: as colegas veem seu nome/apelido e seus pontos no ranking; a equipe do EstudAI vê seu cadastro para aprovar e cuidar da sua conta.</p>
+        <p>Seu responsável pode pedir a correção ou a exclusão da conta a qualquer momento à equipe do EstudAI — apagar remove tudo, inclusive a pontuação.</p>
       </details>
-      <p class="dica">Depois de criar o perfil, a equipe do Estudário aprova o seu acesso.</p>
+      <p class="dica">Depois de criar o perfil, a equipe do EstudAI aprova o seu acesso.</p>
       <div class="acoes"><button class="btn" id="btn-criar">Criar perfil</button></div>
       <p class="erro-form" id="erro-criar" hidden></p>
     </div>
     <button class="cartao item admin-card" id="btn-admin">
       <span class="icone">🔑</span>
       <span><h3>Administração</h3>
-      <p class="desc">Área restrita da equipe do Estudário.</p></span>
+      <p class="desc">Área restrita da equipe do EstudAI.</p></span>
     </button>`;
 
   telas.entrada.innerHTML = html;
@@ -581,7 +585,7 @@ function telaPendente(chave, aviso){
     <button class="voltar" id="btn-volta-entrada">← Voltar</button>
     <div class="cartao intro" style="margin-top:10px">
       <p><strong>Seu perfil foi criado</strong> e está aguardando aprovação. ⏳</p>
-      <p style="margin-top:8px">Peça ao <b>adulto responsável</b> que autorizou seu cadastro para avisar a equipe do Estudário: <b>${c.nome} — ${c.escola||ESCOLA_PADRAO}, ${c.ano}</b>. Assim que a aprovação sair, é só tocar no botão abaixo.</p>
+      <p style="margin-top:8px">Peça ao <b>adulto responsável</b> que autorizou seu cadastro para avisar a equipe do EstudAI: <b>${c.nome} — ${c.escola||ESCOLA_PADRAO}, ${c.ano}</b>. Assim que a aprovação sair, é só tocar no botão abaixo.</p>
     </div>
     <div class="cartao">
       <div class="acoes"><button class="btn" id="btn-tentar">Já fui aprovada — entrar</button></div>
@@ -613,7 +617,7 @@ async function entrarNuvem(chave, senha, elErro, btn){
   catch(e){ solta(); return falha(elErro, msgRede(e)); }
   solta();
   if(r.erro === "senha")     return falha(elErro,"Senha errada. Tenta de novo.");
-  if(r.erro === "pendente"){ c.pendente = true; Armazem.gravar(CHAVE, cache); return falha(elErro,"Ainda aguardando: a equipe do Estudário ainda não aprovou seu acesso."); }
+  if(r.erro === "pendente"){ c.pendente = true; Armazem.gravar(CHAVE, cache); return falha(elErro,"Ainda aguardando: a equipe do EstudAI ainda não aprovou seu acesso."); }
   if(r.erro === "bloqueada") return falha(elErro,"Seu acesso está bloqueado. Fale com a "+ADMIN.nome+".");
   if(r.erro === "nao_existe"){
     delete cache.contas[chave]; Armazem.gravar(CHAVE, cache);
@@ -629,7 +633,7 @@ async function entrarNuvem(chave, senha, elErro, btn){
     const local = (doCache && (!doV1 || doCache.xp >= (doV1.xp||0))) ? doCache : doV1;
     if(local && local.xp) dados = Object.assign(dadosZero(), local);
   }
-  perfil = {id:r.id, nome:r.nome, ano:r.ano, escola:r.escola || c.escola || ESCOLA_PADRAO, avatar:r.avatar || c.avatar, senha, dados};
+  perfil = {id:r.id, nome:r.nome, ano:r.ano, escola:r.escola || c.escola || ESCOLA_PADRAO, avatar:dados.avatarEscolhido || r.avatar || c.avatar, senha, dados};
   migrarPerfil(perfil);
   delete c.pendente;
   c.senha = senha; c.avatar = perfil.avatar;
@@ -755,6 +759,31 @@ function painelAdmin(senha, lista){
   }));
 }
 
+/* ================= Trocar bichinho ================= */
+function telaAvatar(){
+  limparPlaca();
+  cabecalho("Trocar bichinho", "Escolha seu novo companheiro");
+  telas.estante.innerHTML = `
+    <button class="voltar" id="btn-volta-estante">← Voltar</button>
+    <div class="cartao" style="margin-top:10px">
+      <h3>Qual bichinho combina com você hoje?</h3>
+      <div class="avatares grande" id="troca-avatares">
+        ${APP.avatares.map(a=>`<button class="av ${a===perfil.avatar?"atual":""}" data-av="${a}">${a}</button>`).join("")}
+      </div>
+      <p class="dica">Pode trocar quantas vezes quiser — o novo bichinho aparece no ranking e em todos os seus aparelhos.</p>
+    </div>`;
+  mostrar("estante");
+  $("#btn-volta-estante").addEventListener("click", telaEstante);
+  telas.estante.querySelectorAll("[data-av]").forEach(b=>b.addEventListener("click", async ()=>{
+    const novoAv = b.dataset.av;
+    perfil.avatar = novoAv;
+    perfil.dados.avatarEscolhido = novoAv;      // viaja junto com o progresso
+    try{ await rpc("trocar_avatar", {p_id:perfil.id, p_senha:perfil.senha, p_avatar:novoAv}); }catch(e){}
+    await salvar();
+    telaEstante();
+  }));
+}
+
 /* ================= Ranking ================= */
 async function telaRanking(){
   limparPlaca();
@@ -811,7 +840,7 @@ function telaEstante(){
     <div class="cartao perfil">
       <div class="perfil-topo">
         <span class="nivel-num">Nv<b>${nv.numero}</b></span>
-        <span class="quem"><h3>${perfil.avatar} ${perfil.nome} — ${nv.nome}</h3>
+        <span class="quem"><h3><button class="av-troca" id="btn-avatar" title="Trocar bichinho">${perfil.avatar}</button> ${perfil.nome} — ${nv.nome}</h3>
         <p class="desc">${perfil.ano} · ${nv.faltam? nv.faltam+" XP para o próximo nível":"Nível máximo!"}</p></span>
         <span class="xp-total">${d.xp} XP</span>
       </div>
@@ -858,6 +887,7 @@ function telaEstante(){
   telas.estante.querySelectorAll("[data-quiz]").forEach(b=>b.addEventListener("click",()=>telaMenu(b.dataset.quiz)));
   $("#btn-sair-perfil").addEventListener("click", telaEntrada);
   $("#btn-ranking").addEventListener("click", telaRanking);
+  $("#btn-avatar").addEventListener("click", telaAvatar);
 }
 
 /* ================= TELA 3: menu do quiz ================= */
