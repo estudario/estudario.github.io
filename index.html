@@ -970,7 +970,7 @@ function telaMenu(id){
 
   const mod = pq.modos || {};
   const seloRel = mod.relogio ? `<span class="selo">Recorde: ${mod.relogio.acertos}/${mod.relogio.total}</span>` : `<span class="selo vazio">Ainda não jogou</span>`;
-  const seloMor = mod.morte ? `<span class="selo">Recorde: ${mod.morte} seguidas</span>` : `<span class="selo vazio">Ainda não jogou</span>`;
+  const seloMor = mod.morte !== undefined ? `<span class="selo">Recorde: ${mod.morte} seguidas</span>` : `<span class="selo vazio">Ainda não jogou</span>`;
   html += `<div class="divisor"><span>⚡ Modos turbo</span></div>
     <button class="cartao item" data-rodada="relogio">
       <span class="icone">⏱️</span>
