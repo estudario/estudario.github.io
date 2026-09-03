@@ -90,4 +90,18 @@ QUIZ.registrar({
     {p:"O que significa “frete grátis”?", alt:["Não pagar nada pela entrega do produto","O produto é de graça","Pagar a metade da entrega","Buscar o produto na loja"], c:0, exp:"Frete é o valor da entrega. Frete grátis = a loja entrega sem cobrar por isso."},
     {p:"Lucas gastava 135 litros de água num banho de 15 minutos. Baixando para 5 minutos, quantos litros gasta aproximadamente?", alt:["45 litros","90 litros","135 litros","15 litros"], c:0, exp:"5 minutos é a terça parte de 15. Então gasta a terça parte da água: 135÷3 = 45 litros — uma economia de 90 litros por banho!", err:{1:"90 litros é quanto ele ECONOMIZA (135−45), não quanto gasta."}}
   ]}
+,
+{ id:"rx", emoji:"⚡", nome:"Rodada relâmpago — números em ação",
+  desc:"Multiplicação, divisão e problemas do dia a dia com números novos.",
+  resumo:["Multiplicar é somar parcelas iguais; dividir é repartir igualmente (ou descobrir quantos grupos cabem).", "Problemas do dia a dia: leia com calma, descubra o que se pede e escolha a operação.", "Dobro (×2), triplo (×3), metade (÷2): parentes próximos da multiplicação e da divisão."],
+  questoes:[
+    {t:"num", p:"Uma cartela tem 6 fileiras com 8 figurinhas em cada uma. Quantas figurinhas há na cartela?", r:"48", aceita:["48"], exp:"6 × 8 = 48 figurinhas."},
+    {t:"num", p:"72 lápis serão repartidos igualmente em 8 estojos. Quantos lápis vão em cada estojo?", r:"9", aceita:["9"], exp:"72 ÷ 8 = 9 lápis por estojo."},
+    {t:"num", p:"Qual é o triplo de 25?", r:"75", aceita:["75"], exp:"Triplo = 3 vezes: 3 × 25 = 75."},
+    {t:"num", p:"Uma caixa tem 96 bombons. Metade já foi comida. Quantos bombons sobraram?", r:"48", aceita:["48"], exp:"Metade de 96 = 96 ÷ 2 = 48."},
+    {t:"num", p:"Um ônibus faz 4 viagens por dia levando 45 passageiros em cada. Quantos passageiros por dia?", r:"180", aceita:["180"], exp:"4 × 45 = 180 passageiros."},
+    {p:"Em '63 ÷ 7 = 9', o número 63 é chamado de:", alt:["Dividendo", "Divisor", "Quociente", "Resto"], c:0, exp:"Dividendo é o total a repartir (63); divisor é por quanto se divide (7); quociente é o resultado (9).", err:{2:"O quociente é o resultado da conta — aqui, o 9."}},
+    {t:"num", p:"Numa divisão, o quociente é 8 e o divisor é 6, com resto 0. Qual é o dividendo?", r:"48", aceita:["48"], exp:"Para conferir a divisão: quociente × divisor = 8 × 6 = 48."},
+    {t:"num", p:"Ana lê 15 páginas por dia. Em uma semana inteira (7 dias), quantas páginas ela lê?", r:"105", aceita:["105"], exp:"15 × 7 = 105 páginas."}
+  ]}
 ]});
