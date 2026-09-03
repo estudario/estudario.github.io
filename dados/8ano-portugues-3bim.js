@@ -50,4 +50,18 @@ QUIZ.registrar({
     {p:"Qual destas situações NÃO é um uso do hífen?", alt:["Separar o sujeito do verbo na frase","Formar palavras compostas","Ligar verbo a pronome enclítico","Marcar o corte da palavra no fim da linha"], c:0, exp:"Sujeito e verbo não se separam por hífen (nem por vírgula!). Os usos do hífen são: composição, ênclise, translineação e ênfase de dicção."},
     {p:"'Água-viva' leva hífen porque:", alt:["As duas palavras formam um único ser, uma unidade de sentido","'Água' é feminina","É nome científico em latim","Toda palavra com 'água' leva hífen"], c:0, exp:"Água-viva não é uma água que está viva: é o nome de um animal — unidade autônoma de significado, como vespa-do-mar e tartaruga-verde."}
   ]}
+,
+{ id:"rx", emoji:"⚡", nome:"Rodada relâmpago — a língua em uso",
+  desc:"Os conteúdos do bimestre aplicados em frases e situações novas.",
+  resumo:["Revisão dos temas do bimestre em novos exemplos: sentidos, estrutura das frases e interpretação.", "Ler com atenção o contexto é sempre a chave: a mesma palavra muda de sentido conforme a frase."],
+  questoes:[
+    {p:"'A prova estava uma sopa.' O que a expressão sugere?", alt:["Que a prova estava muito fácil", "Que serviram sopa na escola", "Que a prova estava molhada", "Que a prova era de culinária"], c:0, exp:"Linguagem figurada: 'uma sopa' = facílima. O contexto mostra que não é sopa de verdade."},
+    {p:"Qual frase está na voz PASSIVA?", alt:["O bolo foi feito pela vovó.", "A vovó fez o bolo.", "A vovó faz bolos.", "A vovó fará o bolo."], c:0, exp:"Na passiva, quem sofre a ação vira sujeito: 'O bolo foi feito...'. Nas outras, a vovó (agente) é o sujeito."},
+    {p:"'Embora estivesse cansada, terminou o trabalho.' A palavra 'embora' indica:", alt:["Oposição/concessão (apesar de)", "Causa", "Tempo", "Lugar"], c:0, exp:"'Embora' introduz uma ideia contrária: apesar do cansaço, ela terminou."},
+    {p:"Identifique o sujeito: 'Os alunos do oitavo ano organizaram a festa.'", alt:["Os alunos do oitavo ano", "A festa", "Organizaram", "Do oitavo ano"], c:0, exp:"Quem organizou? Os alunos do oitavo ano — esse é o sujeito da oração."},
+    {p:"Qual opção reescreve SEM dúvida de sentido a frase 'Vi o incêndio do prédio'?", alt:["Vi o incêndio que atingiu o prédio", "Vi do prédio o incêndio distante que atingiu", "O prédio viu o incêndio", "Incendiei o prédio que vi"], c:0, exp:"A frase original deixa dúvida (o prédio pegou fogo, ou eu estava no prédio?). A reescrita esclarece quem pegou fogo."},
+    {p:"Em 'Choveu muito ontem', o sujeito é:", alt:["Inexistente: verbos de fenômeno da natureza não têm sujeito", "Ontem", "Muito", "A chuva"], c:0, exp:"'Chover', como nevar e ventar, é verbo impessoal: a oração não tem sujeito."},
+    {p:"Qual é o plural correto de 'cidadão'?", alt:["Cidadãos", "Cidadões", "Cidadães", "Cidadons"], c:0, exp:"Cidadão → cidadãos. Nem toda palavra em -ão vira -ões: pão→pães, mão→mãos, cidadão→cidadãos."},
+    {p:"'O livro, que estava sobre a mesa, sumiu.' As vírgulas servem para:", alt:["Isolar uma explicação intercalada na frase", "Separar itens de lista", "Marcar uma pergunta", "Nada, estão erradas"], c:0, exp:"O trecho entre vírgulas acrescenta uma informação — pode até ser retirado sem quebrar a frase principal."}
+  ]}
 ]});
