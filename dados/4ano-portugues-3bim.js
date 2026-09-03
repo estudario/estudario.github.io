@@ -85,4 +85,18 @@ QUIZ.registrar({
     {p:"Qual destas frases funciona como ARGUMENTO em um texto de opinião?", alt:["Uma pesquisa mostrou que separar o lixo reduz a poluição dos rios","Eu acho legal","Fim","Era uma vez uma menina"], c:0, exp:"Argumento é prova que sustenta a opinião: fatos, exemplos, citações e dados. “Eu acho” sozinho é só opinião, sem apoio.", err:{1:"É uma opinião sem prova nenhuma — falta o argumento que a sustente."}},
     {p:"O que a CONCLUSÃO de um texto de opinião deve fazer?", alt:["Apresentar a ideia final, enfatizando a opinião defendida","Trazer um assunto totalmente novo","Fazer uma lista de compras","Apenas repetir o título"], c:0, exp:"A conclusão fecha o texto: retoma e enfatiza a opinião, considerando os argumentos apresentados.", err:{1:"Assunto novo na conclusão confunde o leitor — ali é hora de fechar a ideia."}}
   ]}
+,
+{ id:"rx", emoji:"⚡", nome:"Rodada relâmpago — palavras em jogo",
+  desc:"Pontuação, sentidos e escrita das palavras, com exemplos novinhos.",
+  resumo:["Pontuação muda o sentido: ponto final encerra, interrogação pergunta, exclamação mostra emoção.", "Sinônimos dizem quase o mesmo; antônimos dizem o contrário.", "Diminutivo (-inho) e aumentativo (-ão) mudam o tamanho — e às vezes o carinho — das palavras."],
+  questoes:[
+    {p:"Qual pontuação completa a fala de espanto: 'Que golaço___'", alt:["!", "?", ".", ","], c:0, exp:"A exclamação (!) marca emoção forte: espanto, alegria, susto."},
+    {p:"Qual é o antônimo de 'coragem'?", alt:["Medo", "Bravura", "Valentia", "Força"], c:0, exp:"Antônimo é o contrário. Bravura e valentia são sinônimos de coragem — o oposto é o medo.", err:{1:"Bravura é sinônimo, não antônimo."}},
+    {p:"Escolha o sinônimo de 'veloz':", alt:["Rápido", "Lento", "Parado", "Atrasado"], c:0, exp:"Veloz e rápido dizem quase a mesma coisa — são sinônimos."},
+    {p:"'A menina que mora ali é minha amiga.' Quem mora ali?", alt:["A menina", "A amiga de outra pessoa", "Quem fala a frase", "Ninguém"], c:0, exp:"O trecho 'que mora ali' explica de qual menina estamos falando."},
+    {p:"Em qual frase a vírgula foi usada para separar itens de uma lista?", alt:["Comprei pão, leite, queijo e frutas.", "O sol, brilha muito.", "A, casa é azul.", "Corri, muito rápido hoje."], c:0, exp:"A vírgula separa os itens da enumeração: pão, leite, queijo... Nas outras, a vírgula está atrapalhando a frase."},
+    {p:"Qual palavra está escrita corretamente?", alt:["Passeio", "Paceio", "Passseio", "Paseio"], c:0, exp:"Passeio se escreve com dois esses (ss) entre vogais para ter o som forte."},
+    {p:"O diminutivo carinhoso de 'casa' é:", alt:["Casinha", "Casona", "Casarão", "Caseiro"], c:0, exp:"O sufixo -inha forma o diminutivo: casinha. Casona e casarão são aumentativos.", err:{1:"Casona indica casa GRANDE — é aumentativo."}},
+    {p:"'O vento sussurrava nas árvores.' O que o autor fez nessa frase?", alt:["Deu ao vento uma ação de gente (linguagem figurada)", "Errou de propósito", "Descreveu um fato científico", "Fez uma pergunta"], c:0, exp:"Vento não fala de verdade — o autor usou linguagem figurada para deixar a cena mais viva."}
+  ]}
 ]});
