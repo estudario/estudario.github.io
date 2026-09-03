@@ -80,4 +80,18 @@ QUIZ.registrar({
     {p:"O que garante as condições para a sociedade produzir o necessário para viver, segundo o texto?", alt:["A natureza do lugar (relevo, solo, clima, rios, vegetação) junto com o trabalho e a tecnologia","Apenas a sorte","Somente o dinheiro","Apenas as máquinas, sem pessoas"], c:0, exp:"Natureza + trabalho + tecnologia: é essa combinação que produz o que precisamos para a sobrevivência."},
     {p:"Uma fábrica de carros e uma plantação de soja pertencem, respectivamente, aos setores:", alt:["Secundário e primário","Primário e secundário","Terciário e primário","Secundário e terciário"], c:0, exp:"Fábrica transforma (secundário); plantação tira da natureza (primário)."}
   ]}
+,
+{ id:"rx", emoji:"⚡", nome:"Rodada relâmpago — campo, cidade e caminhos",
+  desc:"Campo e cidade, trabalho e produtos: perguntas novas para revisar tudo.",
+  resumo:["Campo e cidade têm paisagens e trabalhos diferentes — e um precisa do outro: alimentos vêm do campo; máquinas, remédios e serviços vêm da cidade.", "Do campo à mesa: os produtos percorrem um caminho — colheita, transporte, indústria, mercado.", "Zona rural = campo; zona urbana = cidade."],
+  questoes:[
+    {p:"O leite da caixinha começa sua viagem em qual lugar?", alt:["No campo, nas fazendas com vacas leiteiras", "No supermercado", "Na farmácia", "Na praia"], c:0, exp:"A vaca é ordenhada no campo; o leite vai para a indústria, é tratado, embalado e só então chega ao mercado."},
+    {p:"Qual destes é um trabalho típico da zona RURAL?", alt:["Cultivar a terra e criar animais", "Dirigir metrô", "Trabalhar em shopping", "Apresentar telejornal"], c:0, exp:"Agricultura e criação de animais são atividades do campo."},
+    {p:"E qual é um trabalho típico da zona URBANA?", alt:["Atender em um hospital de grande porte", "Plantar arroz", "Ordenhar vacas", "Colher café"], c:0, exp:"Grandes hospitais, escritórios, fábricas e comércios concentram-se nas cidades."},
+    {p:"Por que a cidade PRECISA do campo?", alt:["Porque os alimentos são produzidos no campo", "Porque no campo há mais prédios", "Não precisa", "Porque o campo tem cinemas"], c:0, exp:"Frutas, verduras, carne, leite: a comida da cidade nasce no campo."},
+    {p:"E por que o campo PRECISA da cidade?", alt:["Máquinas, remédios, escolas e outros serviços vêm da cidade", "Não precisa", "Porque na cidade chove mais", "Porque a cidade planta mais"], c:0, exp:"Tratores, medicamentos, bancos, universidades: muitos produtos e serviços são urbanos — campo e cidade se completam."},
+    {p:"Uma paisagem com plantações, silos e estradas de terra é típica de qual zona?", alt:["Rural", "Urbana", "Espacial", "Litorânea apenas"], c:0, exp:"Plantações e silos são marcas do campo — a zona rural."},
+    {p:"O caminho certo do tomate até o mercado é:", alt:["Colheita no campo → transporte → distribuição → mercado", "Mercado → campo → caminhão", "Fábrica → semente → prato", "Ele nasce no mercado"], c:0, exp:"Do pé à prateleira: colhe-se no campo, transporta-se, distribui-se e vende-se."},
+    {p:"Feiras livres são importantes porque:", alt:["Aproximam quem produz no campo de quem compra na cidade", "Só vendem brinquedos", "Substituem as escolas", "Acontecem no mar"], c:0, exp:"Na feira, o produtor rural vende direto para o morador da cidade — o encontro do campo com a cidade."}
+  ]}
 ]});
