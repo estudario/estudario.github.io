@@ -461,6 +461,14 @@ function acertoNum(q, v){
   });
 }
 function sortear(b,n){ return embaralhar(b).slice(0,Math.min(n,b.length)).map(prepararQuestao); }
+/* sorteio com memória: cada questão carrega um contador de "já vistas";
+   as menos vistas vêm primeiro, então a criança percorre o banco INTEIRO
+   antes de qualquer repetição começar. */
+function sortearInedito(b, n, pq){
+  const vistos = (pq && (pq.vistos = pq.vistos || {})) || {};
+  const ordenadas = embaralhar(b).sort((x,y)=>(vistos[qid(x)]||0)-(vistos[qid(y)]||0));
+  return embaralhar(ordenadas.slice(0, Math.min(n, b.length))).map(prepararQuestao);
+}
 
 /* ================= TELA 1: entrada ================= */
 function telaEntrada(){
@@ -1079,7 +1087,7 @@ function iniciar(id){
   if(id === "final"){
     const todas = quizAtual.rodadas.reduce((a,r)=>a.concat(r.questoes),[]);
     estado.rodada = {id:"final", nome:"Teste final"};
-    estado.lista = sortear(todas, quizAtual.qtdTeste||15);
+    estado.lista = sortearInedito(todas, quizAtual.qtdTeste||15, progressoQuiz(quizAtual.id));
     estado.modo = "teste";
   } else if(id === "revisao"){
     const pq = progressoQuiz(quizAtual.id);
@@ -1091,7 +1099,7 @@ function iniciar(id){
   } else if(id === "relogio"){
     const todas = quizAtual.rodadas.reduce((a,r)=>a.concat(r.questoes),[]);
     estado.rodada = {id:"relogio", nome:"⏱️ Contra o relógio"};
-    estado.lista = sortear(todas, 10);
+    estado.lista = sortearInedito(todas, 10, progressoQuiz(quizAtual.id));
     estado.modo = "relogio";
   } else if(id === "morte"){
     const todas = quizAtual.rodadas.reduce((a,r)=>a.concat(r.questoes),[]);
@@ -1101,7 +1109,7 @@ function iniciar(id){
   } else {
     const r = quizAtual.rodadas.find(x=>x.id===id);
     estado.rodada = r;
-    estado.lista = sortear(r.questoes, quizAtual.qtdAquecimento||8);
+    estado.lista = sortearInedito(r.questoes, quizAtual.qtdAquecimento||8, progressoQuiz(quizAtual.id));
     estado.modo = "aquecimento";
   }
   estado.indice = 0; estado.respostas = []; estado.escolhaAtual = undefined;
@@ -1268,6 +1276,8 @@ async function finalizar(){
     const alvo = pq || progressoQuiz(r.q.origemId);
     if(!alvo) return;
     const k = "q"+hash32(r.q.p);
+    alvo.vistos = alvo.vistos || {};
+    alvo.vistos[k] = (alvo.vistos[k]||0) + 1;
     if(r.acertou){ if(alvo.erros[k]){ alvo.erros[k]--; if(alvo.erros[k]<=0) delete alvo.erros[k]; } }
     else alvo.erros[k] = 2;
   });
