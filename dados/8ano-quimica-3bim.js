@@ -52,4 +52,18 @@ QUIZ.registrar({
     {p:"O ouro obtido pelo método da amálgama sai 100% puro?", alt:["Não: elimina a maior parte das impurezas, mas não todas","Sim, sempre perfeito","Sai misturado com areia apenas","Vira ouro branco"], c:0, exp:"O processo elimina a maior parte das impurezas, mas o resultado não é ouro totalmente puro."},
     {p:"Num hemograma, os valores de referência dos glóbulos vermelhos vão de 4,5 a 5,9 milhões/mm³. Um indivíduo com 2,5 milhões/mm³ está:", alt:["Abaixo do valor de referência","Acima do valor de referência","Dentro do valor de referência","Sem glóbulos vermelhos"], c:0, exp:"2,5 é menor que o mínimo de 4,5 — está abaixo da referência. Já 6,5 estaria acima, e 4,5 estaria dentro do intervalo."}
   ]}
+,
+{ id:"rx", emoji:"⚡", nome:"Rodada relâmpago — separações na vida real",
+  desc:"As técnicas de separação aplicadas a situações do cotidiano.",
+  resumo:["Revisão: a técnica certa depende das propriedades dos componentes.", "Sólido + sólido: catação, imantação, ventilação, flutuação, flotação.", "Sólido + líquido: sedimentação/decantação, filtração, evaporação."],
+  questoes:[
+    {p:"Caiu areia no seu suco. Qual caminho recupera o suco limpo?", alt:["Deixar a areia sedimentar e decantar (ou filtrar)", "Imantação e catação", "Ventilação e flotação", "Evaporar o suco"], c:0, exp:"Areia não dissolve: ela afunda (sedimentação) e o líquido pode ser transferido (decantação) ou passado num filtro.", err:{3:"Evaporar separaria a água, mas você perderia o suco!"}},
+    {p:"O coador de café da sua casa realiza qual técnica?", alt:["Filtração: o pó fica retido e o líquido passa", "Decantação", "Flotação", "Imantação"], c:0, exp:"O papel do coador é um filtro: retém o sólido (pó de café) e deixa passar o líquido."},
+    {p:"Para separar clipes de metal misturados com grãos de arroz, o mais rápido é:", alt:["Imantação com um ímã", "Evaporação", "Adicionar água quente", "Flotação"], c:0, exp:"Os clipes de ferro grudam no ímã; o arroz fica. Rápido e limpo."},
+    {p:"Nas salinas do litoral, o sal é obtido da água do mar por:", alt:["Evaporação: o sol evapora a água e o sal cristaliza", "Filtração", "Catação", "Imantação"], c:0, exp:"Grandes tanques rasos deixam o sol trabalhar: a água evapora e o sal fica — a mesma evaporação do laboratório, em escala gigante."},
+    {p:"Por que a filtração comum NÃO separa o sal dissolvido na água?", alt:["O sal dissolvido passa pelo filtro junto com a água", "O sal é magnético", "O filtro derrete", "O sal é mais pesado que o filtro"], c:0, exp:"Dissolvido, o sal está espalhado em partículas minúsculas que atravessam qualquer filtro — por isso a saída é a evaporação."},
+    {p:"Na estação de tratamento de água, deixar as impurezas se depositarem no fundo dos tanques é aplicar a:", alt:["Sedimentação", "Ventilação", "Catação", "Imantação"], c:0, exp:"As partículas sólidas afundam lentamente — sedimentação em escala industrial, antes da filtração."},
+    {p:"Qual a diferença entre flutuação e flotação?", alt:["Flutuação usa um líquido de densidade intermediária; flotação usa bolhas de ar que carregam partículas", "São a mesma coisa", "Flotação usa ímã", "Flutuação usa fogo"], c:0, exp:"Nomes parecidos, mecanismos diferentes: densidade do líquido (flutuação) × bolhas + espuma (flotação)."},
+    {p:"Garimpo com mercúrio: qual é o perigo para quem NEM trabalha lá?", alt:["O mercúrio contamina rios e peixes que as pessoas consomem", "Nenhum, o perigo fica no garimpo", "O ouro fica mais caro", "O rio muda de cor apenas"], c:0, exp:"O mercúrio lançado no ambiente entra na cadeia alimentar — quem come o peixe contaminado também se contamina."}
+  ]}
 ]});
