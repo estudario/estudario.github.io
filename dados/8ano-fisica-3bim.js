@@ -30,4 +30,18 @@ QUIZ.registrar({
     {p:"Qual é a tensão da fonte no circuito do painel de iluminação do exercício?", alt:["12 V","220 V","1,5 V","1.000 V"], c:0, exp:"O esquema do livro mostra uma fonte de 12 V alimentando o pequeno circuito do painel."},
     {p:"Na covid-19, por que a inflamação dos pulmões podia exigir respiradores?", alt:["Porque dificultava a respiração e a chegada de oxigênio, e a ventilação mecânica ajuda o corpo nesse trabalho","Porque o vírus congelava o ar","Para deixar o paciente dormir melhor","Porque respirar cansa os médicos"], c:0, exp:"Com os pulmões inflamados, o corpo não dá conta de oxigenar o sangue; a ventilação mecânica (não invasiva ou, nos casos severos, com intubação) faz esse trabalho junto."}
   ]}
+,
+{ id:"rx", emoji:"⚡", nome:"Rodada relâmpago — referenciais em todo lugar",
+  desc:"Situações novas para testar movimento, repouso e os tipos de movimento.",
+  resumo:["Revisão: movimento e repouso dependem do REFERENCIAL; não existe repouso absoluto.", "Translação (trajetórias paralelas), rotação (giro) e misto (os dois).", "No circuito: aparelho resistivo esquenta; motor gera movimento."],
+  questoes:[
+    {p:"Dois carros andam lado a lado na estrada, na mesma velocidade. Um motorista olha o outro. O que ele vê?", alt:["O outro carro parado em relação a ele (repouso relativo)", "O outro carro voando", "O outro carro em alta velocidade se afastando", "Nada, é impossível"], c:0, exp:"Mesma velocidade e direção = sem mudança de posição entre eles: um está em repouso em relação ao outro, mesmo os dois correndo em relação à estrada."},
+    {p:"O piloto sentado dentro de um avião em voo está em movimento em relação a quê?", alt:["Às cidades lá embaixo", "À sua poltrona", "Ao painel do avião", "Ao copiloto ao lado"], c:0, exp:"Em relação ao solo, ele viaja a centenas de km/h; em relação à poltrona, ao painel e ao copiloto, está em repouso."},
+    {p:"Uma bola de futebol chutada rolando pelo gramado tem movimento:", alt:["Misto: avança (translação) enquanto gira (rotação)", "Só de rotação", "Só de translação", "Nenhum"], c:0, exp:"Como a roda do carro: a bola avança e gira ao mesmo tempo — movimento misto."},
+    {p:"O elevador subindo do térreo ao 10º andar, sem girar, tem movimento de:", alt:["Translação", "Rotação", "Misto", "Repouso absoluto"], c:0, exp:"Todos os pontos do elevador sobem juntos, em trajetórias paralelas — translação pura."},
+    {p:"Um ventilador ligado, preso no teto, tem as pás em movimento de:", alt:["Rotação", "Translação", "Misto", "Queda livre"], c:0, exp:"As pás giram em torno do eixo sem sair do lugar — rotação."},
+    {p:"Por que NÃO existe repouso absoluto?", alt:["Porque todo corpo está em movimento em relação a algum referencial", "Porque tudo está sempre parado", "Porque o repouso é proibido", "Porque os referenciais não existem"], c:0, exp:"Você está 'parado' na cadeira — mas a Terra gira, orbita o Sol, e o Sol viaja pela galáxia. Sempre há um referencial em que você se move."},
+    {p:"Num chuveiro elétrico, a energia elétrica vira principalmente:", alt:["Energia térmica (é um aparelho resistivo)", "Movimento", "Luz", "Som"], c:0, exp:"Como os filamentos da máquina de fumaça: resistência esquenta — energia elétrica vira calor."},
+    {p:"Num liquidificador, a energia elétrica vira principalmente:", alt:["Movimento (tem um motor elétrico)", "Só calor", "Só luz", "Nada"], c:0, exp:"O motor gira as lâminas: energia elétrica virando movimento, como as bombas de ar do show."}
+  ]}
 ]});
