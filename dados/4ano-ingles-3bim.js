@@ -88,4 +88,18 @@ QUIZ.registrar({
     {p:"Nas fábulas em inglês, qual animal costuma aparecer como o esperto (tricky)?", alt:["A tricky fox (uma raposa ardilosa)","A sleepy cat","A big elephant","A slow turtle"], c:0, exp:"A raposa (fox) é a personagem esperta clássica das fábulas — “a tricky fox”."},
     {p:"O que significa ser “resourceful”?", alt:["Ser criativo para resolver problemas com o que se tem","Ser preguiçoso","Ter muito dinheiro","Falar alto"], c:0, exp:"“We have to be creative and resourceful to get a good grade” — resourceful é quem dá um jeito com os recursos que tem."}
   ]}
+,
+{ id:"rx", emoji:"⚡", nome:"Lightning round — mix it up!",
+  desc:"Vocabulário e frases do bimestre em desafios novinhos.",
+  resumo:["Revisão: cores, números, animais e as perguntas básicas — What's this? / How old are you? / Do you like...?", "There is (um) / There are (vários) para dizer o que existe.", "I like / I don't like para os gostos."],
+  questoes:[
+    {p:"Como se pergunta 'Quantos anos você tem?' em inglês?", alt:["How old are you?", "How are you?", "What is you?", "Where old you?"], c:0, exp:"How old are you? pergunta a idade. How are you? pergunta como você está.", err:{1:"How are you? = 'Como vai você?'"}},
+    {p:"Complete: 'There ___ three dogs in the park.'", alt:["are", "is", "am", "be"], c:0, exp:"Três cachorros = plural → there ARE. Para um só: there is."},
+    {p:"'I don't like broccoli' significa:", alt:["Eu não gosto de brócolis", "Eu adoro brócolis", "Eu como brócolis", "Eu planto brócolis"], c:0, exp:"Don't like = não gostar. Para dizer que gosta: I like."},
+    {p:"Qual é a cor 'purple' em português?", alt:["Roxo", "Verde", "Amarelo", "Preto"], c:0, exp:"Purple = roxo — a cor da uva!"},
+    {p:"Escolha a frase correta:", alt:["She is my sister.", "She are my sister.", "She am my sister.", "She be my sister."], c:0, exp:"Com he/she/it usamos IS: She is my sister."},
+    {p:"'Turtle' é o nome de qual animal?", alt:["Tartaruga", "Tigre", "Peru", "Touro"], c:0, exp:"Turtle = tartaruga. Cuidado: turkey = peru, tiger = tigre!", err:{2:"Peru em inglês é turkey."}},
+    {p:"Complete a sequência: one, two, three, four, ___", alt:["five", "fine", "fish", "fun"], c:0, exp:"1, 2, 3, 4, 5: one, two, three, four, five."},
+    {p:"Como se diz 'obrigada' em inglês?", alt:["Thank you", "Please", "Sorry", "Hello"], c:0, exp:"Thank you = obrigado(a). Please = por favor; sorry = desculpe."}
+  ]}
 ]});
