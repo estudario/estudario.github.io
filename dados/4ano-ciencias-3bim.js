@@ -426,5 +426,19 @@ QUIZ.registrar({
      c:0, exp:"Os antibióticos, produzidos com a ajuda de fungos e bactérias, são usados no tratamento de infecções bacterianas."}
   ]
 }
-  ]
+  ,
+{ id:"rx", emoji:"⚡", nome:"Rodada relâmpago — o bimestre inteiro",
+  desc:"Microrganismos, fermentação, vacinas e saúde — tudo misturado, em perguntas novas.",
+  resumo:["Revisão geral: os microrganismos estão em toda parte — alguns causam doenças, muitos são nossos aliados na comida, na digestão e na produção de remédios.", "Fermentação: micro-organismos transformam alimentos (pão cresce, leite vira iogurte).", "Vacinas ensinam o corpo a se defender ANTES da doença chegar; antibióticos combatem bactérias (e não funcionam contra vírus).", "Higiene (lavar as mãos, água tratada) é a barreira número 1 contra os micróbios do mal."],
+  questoes:[
+    {p:"Uma amiga diz: 'todo micróbio é perigoso'. O que há de errado nessa frase?", alt:["Muitos micro-organismos são úteis, como os do iogurte e os da nossa digestão", "Nada, está perfeita", "Micróbios não existem", "Só os vírus são úteis"], c:0, exp:"Existem micro-organismos causadores de doenças, mas também os aliados: fermentam alimentos, ajudam a digestão e produzem remédios."},
+    {p:"O pão cresce por causa da ação de qual ser vivo?", alt:["Do fermento biológico (leveduras), que libera gás na massa", "Da farinha, que é viva", "Do sal", "Do forno quente"], c:0, exp:"As leveduras do fermento se alimentam do açúcar da massa e soltam gás carbônico — as bolhas fazem a massa crescer."},
+    {p:"Por que o iogurte é um exemplo de micro-organismo do bem?", alt:["Bactérias transformam o leite em iogurte pela fermentação", "Porque não tem micróbio nenhum", "Porque o iogurte mata bactérias", "Porque é gelado"], c:0, exp:"Bactérias especiais fermentam o leite, deixando-o mais espesso e azedinho — é biotecnologia na sua geladeira."},
+    {p:"A vacina age ANTES ou DEPOIS de a pessoa ficar doente?", alt:["Antes: ensina a defesa do corpo a reconhecer o invasor", "Depois: cura a doença instalada", "Nunca age", "Só age em adultos"], c:0, exp:"A vacina apresenta ao corpo um 'retrato' do invasor; se ele aparecer de verdade, a defesa já sabe lutar.", err:{1:"Quem trata a doença já instalada são os remédios — a vacina é prevenção."}},
+    {p:"Antibiótico serve para combater:", alt:["Bactérias", "Vírus", "Qualquer doença", "Vacinas"], c:0, exp:"Antibióticos agem contra bactérias. Contra vírus (como gripe) eles não funcionam — por isso não se toma antibiótico por conta própria."},
+    {p:"Qual atitude simples mais evita a passagem de micróbios de uma pessoa para outra?", alt:["Lavar bem as mãos com água e sabão", "Ficar sem beber água", "Comer mais doces", "Dormir de meia"], c:0, exp:"As mãos tocam em tudo — lavar com sabão desmonta os micróbios e é a barreira número 1."},
+    {p:"Por que a água que bebemos precisa ser tratada ou filtrada?", alt:["Para remover micro-organismos que causam doenças", "Para ficar mais gelada", "Para mudar de cor", "Só por costume"], c:0, exp:"Água contaminada pode carregar causadores de doenças; o tratamento torna a água segura."},
+    {p:"Os micro-organismos são tão pequenos que só podem ser vistos com:", alt:["Microscópio", "Lupa de brinquedo", "Óculos de sol", "Binóculo"], c:0, exp:"Micro = pequeno demais para os olhos. O microscópio amplia o mundo invisível."}
+  ]}
+]
 });
