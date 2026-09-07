@@ -669,8 +669,11 @@ async function criarPerfil(){
   if(r.erro === "existe") return falha(erro,"Já existe uma conta com esse nome e ano. Se é você, use o botão “Já tenho conta” para entrar; se esqueceu a senha, peça à "+ADMIN.nome+" para redefinir.");
   if(r.erro) return falha(erro,"Não deu para criar o perfil. Confira o nome e a senha.");
   const k = chaveDe(nome, ano, escola);
-  cache.contas[k] = {id:r.id, nome, ano, escola, avatar, senha, dados:dadosZero(), pendente:true};
+  const jaLiberado = r.status === "ativa";
+  cache.contas[k] = {id:r.id, nome, ano, escola, avatar, senha, dados:dadosZero()};
+  if(!jaLiberado) cache.contas[k].pendente = true;
   await Armazem.gravar(CHAVE, cache);
+  if(jaLiberado) return entrarNuvem(k, senha, erro, $("#btn-criar"));
   telaPendente(k);
 }
 
