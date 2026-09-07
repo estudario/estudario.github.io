@@ -281,7 +281,7 @@ const APP = {
 
 /* --- Nuvem (fase 2) -------------------------------------------------
    O EstudAI agora vive num banco de dados (Supabase). Cadastro, login,
-   aprovação, bloqueio e progresso são centralizados: a administradora gerencia
+   aprovação, bloqueio e progresso são centralizados: a equipe gerencia
    tudo pelo painel, de qualquer aparelho — e a senha dela mora no banco,
    não neste arquivo. */
 const NUVEM = {
@@ -334,7 +334,7 @@ function qid(q){ return "q"+hash32(q.p); }
 const CONQUISTAS = [
   {id:"primeira", emoji:"🧪", nome:"Primeira rodada",  dica:"Terminar uma rodada",              teste:d=>d.partidas>=1},
   {id:"gabarito", emoji:"🎯", nome:"Sem errar uma",    dica:"Gabaritar qualquer rodada",        teste:d=>d.gabaritos>=1},
-  {id:"aprovada", emoji:"🏅", nome:"Aprovada",         dica:"Passar em um teste final",         teste:d=>d.testesPassados>=1},
+  {id:"aprovada", emoji:"🏅", nome:"Aprovação",         dica:"Passar em um teste final",         teste:d=>d.testesPassados>=1},
   {id:"sequencia",emoji:"⚡", nome:"Sequência de 10",  dica:"Acertar 10 seguidas",              teste:d=>d.melhorSequencia>=10},
   {id:"explora",  emoji:"🧭", nome:"Exploradora",      dica:"Jogar 3 matérias diferentes",      teste:d=>Object.keys(d.porQuiz).length>=3},
   {id:"ouro3",    emoji:"👑", nome:"Três ouros",       dica:"Ganhar 3 medalhas de ouro",        teste:d=>contarMedalhas(d,"ouro")>=3},
@@ -499,7 +499,7 @@ function telaEntrada(){
     });
     html += `</div></div><div class="divisor"><span>ou</span></div>`;
   } else {
-    html += `<div class="cartao intro"><p>Bem-vinda ao <strong>${APP.nome}</strong>! Crie seu perfil e comece a treinar. Sua pontuação fica guardada e te acompanha em qualquer aparelho.</p></div>`;
+    html += `<div class="cartao intro"><p>Boas-vindas ao <strong>${APP.nome}</strong>! Crie seu perfil e comece a treinar. Sua pontuação fica guardada e te acompanha em qualquer aparelho.</p></div>`;
   }
 
   html += `<button class="cartao item" id="btn-login" style="margin-bottom:14px">
@@ -511,7 +511,7 @@ function telaEntrada(){
       <h3>${chaves.length?"Ou crie um perfil novo":"Criar meu perfil"}</h3>
       <label for="n-nome">Seu nome ou apelido</label>
       <input id="n-nome" maxlength="18" placeholder="Ex.: Carol" autocomplete="off">
-      <p class="dica">Use só o primeiro nome ou um apelido — nunca o nome completo. É assim que você vai aparecer para as colegas no ranking. 😉</p>
+      <p class="dica">Use só o primeiro nome ou um apelido — nunca o nome completo. É assim que você vai aparecer para a turma no ranking. 😉</p>
       <label>Escolha seu bichinho</label>
       <div class="avatares" id="n-avatares">${APP.avatares.map((a,i)=>`<button class="av" data-av="${a}" aria-pressed="${i===0}">${a}</button>`).join("")}</div>
       <label>Sua escola</label>
@@ -527,7 +527,7 @@ function telaEntrada(){
       <details class="privacidade">
         <summary>🔒 Como cuidamos dos seus dados</summary>
         <p>Guardamos só o necessário: seu nome ou apelido, escola, ano e a sua pontuação. Nada de sobrenome, foto, telefone ou endereço.</p>
-        <p>Quem vê o quê: as colegas veem seu nome/apelido e seus pontos no ranking; a equipe do EstudAI vê seu cadastro para aprovar e cuidar da sua conta.</p>
+        <p>Quem vê o quê: a turma vê seu nome/apelido e seus pontos no ranking; a equipe do EstudAI vê seu cadastro para aprovar e cuidar da sua conta.</p>
         <p>Seu responsável pode pedir a correção ou a exclusão da conta a qualquer momento à equipe do EstudAI — apagar remove tudo, inclusive a pontuação.</p>
       </details>
       <p class="dica">Depois de criar o perfil, a equipe do EstudAI aprova o seu acesso.</p>
@@ -687,7 +687,7 @@ function telaPendente(chave, aviso){
         : `Peça ao <b>adulto responsável</b> que autorizou seu cadastro para avisar a equipe do EstudAI: <b>${c.nome} — ${c.escola||ESCOLA_PADRAO}, ${c.ano}</b>. Assim que a aprovação sair, é só tocar no botão abaixo.`}</p>
     </div>
     <div class="cartao">
-      <div class="acoes"><button class="btn" id="btn-tentar">Já fui aprovada — entrar</button></div>
+      <div class="acoes"><button class="btn" id="btn-tentar">Meu acesso já foi liberado — entrar</button></div>
       <p class="erro-form" id="erro-pendente" ${aviso?"":"hidden"}>${aviso||""}</p>
     </div>`;
   mostrar("entrada");
@@ -772,9 +772,9 @@ function pedirSenha(chave){
   mostrar("entrada");
 }
 
-/* ================= Painel da administradora ================= */
+/* ================= Painel de administração ================= */
 function telaAdmin(){
-  cabecalho("Administração", "Gestão de usuárias");
+  cabecalho("Administração", "Gestão de contas");
   telas.entrada.innerHTML = `
     <div class="cartao">
       <button class="voltar" id="btn-volta-entrada">← Voltar</button>
@@ -810,7 +810,7 @@ async function recarregarPainel(senha){
 }
 
 function painelAdmin(senha, lista){
-  cabecalho("Administração", "Todas as usuárias, de todos os aparelhos");
+  cabecalho("Administração", "Todas as contas, de todos os aparelhos");
   const pendentes = lista.filter(u=>u.status==="pendente");
   const demais = lista.filter(u=>u.status!=="pendente");
   const linha = u=>{
@@ -835,7 +835,7 @@ function painelAdmin(senha, lista){
       ${pendentes.length>1?`<div class="acoes" style="margin:0 0 10px"><button class="btn" id="btn-aprovar-todos">✅ Aprovar todos os ${pendentes.length}</button></div>`:""}
       ${pendentes.map(linha).join("")}</div>`:""}
     <div class="cartao" style="margin-top:10px">
-      <h3>Usuárias (${demais.length})</h3>
+      <h3>Contas (${demais.length})</h3>
       ${demais.length?demais.map(linha).join(""):`<p class="dica">Ninguém ainda. Assim que alguém se cadastrar, aparece aqui.</p>`}
       <p class="dica"><b>Aprovar</b> libera o acesso na hora, em qualquer aparelho. <b>Bloquear</b> impede a entrada em todos. <b>Senha</b> redefine a senha de quem esqueceu. <b>Apagar</b> remove a conta e a pontuação (pede confirmação).</p>
     </div>`;
@@ -912,7 +912,7 @@ async function telaRanking(){
   try{ lista = await rpc("ranking") || []; }catch(e){ lista = null; }
   let corpo;
   if(lista === null) corpo = `<p class="dica">${SEM_REDE}</p>`;
-  else if(!lista.length) corpo = `<p class="dica">Ninguém pontuou ainda — seja a primeira!</p>`;
+  else if(!lista.length) corpo = `<p class="dica">Ninguém pontuou ainda — comece você!</p>`;
   else {
     const podeFiltrar = lista.some(u => !!u.escola);
     if(!podeFiltrar) telaRanking.filtro = "todas";
@@ -929,7 +929,7 @@ async function telaRanking(){
       </div>` + (lista.length ? lista.map((u,i)=>`<div class="painel-linha ${souEu(u) ? "eu":""}">
       <span><b>${i+1}º</b> ${u.avatar||"🦊"} <b>${u.nome}</b></span>
       <span class="xp-total">${u.xp} XP</span>
-    </div>`).join("") : `<p class="dica">Ninguém da sua escola pontuou ainda — seja a primeira!</p>`);
+    </div>`).join("") : `<p class="dica">Ninguém da sua escola pontuou ainda — comece você!</p>`);
   }
   telas.estante.innerHTML = `
     <button class="voltar" id="btn-volta-estante">← Voltar</button>
@@ -984,7 +984,7 @@ function telaEstante(){
       </div>
       <div class="ofensiva ${ofe.classe}">🔥 ${ofe.txt}${ofe.rec>1?` · recorde: ${ofe.rec} dias`:""}</div>
       <div class="conquistas">${conqHtml}</div>
-      <div class="acoes" style="margin-top:10px"><button class="btn secundario" id="btn-ranking">🏆 Ranking das amigas</button></div>
+      <div class="acoes" style="margin-top:10px"><button class="btn secundario" id="btn-ranking">🏆 Ranking da turma</button></div>
       ${salvaOk?"":`<p class="aviso">Sem conexão com o servidor — seu progresso está guardado neste aparelho e será enviado quando a internet voltar.</p>`}
     </div>
 
