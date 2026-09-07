@@ -1,0 +1,79 @@
+/* Matemática — 3º ano — Colégio Fundamentum — 3º bimestre
+   Módulos 19 (combinações), 22 (tabuada do 7) e 23 (curvas). */
+QUIZ.registrar({
+  id:"fund3-matematica-3bim", ano:"3º ano", materia:"Matemática", emoji:"🔢",
+  escola:"Colégio Fundamentum",
+  bimestre:"3º bimestre", tema:"Combinações, tabuada do 7 e curvas",
+  qtdAquecimento:8, qtdTeste:12,
+  rodadas:[
+{ id:"r1", emoji:"👕", nome:"Rodada 1 — Combinações: tabela e árvore",
+  desc:"Tabela de dupla entrada, árvore de possibilidades e o cálculo das combinações.",
+  resumo:[
+    "Na TABELA DE DUPLA ENTRADA, as combinações possíveis ficam no ENCONTRO DAS LINHAS E COLUNAS — nas células da tabela.",
+    "Exemplo da boneca: 2 tipos de camiseta e 3 de short dão 6 combinações, porque 2 × 3 = 6.",
+    "Outra forma de organizar é a ÁRVORE DE POSSIBILIDADES, que recebe esse nome por lembrar o desenho de uma árvore com galhos e ramificações.",
+    "Na árvore há um PONTO INICIAL (por exemplo, 'Lanche') e, desse ponto, saem os GALHOS. Se houvesse três tipos de sanduíche, seriam desenhados três galhos, e assim por diante.",
+    "Lanche do parque: 2 sanduíches (cachorro-quente e natural) × 2 sucos (laranja e morango) = 4 possibilidades.",
+    "Uniforme do time: 3 camisetas × 2 shorts = 6 possibilidades.",
+    "Sorveteria: 5 sabores × 3 tamanhos de copo = 15 possibilidades. O cálculo é sempre uma MULTIPLICAÇÃO."
+  ],
+  questoes:[
+    {p:"Numa tabela de dupla entrada, onde ficam as combinações possíveis?", alt:["No encontro das linhas com as colunas, nas células da tabela","No título da tabela","Fora da tabela","Na última linha apenas"], c:0, exp:"Cada célula cruza uma opção da linha com uma da coluna — é ali que nasce cada combinação."},
+    {t:"num", p:"Isabella tem 2 camisetas e 3 shorts para vestir a boneca. Quantas combinações diferentes ela pode montar?", r:"6", aceita:["6"], exp:"2 × 3 = 6 combinações — é o número de células da tabela."},
+    {p:"Por que a árvore de possibilidades tem esse nome?", alt:["Porque lembra o desenho de uma árvore, com galhos e ramificações","Porque é feita de madeira","Porque só serve para plantas","Porque tem folhas verdes"], c:0, exp:"Do ponto inicial saem os galhos, que se ramificam — igualzinho a uma árvore."},
+    {p:"Na árvore do lanche, qual era o ponto inicial?", alt:["A palavra LANCHE","O suco de laranja","O cachorro-quente","O professor Gustavo"], c:0, exp:"Do ponto inicial (Lanche) saem os galhos dos sucos, e de cada suco saem as ramificações dos sanduíches."},
+    {t:"num", p:"No passeio ao parque havia 2 tipos de sanduíche e 2 sabores de suco. Quantas combinações de lanche eram possíveis?", r:"4", aceita:["4"], exp:"2 × 2 = 4 possibilidades: SL com CQ, SL com N, SM com CQ e SM com N."},
+    {p:"Que cálculo matemático encontra o número de possibilidades de combinação?", alt:["A multiplicação das quantidades de cada tipo","A soma das quantidades","A subtração","A divisão"], c:0, exp:"Sempre multiplicação: 2 sanduíches × 2 sucos = 4; 3 camisetas × 2 shorts = 6.", err:{1:"Somar dá o total de PEÇAS, não de combinações. Com 2 e 2, somar daria 4 por acaso — mas com 3 e 2 a soma daria 5, e as combinações são 6!"}},
+    {t:"num", p:"O time tem 3 tipos de camiseta e 2 tipos de short. Quantos uniformes diferentes são possíveis?", r:"6", aceita:["6"], exp:"3 × 2 = 6 uniformes — a árvore mostra 2 galhos (shorts) com 3 ramificações cada."},
+    {t:"num", p:"Na sorveteria havia 5 sabores de sorvete e 3 tamanhos de copo. Quantas combinações são possíveis?", r:"15", aceita:["15"], exp:"5 × 3 = 15 combinações — a tabela tem 5 linhas e 3 colunas, dando 15 células."},
+    {p:"Se em vez de dois houvesse TRÊS tipos de sanduíche, o que mudaria na árvore?", alt:["Seriam desenhados três galhos em vez de dois","Nada mudaria","A árvore desapareceria","Seria preciso apagar os sucos"], c:0, exp:"É o que o quadro explica: a quantidade de galhos acompanha a quantidade de opções."},
+    {p:"Na árvore do lanche, também seria possível começar pelos galhos de suco e ramificar para os sanduíches?", alt:["Sim, a ordem pode ser invertida e o resultado é o mesmo","Não, existe só um jeito certo","Só se houvesse mais sabores","Não, isso mudaria o número de possibilidades"], c:0, exp:"O texto diz que dá para iniciar pelos sucos e ramificar para os sanduíches — o total continua 4."}
+  ]},
+{ id:"r2", emoji:"✖️", nome:"Rodada 2 — A tabuada do 7 e as configurações retangulares",
+  desc:"Decompor o retângulo para descobrir a tabuada do 7 com as tabuadas que você já sabe.",
+  resumo:[
+    "Elementos dispostos em CONFIGURAÇÃO RETANGULAR podem ser representados por uma multiplicação. Combinado da apostila: o 1º fator é o número de LINHAS; o 2º, o número de COLUNAS.",
+    "Regularidades que você já estudou: dobrando a tabuada do 2 obtém-se a do 4; dobrando a do 4 obtém-se a do 8; dobrando a do 3 obtém-se a do 6; TRIPLICANDO a do 3 obtém-se a do 9; e na tabuada do 5 o algarismo das unidades é sempre 0 ou 5.",
+    "Estratégia para a tabuada do 7: dividir o retângulo em duas partes coloridas, calcular cada parte e SOMAR os produtos. Ex.: 3 × 7 = (3 × 5) + (3 × 2) = 15 + 6 = 21.",
+    "Outros exemplos do módulo: 4 × 7 = 20 + 8 = 28 · 5 × 7 = 20 + 15 = 35 · 6 × 7 = 12 + 30 = 42 · 7 × 7 = 21 + 28 = 49.",
+    "A tabuada do 7: 7, 14, 21, 28, 35, 42, 49, 56, 63, 70."
+  ],
+  questoes:[
+    {t:"num", p:"Um retângulo tem 3 linhas e 7 colunas. Quantos quadradinhos há ao todo?", r:"21", aceita:["21"], exp:"3 × 7 = 21 — o 1º fator é o número de linhas e o 2º, o de colunas."},
+    {t:"num", p:"Separando o retângulo de 3 × 7 em 3 × 5 e 3 × 2: quanto dá 3 × 5?", r:"15", aceita:["15"], exp:"3 × 5 = 15 — a parte azul da figura."},
+    {t:"num", p:"E quanto dá a outra parte, 3 × 2?", r:"6", aceita:["6"], exp:"3 × 2 = 6 — a parte verde. Somando: 15 + 6 = 21, que é 3 × 7."},
+    {t:"num", p:"Usando a decomposição 4 × 7 = (4 × 5) + (4 × 2), quanto é 4 × 7?", r:"28", aceita:["28"], exp:"20 + 8 = 28. Quebrar o 7 em 5 + 2 deixa a conta bem mais fácil!"},
+    {t:"num", p:"Quanto é 5 × 7?", r:"35", aceita:["35"], exp:"(5 × 4) + (5 × 3) = 20 + 15 = 35."},
+    {t:"num", p:"Quanto é 6 × 7?", r:"42", aceita:["42"], exp:"(6 × 2) + (6 × 5) = 12 + 30 = 42."},
+    {t:"num", p:"Quanto é 7 × 7?", r:"49", aceita:["49"], exp:"(7 × 3) + (7 × 4) = 21 + 28 = 49."},
+    {p:"Se você DOBRAR os valores da tabuada do 3, qual tabuada obtém?", alt:["A do 6","A do 9","A do 4","A do 8"], c:0, exp:"3, 6, 9... dobrados viram 6, 12, 18: a tabuada do 6. Triplicando a do 3, aparece a do 9.", err:{1:"Para chegar na tabuada do 9 é preciso TRIPLICAR a do 3."}},
+    {p:"Dobrando os valores da tabuada do 4, obtém-se a tabuada de qual número?", alt:["8","6","9","7"], c:0, exp:"Dobrar a do 2 dá a do 4; dobrar a do 4 dá a do 8."},
+    {p:"Na tabuada do 5, o algarismo das unidades do resultado é sempre:", alt:["0 ou 5","1 ou 2","Sempre 5","Qualquer um"], c:0, exp:"5, 10, 15, 20, 25... — sempre terminam em 5 ou em 0."},
+    {t:"num", p:"Um retângulo com 2 linhas e 8 colunas representa qual produto? Escreva o resultado.", r:"16", aceita:["16"], exp:"2 × 8 = 16 quadradinhos."},
+    {t:"num", p:"Quanto é 9 × 7?", r:"63", aceita:["63"], exp:"Pela decomposição: (9 × 5) + (9 × 2) = 45 + 18 = 63."}
+  ]},
+{ id:"r3", emoji:"➰", nome:"Rodada 3 — As curvas: abertas, fechadas, simples e não simples",
+  desc:"Geometria com barbante: classificar curvas pelo jeito das pontas e dos cruzamentos.",
+  resumo:[
+    "Em Geometria, uma CURVA é todo caminho CONTÍNUO, ou seja, que não tem interrupção. Um caminho que você pode traçar SEM TIRAR O LÁPIS DO PAPEL é uma curva.",
+    "As letras e os algarismos feitos com barbante são curvas — e as curvas aparecem em brinquedos como o vai e vem e o telefone de barbante.",
+    "CURVA ABERTA: as pontas são separadas (o barbante sem amarrar as pontas).",
+    "CURVA FECHADA: as pontas são unidas (o barbante com um nó juntando as pontas).",
+    "CURVA SIMPLES: não há cruzamento do traçado.",
+    "CURVA NÃO SIMPLES: há um ou mais cruzamentos.",
+    "Juntando os dois critérios existem quatro tipos: aberta simples, aberta não simples, fechada simples e fechada não simples."
+  ],
+  questoes:[
+    {p:"Em Geometria, o que é uma curva?", alt:["Todo caminho contínuo, sem interrupção","Só uma linha torta","Apenas círculos","Uma linha reta"], c:0, exp:"É o caminho que você pode traçar sem tirar o lápis do papel — reto ou torto, tanto faz!"},
+    {p:"Qual é a característica de uma curva ABERTA?", alt:["As pontas são separadas","As pontas são unidas","Ela sempre se cruza","Ela nunca se cruza"], c:0, exp:"Foi o critério escrito no caderno: na aberta, as pontas ficam separadas; na fechada, unidas."},
+    {p:"E uma curva FECHADA?", alt:["As pontas são unidas","As pontas ficam soltas","Ela é sempre pequena","Ela é sempre um quadrado"], c:0, exp:"É o barbante com o nó: as duas pontas se juntam e o caminho se fecha."},
+    {p:"O que caracteriza uma curva SIMPLES?", alt:["Não há cruzamento no traçado","Ela é fácil de desenhar","Ela é bem curtinha","Ela é sempre aberta"], c:0, exp:"Simples é a curva que não passa duas vezes pelo mesmo ponto — sem cruzamentos.", err:{1:"Não tem a ver com dificuldade: 'simples' aqui é um critério geométrico."}},
+    {p:"E uma curva NÃO SIMPLES?", alt:["Tem um ou mais cruzamentos","Não tem pontas","É sempre fechada","É sempre grande"], c:0, exp:"Basta o traçado se cruzar uma vez para ela ser não simples."},
+    {p:"O cordão do brinquedo vai e vem, com uma ponta em cada argola, é uma curva:", alt:["Aberta, porque tem uma ponta em cada argola","Fechada, porque tem argolas","Não é curva","Sempre não simples"], c:0, exp:"Pontas separadas = curva aberta. O mesmo vale para o telefone de barbante, com uma ponta em cada copinho."},
+    {p:"Um círculo desenhado sem levantar o lápis e sem cruzar o traço é uma curva:", alt:["Fechada e simples","Aberta e simples","Fechada e não simples","Aberta e não simples"], c:0, exp:"Pontas unidas (fechada) e sem cruzamentos (simples) — como o algarismo 0 feito de barbante."},
+    {p:"E o algarismo 8 feito com barbante, com as pontas unidas?", alt:["Fechada e não simples, porque o traçado se cruza no meio","Aberta e simples","Fechada e simples","Não é curva"], c:0, exp:"O 8 fecha o caminho, mas tem um cruzamento no meio — fechada e NÃO simples."},
+    {p:"Quantos tipos de curva surgem ao combinar os dois critérios (aberta/fechada e simples/não simples)?", alt:["Quatro","Dois","Seis","Um"], c:0, exp:"Aberta simples, aberta não simples, fechada simples e fechada não simples — as quatro colunas do quadro."},
+    {p:"A letra L feita com barbante, sem cruzamentos e com as pontas soltas, é uma curva:", alt:["Aberta e simples","Fechada e simples","Aberta e não simples","Fechada e não simples"], c:0, exp:"Pontas soltas = aberta; sem cruzar o traço = simples."},
+    {p:"Ao soltar o barbante SEM amarrar as pontas sobre a carteira, que tipo de curva sempre se forma?", alt:["Uma curva aberta","Uma curva fechada","Um triângulo","Uma reta"], c:0, exp:"Sem nó, as pontas ficam separadas: curva aberta. Com o nó, ela vira fechada — foi essa a brincadeira da turma."}
+  ]}
+]});
