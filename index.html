@@ -914,14 +914,20 @@ async function telaRanking(){
   if(lista === null) corpo = `<p class="dica">${SEM_REDE}</p>`;
   else if(!lista.length) corpo = `<p class="dica">Ninguém pontuou ainda — seja a primeira!</p>`;
   else {
-    if(telaRanking.filtro === "minha" && perfil){
+    const podeFiltrar = lista.some(u => !!u.escola);
+    if(!podeFiltrar) telaRanking.filtro = "todas";
+    const souEu = u => perfil
+      && normalizarNome(u.nome) === normalizarNome(perfil.nome)
+      && u.ano === perfil.ano
+      && (!podeFiltrar || (u.escola||ESCOLA_PADRAO) === (perfil.escola||ESCOLA_PADRAO));
+    if(podeFiltrar && telaRanking.filtro === "minha" && perfil){
       lista = lista.filter(u=>(u.escola||ESCOLA_PADRAO)===(perfil.escola||ESCOLA_PADRAO));
     }
     corpo = `<div class="chips" style="margin-bottom:12px">
         <button class="chip" data-rf="minha" aria-pressed="${telaRanking.filtro==="minha"}">Minha escola</button>
         <button class="chip" data-rf="todas" aria-pressed="${telaRanking.filtro!=="minha"}">Todas as escolas</button>
-      </div>` + (lista.length ? lista.map((u,i)=>`<div class="painel-linha ${perfil && normalizarNome(u.nome)===normalizarNome(perfil.nome) && u.ano===perfil.ano && (u.escola||ESCOLA_PADRAO)===(perfil.escola||ESCOLA_PADRAO) ? "eu":""}">
-      <span><b>${i+1}º</b> ${u.avatar||"🦊"} <b>${u.nome}</b><br><small>${u.escola||ESCOLA_PADRAO} · ${u.ano}</small></span>
+      </div>` + (lista.length ? lista.map((u,i)=>`<div class="painel-linha ${souEu(u) ? "eu":""}">
+      <span><b>${i+1}º</b> ${u.avatar||"🦊"} <b>${u.nome}</b></span>
       <span class="xp-total">${u.xp} XP</span>
     </div>`).join("") : `<p class="dica">Ninguém da sua escola pontuou ainda — seja a primeira!</p>`);
   }
