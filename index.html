@@ -831,7 +831,9 @@ function painelAdmin(senha, lista){
   };
   telas.entrada.innerHTML = `
     <button class="voltar" id="btn-volta-entrada">← Sair do painel</button>
-    ${pendentes.length?`<div class="cartao" style="margin-top:10px"><h3>⏳ Aguardando aprovação (${pendentes.length})</h3>${pendentes.map(linha).join("")}</div>`:""}
+    ${pendentes.length?`<div class="cartao" style="margin-top:10px"><h3>⏳ Aguardando aprovação (${pendentes.length})</h3>
+      ${pendentes.length>1?`<div class="acoes" style="margin:0 0 10px"><button class="btn" id="btn-aprovar-todos">✅ Aprovar todos os ${pendentes.length}</button></div>`:""}
+      ${pendentes.map(linha).join("")}</div>`:""}
     <div class="cartao" style="margin-top:10px">
       <h3>Usuárias (${demais.length})</h3>
       ${demais.length?demais.map(linha).join(""):`<p class="dica">Ninguém ainda. Assim que alguém se cadastrar, aparece aqui.</p>`}
@@ -839,6 +841,25 @@ function painelAdmin(senha, lista){
     </div>`;
   mostrar("entrada");
   $("#btn-volta-entrada").addEventListener("click", telaEntrada);
+  const btnTodos = $("#btn-aprovar-todos");
+  if(btnTodos) btnTodos.addEventListener("click", async ()=>{
+    if(btnTodos.dataset.c !== "sim"){
+      btnTodos.dataset.c = "sim";
+      btnTodos.textContent = `Aprovar mesmo as ${pendentes.length}?`;
+      return;
+    }
+    btnTodos.disabled = true;
+    let feitas = 0, falhou = 0;
+    for(const u of pendentes){
+      btnTodos.textContent = `Aprovando ${feitas+falhou+1} de ${pendentes.length}...`;
+      try{
+        const r = await rpc("admin_definir_status", {p_senha:senha, p_id:u.id, p_status:"ativa"});
+        if(r && r.erro) falhou++; else feitas++;
+      }catch(e){ falhou++; }
+    }
+    if(falhou) window.alert(`${feitas} aprovadas. ${falhou} não deram certo — tente essas uma a uma.`);
+    recarregarPainel(senha);
+  });
   telas.entrada.querySelectorAll("[data-acao]").forEach(b=>b.addEventListener("click", async ()=>{
     b.disabled = true;
     try{ await rpc("admin_definir_status", {p_senha:senha, p_id:b.dataset.id, p_status:b.dataset.acao}); }catch(e){}
