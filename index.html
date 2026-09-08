@@ -327,6 +327,131 @@ async function rpc(fn, args){
   return await r.json();
 }
 
+/* ===== Envio de apostilas ===== */
+const BALDE = "apostilas";
+const MAX_MB = 8, MAX_FOTOS = 30;
+const BIMESTRES = ["1º bimestre","2º bimestre","3º bimestre","4º bimestre"];
+const MATERIAS_INICIAIS = ["Português","Matemática","Ciências","História","Geografia","Inglês","Arte"];
+const MATERIAS_FINAIS   = ["Português","Matemática","Ciências","Biologia","Física","Química","História","Geografia","Inglês","Espanhol","Arte"];
+const MATERIAS_MEDIO    = ["Português","Literatura","Redação","Matemática","Biologia","Física","Química","História","Geografia","Filosofia","Sociologia","Inglês","Espanhol"];
+
+function materiasEsperadas(ano){
+  if(/médio/.test(ano)) return MATERIAS_MEDIO;
+  const n = parseInt(ano, 10);
+  return (n >= 6) ? MATERIAS_FINAIS : MATERIAS_INICIAIS;
+}
+function materiasFaltantes(escola, ano, bimestre){
+  const tem = new Set(QUIZ.catalogo
+    .filter(q => q.ano === ano
+      && (q.escola||ESCOLA_PADRAO) === (escola||ESCOLA_PADRAO)
+      && (!bimestre || q.bimestre === bimestre))
+    .map(q => q.materia));
+  return materiasEsperadas(ano).filter(m => !tem.has(m));
+}
+function podeEnviar(escola, ano){
+  return !superior(escola) && BIMESTRES.some(b => materiasFaltantes(escola, ano, b).length);
+}
+function limpo(s){
+  return String(s).normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+    .toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+}
+function idEnvio(){
+  return "env-" + Math.random().toString(36).slice(2,8) + Date.now().toString(36).slice(-4);
+}
+async function subirArquivo(caminho, arquivo){
+  const cab = { "apikey": NUVEM.chave, "Content-Type": arquivo.type || "application/octet-stream" };
+  if(NUVEM.chave.startsWith("eyJ")) cab["Authorization"] = "Bearer " + NUVEM.chave;
+  const r = await fetch(NUVEM.url + "/storage/v1/object/" + BALDE + "/" + caminho, {
+    method: "POST", headers: cab, body: arquivo
+  });
+  if(!r.ok) throw new Error("upload http " + r.status);
+  return caminho;
+}
+
+function telaEnvio(){
+  const escola = perfil.escola || ESCOLA_PADRAO;
+  limparPlaca();
+  cabecalho("📸 Enviar apostila", "Cada foto vira matéria para toda a sua turma");
+  let bimSel = BIMESTRES.find(b => materiasFaltantes(escola, perfil.ano, b).length) || BIMESTRES[0];
+  let matSel = null, arquivos = [];
+
+  function desenhar(){
+    const faltam = materiasFaltantes(escola, perfil.ano, bimSel);
+    if(matSel && !faltam.includes(matSel)) matSel = null;
+    telas.estante.innerHTML = `
+      <button class="btn secundario" id="btn-volta-estante">← Voltar</button>
+      <div class="cartao">
+        <p class="dica">Peça a um adulto para ajudar. Fotografe as páginas na ordem, com boa luz e sem sombra.</p>
+        <label>De qual bimestre?</label>
+        <div class="chips" id="e-bims">${BIMESTRES.map(b=>{
+          const n = materiasFaltantes(escola, perfil.ano, b).length;
+          return `<button class="chip" data-b="${b}" aria-pressed="${b===bimSel}" ${n?"":"disabled"}>${b}${n?"":" ✓"}</button>`;
+        }).join("")}</div>
+        ${faltam.length ? `<label>De qual matéria?</label>
+        <div class="chips" id="e-mats">${faltam.map(m=>`<button class="chip" data-m="${m}" aria-pressed="${m===matSel}">${m}</button>`).join("")}</div>
+        <label>Fotos das páginas</label>
+        <input type="file" id="e-fotos" accept="image/*" multiple>
+        <p class="dica" id="e-contagem">${arquivos.length ? arquivos.length+" foto(s) escolhida(s)" : "Nenhuma foto escolhida ainda."}</p>
+        <p class="erro" id="e-erro" hidden></p>
+        <button class="btn" id="btn-mandar">Enviar para a equipe</button>`
+        : `<p class="dica">Esse bimestre já está completo. Escolha outro acima.</p>`}
+      </div>`;
+    mostrar("estante");
+    $("#btn-volta-estante").addEventListener("click", telaEstante);
+    telas.estante.querySelectorAll("#e-bims [data-b]").forEach(b=>b.addEventListener("click",()=>{ bimSel=b.dataset.b; arquivos=[]; desenhar(); }));
+    telas.estante.querySelectorAll("#e-mats [data-m]").forEach(b=>b.addEventListener("click",()=>{ matSel=b.dataset.m; desenhar(); }));
+    const inp = $("#e-fotos");
+    if(inp) inp.addEventListener("change", ()=>{
+      arquivos = [...inp.files];
+      $("#e-contagem").textContent = arquivos.length ? arquivos.length+" foto(s) escolhida(s)" : "Nenhuma foto escolhida ainda.";
+    });
+    const bt = $("#btn-mandar");
+    if(bt) bt.addEventListener("click", ()=>mandar(bt));
+  }
+
+  async function mandar(bt){
+    const err = $("#e-erro");
+    if(!matSel) return falha(err, "Escolha a matéria das fotos.");
+    if(!arquivos.length) return falha(err, "Escolha pelo menos uma foto.");
+    if(arquivos.length > MAX_FOTOS) return falha(err, `No máximo ${MAX_FOTOS} fotos por envio.`);
+    if(arquivos.some(a => !/^image\//.test(a.type))) return falha(err, "Só dá para enviar imagens.");
+    const grande = arquivos.find(a => a.size > MAX_MB*1024*1024);
+    if(grande) return falha(err, `A foto "${grande.name}" passa de ${MAX_MB} MB.`);
+    err.hidden = true; bt.disabled = true;
+
+    const id = idEnvio();
+    const base = [limpo(escola), limpo(perfil.ano), limpo(bimSel), limpo(matSel), id].join("/");
+    const caminhos = [];
+    try{
+      for(let i=0;i<arquivos.length;i++){
+        bt.textContent = `Enviando ${i+1} de ${arquivos.length}...`;
+        const ext = (arquivos[i].name.split(".").pop()||"jpg").toLowerCase().replace(/[^a-z0-9]/g,"");
+        caminhos.push(await subirArquivo(`${base}/pagina-${String(i+1).padStart(2,"0")}.${ext}`, arquivos[i]));
+      }
+      await rpc("registrar_envio", {
+        p_id: id, p_conta: perfil.id, p_escola: escola, p_ano: perfil.ano,
+        p_bimestre: bimSel, p_materia: matSel, p_qtd: arquivos.length, p_pasta: base
+      });
+    }catch(e){
+      console.error(e); bt.disabled = false; bt.textContent = "Enviar para a equipe";
+      return falha(err, caminhos.length
+        ? "Algumas fotos subiram, mas o envio não foi concluído. Tente de novo."
+        : "Não deu para enviar agora. Confira a internet e tente de novo.");
+    }
+    limparPlaca();
+    cabecalho("Recebido! 🎉", "Obrigado por ajudar a turma");
+    telas.estante.innerHTML = `<div class="cartao vazio-msg">
+      <b>${arquivos.length} foto(s) de ${matSel} chegaram à equipe do EstudAI.</b><br><br>
+      Agora é a vez da mágica: a equipe prepara as rodadas e elas aparecem na sua estante — para você e para todo o ${perfil.ano}. ✨<br><br>
+      Pode fechar o app; não precisa esperar aqui.
+      </div><button class="btn" id="btn-volta-estante">Voltar para a estante</button>`;
+    mostrar("estante");
+    $("#btn-volta-estante").addEventListener("click", telaEstante);
+  }
+
+  desenhar();
+}
+
 function hash32(s){ let h=2166136261>>>0; for(let i=0;i<s.length;i++){ h^=s.charCodeAt(i); h=Math.imul(h,16777619)>>>0; } return h>>>0; }
 function normalizarNome(n){ return n.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/\s+/g," "); }
 function qid(q){ return "q"+hash32(q.p); }
@@ -1007,10 +1132,14 @@ function telaEstante(){
          Envie à equipe do EstudAI os <b>slides das aulas</b> deste semestre (um arquivo por matéria). A equipe faz a mágica e as matérias aparecem aqui — para você e para <b>toda a sua turma</b>. ✨<br><br>
          Seu perfil e seus pontos já estão prontos esperando. Assim que o material entrar, é só abrir o app.</div>`
         : `<div class="cartao vazio-msg">🪄 <b>O ${perfil.ano} do ${minhaEscola} ainda não tem matérias — e você pode destravar!</b><br><br>
-         Peça ao seu <b>adulto responsável</b> para enviar à equipe do EstudAI as <b>fotos da apostila</b> deste bimestre (páginas nítidas, matéria por matéria). A equipe faz a mágica e as matérias aparecem aqui — para você e para <b>todo o seu ano</b>. ✨<br><br>
-         Seu perfil e seus pontos já estão prontos esperando. Assim que o material entrar, é só abrir o app.</div>`)
+         Com um <b>adulto responsável</b> por perto, mande as <b>fotos da apostila</b> deste bimestre (páginas nítidas, matéria por matéria). A equipe faz a mágica e as matérias aparecem aqui — para você e para <b>todo o seu ano</b>. ✨<br><br>
+         <button class="btn" id="btn-enviar-apostila">📸 Enviar fotos da apostila</button></div>`)
       : `<div class="cartao vazio-msg">As matérias do ${perfil.ano} ainda estão sendo preparadas.<br>Assim que o material entrar, elas aparecem aqui sozinhas.</div>`;
-  } else {
+  } else if(podeEnviar(minhaEscola, perfil.ano)){
+    html += `<div class="cartao vazio-msg" style="padding:16px 10px">Falta alguma matéria aqui?<br>
+      <button class="btn" id="btn-enviar-apostila" style="margin-top:10px">📸 Enviar fotos da apostila</button></div>`;
+  }
+  if(lista.length){
     lista.forEach(q=>{
       const pq = d.porQuiz[q.id];
       const feitas = pq ? Object.keys(pq.recordes).length : 0;
@@ -1033,6 +1162,8 @@ function telaEstante(){
   telas.estante.querySelectorAll("#f-bim [data-bim]").forEach(b=>b.addEventListener("click",()=>{ filtroBim=b.dataset.bim; telaEstante(); }));
   telas.estante.querySelectorAll("[data-quiz]").forEach(b=>b.addEventListener("click",()=>telaMenu(b.dataset.quiz)));
   $("#btn-sair-perfil").addEventListener("click", telaEntrada);
+  const btnEnv = $("#btn-enviar-apostila");
+  if(btnEnv) btnEnv.addEventListener("click", telaEnvio);
   $("#btn-ranking").addEventListener("click", telaRanking);
   $("#btn-avatar").addEventListener("click", telaAvatar);
   const bde = $("#btn-desafio"); if(bde) bde.addEventListener("click", iniciarDesafio);
