@@ -602,6 +602,26 @@ function sortearInedito(b, n, pq){
   return embaralhar(ordenadas.slice(0, Math.min(n, b.length))).map(prepararQuestao);
 }
 
+/* sorteio com cobertura: percorre as rodadas em rodízio, tirando uma questão
+   de cada por vez. Garante que todo tópico da matéria apareça no teste, em vez
+   de sortear do monte e correr o risco de concentrar tudo num assunto só.
+   Dentro de cada rodada, vale a mesma memória: as menos vistas saem primeiro. */
+function sortearCobrindo(rodadas, n, pq){
+  const vistos = (pq && (pq.vistos = pq.vistos || {})) || {};
+  const filas = embaralhar(rodadas.filter(r => r.questoes && r.questoes.length))
+    .map(r => embaralhar(r.questoes).sort((x,y)=>(vistos[qid(x)]||0)-(vistos[qid(y)]||0)));
+  const escolhidas = [];
+  let sobrou = true;
+  while(escolhidas.length < n && sobrou){
+    sobrou = false;
+    for(const fila of filas){
+      if(escolhidas.length >= n) break;
+      if(fila.length){ escolhidas.push(fila.shift()); sobrou = true; }
+    }
+  }
+  return embaralhar(escolhidas).map(prepararQuestao);
+}
+
 /* ================= TELA 1: entrada ================= */
 function telaEntrada(){
   perfil = null;
@@ -1286,9 +1306,8 @@ function iniciarDesafio(){
 function iniciar(id){
   limparPlaca();
   if(id === "final"){
-    const todas = quizAtual.rodadas.reduce((a,r)=>a.concat(r.questoes),[]);
     estado.rodada = {id:"final", nome:"Teste final"};
-    estado.lista = sortearInedito(todas, quizAtual.qtdTeste||15, progressoQuiz(quizAtual.id));
+    estado.lista = sortearCobrindo(quizAtual.rodadas, quizAtual.qtdTeste||15, progressoQuiz(quizAtual.id));
     estado.modo = "teste";
   } else if(id === "revisao"){
     const pq = progressoQuiz(quizAtual.id);
@@ -1298,9 +1317,8 @@ function iniciar(id){
     estado.lista = sortear(alvo, quizAtual.qtdAquecimento||8);
     estado.modo = "aquecimento";
   } else if(id === "relogio"){
-    const todas = quizAtual.rodadas.reduce((a,r)=>a.concat(r.questoes),[]);
     estado.rodada = {id:"relogio", nome:"⏱️ Contra o relógio"};
-    estado.lista = sortearInedito(todas, 10, progressoQuiz(quizAtual.id));
+    estado.lista = sortearCobrindo(quizAtual.rodadas, 10, progressoQuiz(quizAtual.id));
     estado.modo = "relogio";
   } else if(id === "morte"){
     const todas = quizAtual.rodadas.reduce((a,r)=>a.concat(r.questoes),[]);
