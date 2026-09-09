@@ -19,7 +19,7 @@ QUIZ.registrar({
       ],
       questoes:[
         {p:"Qual é a descrição correta da posição anatômica?",
-         alt:["Corpo ereto, cabeça para frente, braços ao lado do corpo, palmas viradas para frente e pés voltados para frente","Corpo deitado de costas, braços cruzados sobre o tórax e pernas estendidas","Corpo ereto com os braços elevados acima da cabeça e palmas voltadas para trás","Corpo sentado, com joelhos e cotovelos flexionados a 90 graus"],
+         alt:["Corpo ereto, braços ao lado, palmas e pés para frente","Corpo deitado de costas, braços cruzados sobre o tórax e pernas estendidas","Corpo ereto com os braços elevados acima da cabeça e palmas voltadas para trás","Corpo sentado, com joelhos e cotovelos flexionados a 90 graus"],
          c:0, exp:"A posição anatômica é a referência convencional para toda descrição de estrutura. Sem ela, termos como 'anterior' e 'lateral' perderiam sentido, já que dependeriam da postura em que a pessoa estivesse."},
 
         {p:"Um plano vertical que atravessa o corpo dividindo-o em partes anterior e posterior é o plano:",
@@ -28,7 +28,7 @@ QUIZ.registrar({
          err:{1:"Planos sagitais são verticais, mas dividem em direita e esquerda.",2:"O transversal é horizontal e separa superior de inferior.",3:"O plano mediano é o sagital que passa exatamente pelo meio."}},
 
         {p:"A polidactilia — presença de dedos supranumerários — é um exemplo de:",
-         alt:["Anomalia: alteração morfológica com função afetada, mas compatível com a vida","Variação anatômica: diferente do normal, mas sem prejuízo da função","Monstruosidade: alteração incompatível com a vida","Normal: apenas menos frequente na população"],
+         alt:["Anomalia: função afetada, mas compatível com a vida","Variação anatômica: diferente do normal, mas sem prejuízo da função","Monstruosidade: alteração incompatível com a vida","Normal: apenas menos frequente na população"],
          c:0, exp:"A escala vai do normal (mais frequente) à variação (diferente sem prejuízo funcional), passando pela anomalia (função afetada, vida preservada) até a monstruosidade (incompatível com a vida, como a anencefalia).",
          err:{1:"Variações não comprometem a função — o exemplo típico é o trajeto diferente de vasos sanguíneos.",2:"A monstruosidade é incompatível com a vida, o que não é o caso da polidactilia."}},
 
@@ -47,7 +47,7 @@ QUIZ.registrar({
          err:{1:"Essa é a descrição do paquímero anterior, ventral ou visceral."}},
 
         {p:"A falange média do dedo indicador está localizada entre a falange proximal e a distal. O que significam esses termos?",
-         alt:["Proximal é mais próximo da raiz do membro; distal é mais distante","Proximal é mais próximo do plano mediano; distal é mais lateral","Proximal é mais superficial; distal é mais profundo","Proximal é anterior; distal é posterior"],
+         alt:["Proximal é mais perto da raiz do membro","Proximal é mais próximo do plano mediano; distal é mais lateral","Proximal é mais superficial; distal é mais profundo","Proximal é anterior; distal é posterior"],
          c:0, exp:"Proximal e distal sempre se referem à distância em relação à raiz do membro. Já medial e lateral se referem ao plano mediano, e superficial e profundo à fáscia muscular.",
          err:{1:"Proximidade ao plano mediano é descrita por medial e lateral."}},
 
@@ -116,7 +116,7 @@ QUIZ.registrar({
          err:{1:"Os números estão invertidos: o neurocrânio, que envolve o encéfalo, é o de 8 ossos."}},
 
         {p:"Qual é a composição correta da coluna vertebral, de cima para baixo?",
-         alt:["7 cervicais, 12 torácicas, 5 lombares, 5 sacrais e 4 a 3 coccígeas","12 cervicais, 7 torácicas, 5 lombares, 5 sacrais e 4 coccígeas","7 cervicais, 5 torácicas, 12 lombares, 5 sacrais e 3 coccígeas","5 cervicais, 12 torácicas, 7 lombares, 4 sacrais e 5 coccígeas"],
+         alt:["7 cervicais, 12 torácicas, 5 lombares e 5 sacrais","12 cervicais, 7 torácicas, 5 lombares, 5 sacrais e 4 coccígeas","7 cervicais, 5 torácicas, 12 lombares, 5 sacrais e 3 coccígeas","5 cervicais, 12 torácicas, 7 lombares, 4 sacrais e 5 coccígeas"],
          c:0, exp:"Uma forma de fixar: 7, 12 e 5 são as vértebras móveis (cervicais, torácicas e lombares), enquanto sacrais e coccígeas se fundem. As 12 torácicas correspondem aos 12 pares de costelas.",
          err:{1:"São 7 cervicais, correspondentes ao pescoço, e 12 torácicas, que articulam com as costelas."}},
 
@@ -141,12 +141,12 @@ QUIZ.registrar({
          err:{1:"O periósteo atua na espessura, não no comprimento."}},
 
         {p:"Qual é a diferença entre substância óssea compacta e esponjosa?",
-         alt:["A compacta forma a camada externa dos ossos; a esponjosa, a parte interna","A compacta é interna; a esponjosa, externa","A compacta existe só nos ossos longos; a esponjosa, só nos planos","A compacta contém medula óssea; a esponjosa não"],
+         alt:["A compacta é externa; a esponjosa, interna","A compacta é interna; a esponjosa, externa","A compacta existe só nos ossos longos; a esponjosa, só nos planos","A compacta contém medula óssea; a esponjosa não"],
          c:0, exp:"A compacta forma a casca externa resistente; a esponjosa preenche o interior, com trabéculas que dão leveza. Nos ossos do crânio a camada esponjosa recebe o nome de díploe.",
          err:{1:"É o contrário: compacta por fora, esponjosa por dentro."}},
 
         {p:"O que ocorre no osso osteoporótico?",
-         alt:["A reabsorção do tecido ósseo supera a deposição de sais minerais e a produção de matriz","A deposição de sais minerais supera a reabsorção, deixando o osso mais denso","O periósteo deixa de existir","A cartilagem articular se calcifica e substitui o osso esponjoso"],
+         alt:["A reabsorção supera a deposição de sais minerais","A deposição de sais minerais supera a reabsorção, deixando o osso mais denso","O periósteo deixa de existir","A cartilagem articular se calcifica e substitui o osso esponjoso"],
          c:0, exp:"O osso é um tecido em remodelação permanente. Na osteoporose o equilíbrio se desloca para o lado da reabsorção, e a substância esponjosa vai perdendo trabéculas, o que aumenta o risco de fraturas.",
          err:{1:"Esse quadro descreveria o oposto da osteoporose."}}
       ]},
@@ -176,7 +176,7 @@ QUIZ.registrar({
          err:{1:"Sindesmoses unem ossos por membranas interósseas, como no antebraço e na perna.",2:"Sincondroses têm cartilagem hialina interposta.",3:"Sínfises têm cartilagem fibrosa interposta."}},
 
         {p:"A membrana interóssea da perna, que une tíbia e fíbula, é classificada como:",
-         alt:["Sindesmose, uma articulação fibrosa de mobilidade parcial","Sutura, uma articulação fibrosa imóvel","Sincondrose, uma articulação cartilaginosa","Articulação sinovial com cavidade"],
+         alt:["Sindesmose, fibrosa de mobilidade parcial","Sutura, uma articulação fibrosa imóvel","Sincondrose, uma articulação cartilaginosa hialina","Articulação sinovial com cavidade"],
          c:0, exp:"Sindesmoses são fibrosas e permitem mobilidade parcial — são anfiartroses. É o caso da sindesmose tibiofibular e da radioulnar.",
          err:{1:"Suturas são imóveis, classificadas como sinartroses, e ocorrem no crânio."}},
 
@@ -186,7 +186,7 @@ QUIZ.registrar({
          err:{1:"A escamosa é o encaixe em bisel da sutura temporoparietal.",2:"A plana é o encontro de bordas retas, como na internasal."}},
 
         {p:"O que é a sinostose?",
-         alt:["A ossificação do tecido interposto às faces articulares quando cessa o crescimento","A inflamação da membrana sinovial","A separação anormal de duas superfícies articulares","A formação de líquido sinovial em excesso"],
+         alt:["A ossificação do tecido interposto às faces articulares","A inflamação da membrana sinovial","A separação anormal entre duas superfícies articulares","A formação de líquido sinovial em excesso"],
          c:0, exp:"A sinostose acontece na maioria das suturas a partir dos 20 anos de idade, e também em sincondroses e algumas sínfises. O disco epifisial fechado é um exemplo de sincondrose que sofreu sinostose.",
          err:{2:"A separação anormal de superfícies articulares é a luxação."}},
 
@@ -196,7 +196,7 @@ QUIZ.registrar({
          err:{1:"Sincondroses usam cartilagem hialina — o disco epifisial e a sincondrose esfenoccipital são os exemplos."}},
 
         {p:"Quais são os componentes da cápsula articular de uma articulação sinovial?",
-         alt:["Membrana fibrosa e membrana sinovial","Anel fibroso e núcleo pulposo","Periósteo e endósteo","Epicárdio e endocárdio"],
+         alt:["Membrana fibrosa e membrana sinovial","O anel fibroso e o núcleo pulposo","Periósteo e endósteo","Epicárdio e endocárdio"],
          c:0, exp:"A membrana fibrosa é a camada externa resistente; a membrana sinovial reveste internamente e produz o líquido sinovial que preenche a cavidade articular.",
          err:{1:"Anel fibroso e núcleo pulposo são partes do disco intervertebral.",3:"Epicárdio e endocárdio são camadas da parede do coração."}},
 
@@ -244,12 +244,12 @@ QUIZ.registrar({
          err:{1:"O estriado esquelético é voluntário.",2:"O liso é involuntário, mas não tem estrias.",3:"O músculo cardíaco é justamente o contraexemplo dessa regra."}},
 
         {p:"Onde se localiza o músculo liso?",
-         alt:["Na parede das vísceras e dos vasos sanguíneos","Fixado ao esqueleto","Na parede do coração","Apenas no diafragma"],
+         alt:["Na parede das vísceras e dos vasos","Fixado ao esqueleto","Na parede muscular do coração","Apenas no diafragma"],
          c:0, exp:"O músculo liso reveste vísceras e vasos, e sua contração involuntária responde pela constrição de órgãos e vasos sanguíneos — uma das funções listadas do sistema muscular.",
          err:{1:"Essa é a localização do estriado esquelético.",2:"A parede do coração é o miocárdio, estriado cardíaco.",3:"O diafragma é músculo estriado esquelético."}},
 
         {p:"Qual é a diferença entre origem e inserção de um músculo?",
-         alt:["Origem é a extremidade fixa ao segmento que não se desloca; inserção é a fixa ao segmento que se desloca","Origem é sempre proximal e inserção sempre distal, independentemente do movimento","Origem se fixa em osso e inserção em cartilagem","Origem é o ventre muscular e inserção é o tendão"],
+         alt:["Origem é o ponto fixo; inserção, o ponto móvel","Origem é sempre proximal e inserção sempre distal, independentemente do movimento","Origem se fixa em osso e inserção em cartilagem","Origem é o ventre muscular e inserção é o tendão"],
          c:0, exp:"Para haver movimento, o músculo precisa se fixar em ossos diferentes e cruzar a articulação. Quando ele se contrai, traciona um osso em direção ao outro: a origem é o ponto fixo, a inserção é o ponto móvel.",
          err:{3:"Ventre e tendão são componentes anatômicos, e não pontos de fixação."}},
 
@@ -259,7 +259,7 @@ QUIZ.registrar({
          err:{1:"Dois tendões de origem correspondem ao bíceps.",2:"Três correspondem ao tríceps."}},
 
         {p:"O músculo digástrico do pescoço recebe esse nome porque possui:",
-         alt:["2 ventres musculares e 1 tendão intermédio","2 tendões de origem","2 inserções distintas","Dupla inervação"],
+         alt:["2 ventres e 1 tendão intermédio","2 tendões de origem","2 inserções bem distintas no osso","Dupla inervação"],
          c:0, exp:"O critério aqui é o número de ventres, e não de tendões. O reto do abdome segue a mesma lógica e é chamado de poligástrico, por apresentar 4 ventres musculares.",
          err:{1:"Contar tendões de origem é o critério do bíceps, tríceps e quadríceps."}},
 
@@ -274,7 +274,7 @@ QUIZ.registrar({
          err:{1:"A fáscia envolve e separa os músculos em compartimentos, sem ser um meio de fixação.",2:"A bursa é uma bolsa que reduz o atrito.",3:"Retináculo é a bainha fibrosa que mantém tendões em posição."}},
 
         {p:"O que são os retináculos, entre os anexos musculares?",
-         alt:["Bainhas fibrosas que mantêm os tendões em posição","Bolsas cheias de líquido que reduzem o atrito","Os folhetos da bainha sinovial","Tendões intermédios de músculos digástricos"],
+         alt:["Bainhas fibrosas que seguram os tendões","Bolsas cheias de líquido que reduzem o atrito","Os folhetos da bainha sinovial","Tendões intermédios de músculos digástricos"],
          c:0, exp:"Os anexos musculares incluem a bursa ou bolsa sinovial, a bainha fibrosa — os retináculos, como o dos extensores — e a bainha sinovial, com folheto externo e interno.",
          err:{1:"Essa é a descrição da bursa ou bolsa sinovial."}},
 
@@ -293,7 +293,7 @@ QUIZ.registrar({
          c:0, exp:"O grupo é formado por glúteo máximo, médio e mínimo — nomeados pelo tamanho. O piriforme aparece na mesma região, mas não pertence ao grupo glúteo."},
 
         {p:"Como se chama a célula do tecido muscular?",
-         alt:["Fibra muscular ou miócito","Osteócito","Condrócito","Sinoviócito"],
+         alt:["Fibra muscular","Osteócito","Condrócito","Sinoviócito"],
          c:0, exp:"A fibra muscular ou miócito é alongada e capaz de contração — encurtamento — e relaxamento, o que sustenta todas as funções do sistema.",
          err:{1:"Osteócito é a célula do tecido ósseo.",2:"Condrócito é a célula da cartilagem."}}
       ]},
@@ -325,12 +325,12 @@ QUIZ.registrar({
          err:{1:"A tricúspide é a atrioventricular direita.",2:"A valva da aorta é semilunar e fica na saída do ventrículo esquerdo, não entre átrio e ventrículo."}},
 
         {p:"Qual é a função das cordas tendíneas?",
-         alt:["Prender as válvulas das valvas atrioventriculares aos músculos papilares","Conduzir o impulso elétrico do átrio ao ventrículo","Sustentar as valvas semilunares da aorta e do tronco pulmonar","Ligar o pericárdio fibroso ao diafragma"],
+         alt:["Prender as válvulas aos músculos papilares","Conduzir o impulso elétrico do átrio ao ventrículo","Sustentar as valvas semilunares da aorta e do tronco pulmonar","Ligar o pericárdio fibroso ao diafragma"],
          c:0, exp:"As cordas tendíneas impedem que as válvulas se evertam para dentro do átrio durante a sístole ventricular, quando a pressão sobe bruscamente.",
          err:{2:"As valvas semilunares não têm cordas tendíneas — abrem e fecham pela própria diferença de pressão."}},
 
         {p:"Descreva corretamente o trajeto da pequena circulação:",
-         alt:["Ventrículo direito → tronco pulmonar → artérias pulmonares → pulmões → veias pulmonares → átrio esquerdo","Ventrículo esquerdo → aorta → corpo → veias cavas → átrio direito","Átrio direito → ventrículo direito → aorta → pulmões → átrio esquerdo","Ventrículo esquerdo → artérias pulmonares → pulmões → veias cavas → átrio direito"],
+         alt:["Ventrículo direito → tronco pulmonar → pulmões → átrio esquerdo","Ventrículo esquerdo → aorta → corpo → veias cavas → átrio direito","Átrio direito → ventrículo direito → aorta → pulmões → átrio esquerdo","Ventrículo esquerdo → artérias pulmonares → pulmões → veias cavas → átrio direito"],
          c:0, exp:"A pequena circulação, ou pulmonar, leva o sangue venoso do coração aos pulmões e traz de volta o sangue já oxigenado. A grande circulação, ou sistêmica, é a que sai do ventrículo esquerdo pela aorta e retorna pelas cavas ao átrio direito.",
          err:{1:"Esse é o trajeto da grande circulação, ou sistêmica."}},
 
@@ -345,12 +345,12 @@ QUIZ.registrar({
          err:{1:"Do arco da aorta saem o tronco braquiocefálico, a carótida comum esquerda e a subclávia esquerda.",3:"O seio coronário é venoso e recebe o sangue já usado pelo miocárdio."}},
 
         {p:"Quais são os três ramos do arco da aorta, na ordem?",
-         alt:["Tronco braquiocefálico, artéria carótida comum esquerda e artéria subclávia esquerda","Artérias carótidas comuns direita e esquerda e tronco braquiocefálico","Artérias subclávias direita e esquerda e tronco pulmonar","Tronco braquiocefálico direito e esquerdo e artéria carótida comum"],
+         alt:["Tronco braquiocefálico, carótida comum e subclávia esquerdas","Artérias carótidas comuns direita e esquerda e tronco braquiocefálico","Artérias subclávias direita e esquerda e tronco pulmonar","Tronco braquiocefálico direito e esquerdo e artéria carótida comum"],
          c:0, exp:"A assimetria é o ponto: à direita existe um tronco braquiocefálico que só depois se divide em carótida comum direita e subclávia direita, enquanto à esquerda a carótida comum e a subclávia saem diretamente do arco.",
          err:{1:"A carótida comum direita não sai do arco: ela é ramo do tronco braquiocefálico."}},
 
         {p:"Para onde as veias cardíacas drenam o sangue venoso do miocárdio?",
-         alt:["Para o seio coronário, que desemboca no átrio direito","Para a veia cava superior","Diretamente para o ventrículo direito","Para as veias pulmonares"],
+         alt:["Para o seio coronário, no átrio direito","Para a veia cava superior","Diretamente para o ventrículo direito do coração","Para as veias pulmonares"],
          c:0, exp:"O átrio direito recebe sangue venoso de três fontes: veia cava superior, veia cava inferior e seio coronário."},
 
         {p:"Durante a sístole ventricular, o que acontece com as valvas cardíacas?",
@@ -359,7 +359,7 @@ QUIZ.registrar({
          err:{1:"Essa configuração corresponde à sístole atrial com diástole ventricular, quando o sangue passa dos átrios para os ventrículos."}},
 
         {p:"Por que o ventrículo esquerdo tem parede muito mais espessa que o direito?",
-         alt:["Porque ejeta sangue para toda a circulação sistêmica, contra maior resistência","Porque recebe um volume de sangue muito maior a cada ciclo","Porque contém as artérias coronárias em sua parede","Porque abriga o septo interatrial"],
+         alt:["Porque ejeta contra a resistência de todo o corpo","Porque recebe um volume de sangue muito maior a cada ciclo","Porque contém as artérias coronárias em sua parede","Porque abriga o septo interatrial"],
          c:0, exp:"A diferença de espessura entre os lados direito e esquerdo é visível a olho nu num corte transversal. O direito ejeta apenas para os pulmões, um circuito curto e de baixa pressão; o esquerdo precisa vencer a resistência de todo o corpo.",
          err:{1:"O volume ejetado pelos dois ventrículos é essencialmente o mesmo; o que muda é a pressão."}},
 
@@ -392,22 +392,22 @@ QUIZ.registrar({
          err:{1:"Ao contrário do sangue, a linfa não contém hemácias."}},
 
         {p:"Qual é a sequência correta do fluxo da linfa?",
-         alt:["Capilares linfáticos → vasos linfáticos → troncos linfáticos → ductos linfáticos","Ductos → troncos → vasos → capilares linfáticos","Capilares linfáticos → linfonodos → capilares sanguíneos → coração","Vasos linfáticos → capilares linfáticos → troncos → ductos"],
+         alt:["Capilares → vasos → troncos → ductos linfáticos","Ductos → troncos → vasos → capilares linfáticos","Capilares linfáticos → linfonodos → capilares sanguíneos → coração","Vasos linfáticos → capilares linfáticos → troncos → ductos"],
          c:0, exp:"O sistema vai do mais fino ao mais calibroso: capilares linfáticos, vasos, troncos e por fim os ductos, que despejam a linfa no sistema venoso.",
          err:{1:"A ordem está invertida: os capilares são o ponto de partida."}},
 
         {p:"Onde os ductos linfáticos desembocam?",
-         alt:["Na junção das veias jugular interna e subclávia","No átrio direito, junto com as veias cavas","No baço","Nos capilares sanguíneos do intestino"],
+         alt:["Na junção da jugular interna com a subclávia","No átrio direito, junto com as veias cavas","No baço","Nos capilares sanguíneos do intestino"],
          c:0, exp:"O ducto torácico e o ducto linfático direito devolvem a linfa à circulação sanguínea exatamente nesse ângulo venoso — é assim que o líquido que escapou dos capilares retorna ao sangue.",
          err:{1:"A linfa entra no sistema venoso antes de chegar ao coração, e não diretamente no átrio."}},
 
         {p:"Quais troncos linfáticos são recebidos pelo ducto linfático direito?",
-         alt:["Jugular direito, subclávio direito e broncomediastinal direito","Todos os troncos do lado direito, inclusive o lombar direito","Apenas o tronco intestinal","Jugulares e subclávios de ambos os lados"],
+         alt:["Jugular, subclávio e broncomediastinal direitos","Todos os troncos do lado direito, inclusive o lombar direito","Apenas o tronco intestinal","Jugulares e subclávios de ambos os lados"],
          c:0, exp:"O ducto linfático direito drena apenas o quadrante superior direito do corpo. Todo o resto — os dois membros inferiores, o abdome e o lado esquerdo do tórax e da cabeça — vai para o ducto torácico, muito maior.",
          err:{1:"Os troncos lombares drenam para o ducto torácico, não para o direito."}},
 
         {p:"O tronco linfático lombar drena qual região?",
-         alt:["Abdome, pelve, rins, vísceras pélvicas e membros inferiores","Cabeça e pescoço","Membros superiores","Tórax, diafragma, pulmões e coração"],
+         alt:["Abdome, pelve, rins e membros inferiores","Cabeça e pescoço","Membros superiores","Tórax, diafragma, pulmões e coração"],
          c:0, exp:"Cada tronco tem seu território: jugulares para cabeça e pescoço, subclávios para os membros superiores, broncomediastinais para o tórax, intestinal para as vísceras digestivas e lombares para abdome, pelve e membros inferiores.",
          err:{1:"Cabeça e pescoço são drenados pelos troncos jugulares.",2:"Os membros superiores são drenados pelos troncos subclávios.",3:"Essa é a região dos troncos broncomediastinais."}},
 
@@ -417,7 +417,7 @@ QUIZ.registrar({
          err:{1:"O baço não involui na puberdade e tem funções de filtragem e reciclagem.",2:"A medula óssea produz linfócitos, mas não é onde ocorre a maturação dos T."}},
 
         {p:"Onde o baço se localiza?",
-         alt:["No lado esquerdo da cavidade abdominal, ao nível das 9ª, 10ª e 11ª costelas","No lado direito da cavidade abdominal, abaixo do fígado","No mediastino, posterior ao esterno","Na pelve, junto às vísceras pélvicas"],
+         alt:["À esquerda do abdome, junto às últimas costelas","No lado direito da cavidade abdominal, abaixo do fígado","No mediastino, posterior ao esterno","Na pelve, junto às vísceras pélvicas"],
          c:0, exp:"A relação com as costelas inferiores esquerdas explica por que traumas nessa região podem provocar ruptura esplênica.",
          err:{2:"Posterior ao manúbrio do esterno fica o timo."}},
 
@@ -427,22 +427,22 @@ QUIZ.registrar({
          err:{3:"A reciclagem de ferro é consequência direta da destruição de hemácias velhas pelo baço."}},
 
         {p:"Quais são as três tonsilas citadas e onde se localizam?",
-         alt:["Faríngea, palatina e lingual, no início dos tratos respiratório e digestivo","Cervical, torácica e lombar, ao longo da coluna","Axilar, inguinal e cervical, junto aos grandes vasos","Superior, média e inferior, no mediastino"],
+         alt:["Faríngea, palatina e lingual, na entrada das vias","Cervical, torácica e lombar, ao longo da coluna","Axilar, inguinal e cervical, junto aos grandes vasos","Superior, média e inferior, no mediastino"],
          c:0, exp:"As tonsilas são agregados de tecido linfoide produtores de linfócitos, posicionados justamente na porta de entrada do ar e do alimento — uma primeira linha de defesa.",
          err:{2:"Axila, virilha e pescoço são localizações típicas de linfonodos, não de tonsilas."}},
 
         {p:"Qual é a função principal dos linfonodos?",
-         alt:["Atuar como filtros contra micro-organismos, toxinas e patógenos","Produzir hemácias no adulto","Bombear a linfa em direção ao coração","Produzir líquido sinovial"],
+         alt:["Filtrar micro-organismos e toxinas","Produzir hemácias no adulto","Bombear a linfa em direção ao coração e aos pulmões","Produzir líquido sinovial"],
          c:0, exp:"Linfonodos são massas encapsuladas de tecido linfoide contendo macrófagos e linfócitos, interpostas ao longo dos vasos linfáticos. São encontrados na axila, virilha e ao longo dos grandes vasos do pescoço.",
          err:{2:"A linfa não é bombeada por um órgão: o fluxo é lento, unidirecional e depende de válvulas e da compressão muscular."}},
 
         {p:"Por que os vasos linfáticos possuem válvulas?",
-         alt:["Porque o fluxo é lento e unidirecional, e as válvulas impedem o refluxo","Porque a pressão dentro deles é maior que a das artérias","Porque precisam separar a linfa do sangue","Porque produzem linfócitos ao longo do trajeto"],
+         alt:["Porque o fluxo é lento e precisa não refluir","Porque a pressão dentro deles é maior que a das artérias","Porque precisam separar a linfa do sangue","Porque produzem linfócitos ao longo do trajeto"],
          c:0, exp:"Sem uma bomba própria, o sistema linfático depende de válvulas e da compressão pelos músculos vizinhos para manter a linfa avançando em direção ao coração.",
          err:{1:"A pressão no sistema linfático é baixa, muito menor que a arterial."}},
 
         {p:"Quais órgãos são citados como hematopoiéticos na aula de sistema circulatório?",
-         alt:["Medula óssea, timo, baço, tonsilas e linfonodos","Coração, pulmões e fígado","Rins, pâncreas e estômago","Apenas a medula óssea"],
+         alt:["Medula óssea, timo, baço e linfonodos","Coração, pulmões, fígado e rins","Rins, pâncreas e estômago","Apenas a medula óssea"],
          c:0, exp:"A aula apresenta o sistema circulatório como a soma do cardiovascular e do linfático, e lista esses cinco como órgãos hematopoiéticos — o que já antecipa a ponte com o conteúdo do sistema linfático."}
       ]}
   ]});
