@@ -17,7 +17,7 @@ QUIZ.registrar({
       ],
       questoes:[
         {p:"O que define uma célula como procariótica, caso das bactérias?",
-         alt:["A ausência de membrana nuclear envolvendo o material genético","A ausência total de ribossomos","O fato de ser sempre unicelular","A presença de parede celular"],
+         alt:["A ausência de membrana nuclear","A ausência total de ribossomos","O fato de ser sempre unicelular","A presença de parede celular"],
          c:0, exp:"Procarionte significa literalmente 'antes do núcleo': o DNA fica disperso no citoplasma, numa região chamada nucleoide, sem carioteca separando-o do resto da célula.",
          err:{1:"Ribossomos existem em procariontes e eucariontes — a diferença está no tamanho (70S contra 80S), não na presença.",2:"Ser unicelular não define procarionte: leveduras são unicelulares e eucarióticas.",3:"Parede celular também aparece em fungos e vegetais, que são eucariontes."}},
 
@@ -27,7 +27,7 @@ QUIZ.registrar({
          err:{1:"Mitocôndrias são organelas exclusivas de eucariontes — a célula bacteriana não as tem."}},
 
         {p:"Qual é a composição aproximada da membrana plasmática bacteriana?",
-         alt:["60% de proteínas imersas em uma bicamada fosfolipídica que responde por 40%","90% de fosfolipídios e 10% de proteínas","Apenas peptideoglicano","Glucanas, mananas e quitina"],
+         alt:["60% de proteínas e 40% de bicamada lipídica","90% de fosfolipídios e 10% de proteínas","Apenas peptideoglicano","Glucanas, mananas e quitina"],
          c:0, exp:"A proporção invertida em relação ao senso comum é justamente o que chama atenção: a membrana bacteriana é mais proteica (60%) do que lipídica (40%), o que se explica pelo número de funções que ela acumula.",
          err:{2:"Peptideoglicano é o componente da parede celular, não da membrana.",3:"Glucanas, mananas e quitina compõem a parede celular dos fungos."}},
 
@@ -67,11 +67,11 @@ QUIZ.registrar({
          err:{1:"O DNA circular é justamente uma das evidências mais fortes da teoria.",3:"Certos antibióticos afetarem a síntese proteica mitocondrial reforça o parentesco procariótico."}},
 
         {p:"Qual é a função das junções de Bayer na célula bacteriana?",
-         alt:["Permear para o lado externo moléculas sintetizadas junto à membrana, como peptideoglicanos e LPS","Ancorar o flagelo à parede celular","Transferir plasmídeos entre duas bactérias","Armazenar nutrientes no citoplasma"],
+         alt:["Levar para fora moléculas sintetizadas na membrana","Ancorar o flagelo à parede celular","Transferir plasmídeos entre duas bactérias vizinhas","Armazenar nutrientes no citoplasma"],
          c:0, exp:"As enzimas que sintetizam lipídios de membrana e macromoléculas de estruturas externas (peptideoglicanos, lipopolissacarídeos, polissacarídeos extracelulares) ficam ligadas à membrana plasmática. Depois de sintetizadas, essas moléculas atravessam para fora por canais chamados junções de Bayer."},
 
         {p:"Por que a parede celular é indispensável à maioria das bactérias?",
-         alt:["Porque a pressão osmótica interna é muito maior que a do meio externo, e sem a parede a célula estouraria","Porque é nela que ocorre a síntese proteica","Porque ela armazena o material genético","Porque é ela que confere motilidade"],
+         alt:["Porque contém a pressão osmótica interna","Porque é nela que ocorre a síntese proteica","Porque ela armazena o material genético","Porque é ela que confere motilidade"],
          c:0, exp:"Além de manter a forma da bactéria (coco, bacilo, espiral) e participar da divisão celular pela ação das autolisinas, a parede contém a pressão osmótica interna, muitas vezes superior à do meio.",
          err:{1:"A síntese proteica ocorre nos ribossomos, no citoplasma.",2:"O material genético fica no nucleoide."}}
       ]},
@@ -108,12 +108,12 @@ QUIZ.registrar({
          err:{1:"Espiroquetas têm corpo flexível e se movem por filamentos axiais.",2:"Espirilo é a espiral rígida completa, não a vírgula."}},
 
         {p:"Qual característica é exclusiva da parede celular das bactérias Gram-positivas?",
-         alt:["Ácidos teicoicos e lipoteicoicos, com 70 a 75% de peptideoglicano","Presença de membrana externa com porinas","Lipopolissacarídeo atuando como endotoxina","Espaço periplasmático amplo"],
+         alt:["Ácidos teicoicos e muito peptideoglicano","Presença de membrana externa com porinas","Lipopolissacarídeo atuando como endotoxina","Espaço periplasmático amplo"],
          c:0, exp:"A parede Gram-positiva é espessa e majoritariamente formada por peptideoglicano, com ácidos teicoicos e lipoteicoicos que facilitam a entrada e saída de cátions, a adesão e a regulação das autolisinas.",
          err:{1:"A membrana externa é característica das Gram-negativas.",2:"O LPS é componente da membrana externa das Gram-negativas.",3:"O espaço periplasmático é típico da arquitetura Gram-negativa."}},
 
         {p:"Na coloração de Gram, qual é a função do lugol?",
-         alt:["Atuar como mordente, fixando o corante primário nas células","Descorar as bactérias Gram-negativas","Corar de rosa as bactérias que perderam o violeta","Dissolver a parede celular antes da coloração"],
+         alt:["Atuar como mordente, fixando o cristal violeta","Descorar as bactérias Gram-negativas","Corar de rosa as bactérias que perderam o cristal violeta","Dissolver a parede celular antes da coloração"],
          c:0, exp:"A sequência é cristal violeta (corante primário), lugol (mordente que fixa o violeta), álcool-cetona (descorante) e fucsina (contracorante).",
          err:{1:"Quem descora é o álcool-cetona.",2:"O contracorante rosa é a fucsina.",3:"Nenhum reagente da técnica dissolve a parede — é justamente a diferença de parede que produz o resultado."}},
 
@@ -123,17 +123,17 @@ QUIZ.registrar({
          err:{1:"Na etapa do cristal violeta todas as bactérias se coram igualmente.",3:"Esse é exatamente o mecanismo das Gram-positivas, que faz o corante ficar retido."}},
 
         {p:"Ao final de uma coloração de Gram bem executada, de que cor aparecem as bactérias Gram-negativas?",
-         alt:["Rosa ou avermelhadas, pela fucsina","Roxas, pelo cristal violeta","Incolores","Azuis, pelo lugol"],
+         alt:["Rosa ou avermelhadas, pela fucsina","Roxas, retendo o cristal violeta","Incolores","Azuis, pelo lugol"],
          c:0, exp:"As Gram-negativas perdem o violeta na descoloração e ficam sem cor, até serem reveladas pela fucsina, o contracorante — daí a tonalidade rosada.",
          err:{1:"Roxo é o resultado das Gram-positivas, que retêm o cristal violeta."}},
 
         {p:"Quem desenvolveu a técnica de coloração que leva seu nome, e a partir de qual material?",
-         alt:["Hans Christian Gram, estudando tecido pulmonar de pacientes mortos por pneumonia","Carolus Linnaeus, estudando plantas medicinais","Alexander Fleming, estudando culturas contaminadas por fungos","Lynn Margulis, estudando mitocôndrias"],
+         alt:["Hans Christian Gram, estudando tecido pulmonar","Carolus Linnaeus, estudando plantas medicinais","Alexander Fleming, estudando culturas contaminadas por fungos","Lynn Margulis, estudando mitocôndrias"],
          c:0, exp:"O fisiologista dinamarquês Hans Christian Gram desenvolveu o método em Berlim, em 1883, publicando-o em 1884. Seu primeiro estudo foi com tecido pulmonar de pacientes que haviam morrido de pneumonia.",
          err:{1:"Linnaeus criou o sistema binomial de nomenclatura, em 1735.",2:"Fleming descobriu a penicilina, a partir do Penicillium, em 1928.",3:"Margulis propôs a teoria endossimbiótica."}},
 
         {p:"Por que as bactérias precisam ser coradas para observação ao microscópio óptico?",
-         alt:["Porque são transparentes, o que dificulta ver forma e arranjo","Porque se movem rápido demais para serem fotografadas","Porque são pequenas demais para o microscópio óptico","Porque a luz do microscópio as destruiria sem o corante"],
+         alt:["Porque são transparentes ao microscópio","Porque se movem rápido demais para serem fotografadas","Porque são pequenas demais para o microscópio óptico","Porque a luz do microscópio as destruiria sem o corante"],
          c:0, exp:"A transparência das células é o obstáculo. O corante cria contraste e permite distinguir tanto a morfologia quanto o tipo de arranjo — e, no caso de Gram, ainda classifica a bactéria pelo tipo de parede.",
          err:{2:"Bactérias são perfeitamente visíveis ao microscópio óptico; o problema é o contraste, não a resolução."}},
 
@@ -143,7 +143,7 @@ QUIZ.registrar({
          err:{2:"Nas Gram-positivas o componente dominante é o peptideoglicano, com ácidos teicoicos."}},
 
         {p:"Qual material NÃO faz parte da lista necessária para executar uma coloração de Gram?",
-         alt:["Microscópio eletrônico de transmissão","Alça bacteriológica","Bico de Bunsen","Lâminas de vidro limpas"],
+         alt:["Microscópio eletrônico de transmissão","Alça bacteriológica","Bico de Bunsen","Lâminas de vidro bem limpas e secas"],
          c:0, exp:"A coloração de Gram é lida em microscópio óptico. O microscópio eletrônico de transmissão é usado para observar estruturas muito menores, como partículas virais, e não faz parte da técnica.",
          err:{1:"A alça bacteriológica é usada para manipular as colônias.",2:"O bico de Bunsen flamba a alça e a lâmina."}}
       ]},
@@ -167,7 +167,7 @@ QUIZ.registrar({
          err:{1:"Colesterol é o esterol das membranas animais, não das fúngicas.",2:"Peptideoglicano é componente da parede bacteriana.",3:"Ácidos teicoicos são exclusivos de bactérias Gram-positivas."}},
 
         {p:"De que é composta, principalmente, a parede celular dos fungos?",
-         alt:["Glucanas e mananas, com menor quantidade de quitina","Peptideoglicano","Celulose e lignina","Lipopolissacarídeo"],
+         alt:["Glucanas e mananas, com pouca quitina","Peptideoglicano","Celulose e lignina, como nos vegetais","Lipopolissacarídeo"],
          c:0, exp:"A parede fúngica é rígida e protege a célula contra choques osmóticos. Sua composição predominante são glucanas e mananas, com quitina, proteínas e lipídios em menor quantidade.",
          err:{1:"Peptideoglicano é bacteriano.",2:"Celulose e lignina compõem a parede vegetal — a lignina, aliás, é justamente o que muitos fungos conseguem degradar.",3:"LPS pertence às Gram-negativas."}},
 
@@ -197,7 +197,7 @@ QUIZ.registrar({
          err:{1:"Aspergillus é ascomiceto, fungo de ambiente e patógeno da aspergilose.",2:"Rhizopus é zigomiceto, o mofo preto do pão.",3:"Penicillium é a origem da penicilina."}},
 
         {p:"Por que os fungos conseguem crescer em substratos improváveis, como paredes de banheiro, couro de sapatos e jornais velhos?",
-         alt:["Toleram pH ácido, alta pressão osmótica e baixa umidade, e exigem pouco nitrogênio","Realizam fotossíntese e dispensam matéria orgânica","São todos anaeróbios estritos","Possuem parede de peptideoglicano, muito resistente"],
+         alt:["Toleram pH ácido, pouca umidade e pouco nitrogênio","Realizam fotossíntese e dispensam matéria orgânica","São todos anaeróbios estritos","Possuem parede de peptideoglicano, muito resistente"],
          c:0, exp:"Os fungos são quimio-heterotróficos e absorvem nutrientes em vez de ingeri-los. Crescem melhor em pH próximo de 5 — ácido demais para a maioria das bactérias comuns —, resistem a concentrações elevadas de sal ou açúcar, sobrevivem com pouca umidade, precisam de menos nitrogênio que as bactérias e ainda metabolizam carboidratos complexos como a lignina.",
          err:{1:"Fungos não fazem fotossíntese; são heterotróficos.",2:"Quase todos os filamentosos são aeróbios, e a maioria das leveduras é anaeróbia facultativa."}},
 
@@ -217,7 +217,7 @@ QUIZ.registrar({
          err:{1:"A ciclosporina vem de Tolypocladium inflatum.",2:"A penicilina vem de Penicillium chrysogenum.",3:"O taxol é produzido por teixos e também pelo fungo Taxomyces."}},
 
         {p:"Qual é a diferença entre hifas septadas e cenocíticas?",
-         alt:["As septadas têm divisões transversais separando as células; as cenocíticas são contínuas, sem septos","As septadas são unicelulares; as cenocíticas são pluricelulares","As septadas pertencem às leveduras; as cenocíticas aos cogumelos","As septadas se reproduzem só sexuadamente; as cenocíticas só assexuadamente"],
+         alt:["As septadas têm divisões transversais; as cenocíticas não","As septadas são unicelulares; as cenocíticas são pluricelulares","As septadas pertencem às leveduras; as cenocíticas aos cogumelos","As septadas se reproduzem só sexuadamente; as cenocíticas só assexuadamente"],
          c:0, exp:"Hifas são os tubos multicelulares que formam as colônias filamentosas. Podem ser septadas, com paredes transversais dividindo as células, ou cenocíticas (não septadas), formando um tubo contínuo com vários núcleos.",
          err:{2:"Leveduras não formam hifas verdadeiras — no máximo pseudo-hifas."}}
       ]},
@@ -235,17 +235,17 @@ QUIZ.registrar({
       ],
       questoes:[
         {p:"Qual argumento é usado para sustentar que vírus não são seres vivos?",
-         alt:["Não apresentam metabolismo próprio e dependem da maquinaria do hospedeiro","Não possuem ácido nucleico","Não são capazes de causar infecção","São grandes demais para serem células"],
+         alt:["Não têm metabolismo próprio","Não possuem ácido nucleico","Não são capazes de causar infecção","São grandes demais para serem consideradas células"],
          c:0, exp:"Os argumentos contra: não têm metabolismo próprio, dependem inteiramente da célula hospedeira para sintetizar seus produtos e o material genético só começa a replicar depois de entrar na célula. A favor: possuem ácido nucleico e causam infecção — o que mantém a discussão aberta.",
          err:{1:"Todo vírus possui ácido nucleico, DNA ou RNA. Esse é justamente um argumento a favor de considerá-lo vivo.",2:"A capacidade de causar infecção é característica dos vírus."}},
 
         {p:"O que é um vírion?",
-         alt:["A partícula viral completa, com capacidade de causar infecção","O envelope lipídico que reveste alguns vírus","A subunidade proteica que forma o capsídeo","O vírus já integrado ao DNA da célula hospedeira"],
+         alt:["A partícula viral completa e infectante","O envelope lipídico que reveste alguns vírus","A subunidade proteica que forma o capsídeo","O vírus já integrado ao DNA da célula que ele infectou"],
          c:0, exp:"O vírion é a partícula completa e infectante, composta por um ácido nucleico — DNA ou RNA — e pelo capsídeo, o envoltório proteico que protege o genoma e serve de veículo de transmissão entre células.",
          err:{2:"A subunidade proteica do capsídeo é o capsômero.",3:"O vírus integrado ao cromossomo bacteriano é o profago."}},
 
         {p:"Qual é a função principal do capsídeo?",
-         alt:["Proteger o ácido nucleico e servir de veículo para a transmissão entre células","Fornecer energia para a replicação viral","Produzir as enzimas necessárias à biossíntese","Fundir-se com a membrana da célula hospedeira"],
+         alt:["Proteger o ácido nucleico durante a transmissão","Fornecer energia para a replicação viral","Produzir as enzimas necessárias à biossíntese","Fundir-se com a membrana da célula hospedeira"],
          c:0, exp:"O capsídeo envolve o ácido nucleico, protege-o da degradação durante o transporte e a infecção e constitui a maior parte da massa viral. Diferenças na estrutura do envoltório proteico servem inclusive para identificar os diferentes tipos de vírus.",
          err:{1:"Vírus não produzem energia; a produção de ATP é fornecida pela célula hospedeira.",3:"A fusão com a membrana é papel do envelope, presente apenas em alguns vírus."}},
 
@@ -255,7 +255,7 @@ QUIZ.registrar({
          err:{1:"Helicoidais são bastões longos, rígidos ou flexíveis, como o vírus Ebola.",2:"Complexos têm estruturas adicionais aderidas ao capsídeo, como os bacteriófagos.",3:"Ter envelope não é um critério morfológico de capsídeo."}},
 
         {p:"Por que um vírus só consegue infectar determinados tipos de célula?",
-         alt:["Porque a ligação depende de receptores específicos na superfície da célula que se encaixem na superfície viral","Porque só entra em células que estejam se dividindo","Porque só infecta células com parede celular","Porque depende do tamanho da célula hospedeira"],
+         alt:["Porque depende de receptores específicos na célula","Porque só entra em células que estejam se dividindo rápido","Porque só infecta células com parede celular","Porque depende do tamanho da célula hospedeira"],
          c:0, exp:"A escolha do hospedeiro depende de ligações específicas determinadas pelas características químicas da superfície do vírus e da célula. Cada tipo viral só infecta células que possuam o receptor que encaixa perfeitamente com sua superfície.",
          err:{2:"Vírus infectam tanto células com parede, como as bacterianas, quanto animais, que não têm parede."}},
 
@@ -265,7 +265,7 @@ QUIZ.registrar({
          err:{1:"A transcriptase reversa atua em vírus de RNA, produzindo DNA a partir do RNA.",3:"Autolisinas são enzimas bacterianas ligadas à divisão celular."}},
 
         {p:"Qual é a diferença fundamental entre os ciclos lítico e lisogênico dos bacteriófagos?",
-         alt:["No lítico a célula hospedeira sofre lise; no lisogênico ela permanece viva","No lítico o vírus não replica; no lisogênico sim","No lítico o DNA viral circulariza; no lisogênico permanece linear","No lítico o vírus infecta animais; no lisogênico, bactérias"],
+         alt:["No lítico a célula sofre lise; no lisogênico, não","No lítico o vírus não replica; no lisogênico sim","No lítico o DNA viral circulariza; no lisogênico permanece linear","No lítico o vírus infecta animais; no lisogênico, bactérias"],
          c:0, exp:"No ciclo lítico a multiplicação viral termina com a lise da bactéria. No lisogênico o fago incorpora seu DNA ao da célula hospedeira e permanece latente na forma de profago, sem matá-la — embora possa induzir a lise mais tarde.",
          err:{2:"O DNA do fago circulariza nos dois casos; é depois disso que ele decide entre um ciclo e outro.",3:"Bacteriófagos infectam bactérias em ambos os ciclos."}},
 
@@ -285,7 +285,7 @@ QUIZ.registrar({
          err:{1:"A pinocitose é a via de adenovírus, poliovírus, rotavírus e enterovírus, entre outros.",2:"A injeção do DNA com o capsídeo permanecendo fora é o mecanismo dos bacteriófagos."}},
 
         {p:"Vírus que saem da célula hospedeira por brotamento têm qual característica em comum?",
-         alt:["Possuem envelope lipídico derivado da membrana da célula hospedeira","São todos vírus de DNA","Não possuem capsídeo","Provocam sempre a morte imediata da célula"],
+         alt:["Possuem envelope lipídico da célula hospedeira","São todos vírus de DNA","Não possuem capsídeo","Provocam sempre a morte imediata da célula"],
          c:0, exp:"Na liberação por brotamento, a membrana plasmática da célula hospedeira forma o envelope do vírus — é por isso que os vírus que saem assim são os envelopados, como influenza, HCV, HIV, dengue, rubéola e varicela-zóster.",
          err:{2:"Todo vírus possui capsídeo.",3:"A morte da célula é característica da liberação por ruptura da membrana, típica dos não envelopados como poliovírus e raiva."}},
 
@@ -330,7 +330,7 @@ QUIZ.registrar({
          err:{1:"Um saldo dessa ordem corresponde à fermentação, não à respiração aeróbica."}},
 
         {p:"O que caracteriza a respiração anaeróbica em bactérias?",
-         alt:["Usa uma molécula inorgânica como nitrito, nitrato, sulfato ou carbonato como aceptor final de elétrons","Não produz ATP algum","Dispensa a glicólise","Ocorre apenas em bactérias termófilas"],
+         alt:["Usa nitrato ou sulfato como aceptor final","Não produz ATP algum","Dispensa a glicólise","Ocorre apenas em bactérias do grupo termófilo"],
          c:0, exp:"Na respiração anaeróbica o aceptor final não é o O₂, e sim outra molécula inorgânica. A produção de ATP é menor que na aeróbica, e por isso micro-organismos anaeróbicos crescem mais lentamente.",
          err:{1:"Ela produz ATP, apenas em menor quantidade.",2:"A glicólise é o ponto de partida comum a todas essas vias."}},
 
@@ -365,7 +365,7 @@ QUIZ.registrar({
          err:{1:"Na fase log a divisão acontece na velocidade máxima.",2:"Na estacionária a multiplicação diminui gradualmente até cessar."}},
 
         {p:"Por que a contagem direta ou microscópica de micro-organismos tem limitações?",
-         alt:["Não distingue células vivas de mortas e pode omitir células pequenas","Exige incubação de vários dias","Só funciona para bactérias Gram-positivas","Depende de um microscópio eletrônico"],
+         alt:["Não distingue células vivas de mortas","Exige incubação de vários dias","Só funciona para bactérias do grupo Gram-positivo","Depende de um microscópio eletrônico"],
          c:0, exp:"A contagem direta é rápida e fácil, mas não separa vivas de mortas, pode omitir células pequenas e sofre com a mobilidade celular. Já a contagem de viabilidade mede as unidades formadoras de colônia (UFC), ou seja, apenas as células capazes de se multiplicar."},
 
         {p:"Uma bactéria incorpora fragmentos de DNA livre dispersos no meio, provenientes da lise de outra célula. Esse mecanismo é a:",
