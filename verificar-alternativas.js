@@ -28,7 +28,9 @@ for(const m of QUIZ.catalogo){
       total++;
       const comp = q.alt.map(a => a.length);
       const maior = Math.max(...comp);
-      if(comp.indexOf(maior) === q.c) acerta++;
+      // quem marca "a mais longa" chuta entre as empatadas: a chance é 1/empatadas
+      const empatadas = comp.filter(x => x === maior).length;
+      if(comp[q.c] === maior) acerta += 1 / empatadas;
 
       const outros = comp.filter((_, i) => i !== q.c);
       const media = outros.reduce((a,b)=>a+b, 0) / outros.length;
@@ -40,6 +42,7 @@ for(const m of QUIZ.catalogo){
 
   totalGeral += total; acertoGeral += acerta;
   const taxa = Math.round(100 * acerta / total);
+  acerta = Math.round(acerta * 10) / 10;
   const passa = taxa <= LIMITE;
   if(!passa) reprovadas++;
 
