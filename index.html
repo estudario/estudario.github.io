@@ -58,6 +58,9 @@ h1,h2,h3{font-family:"Baloo 2","Trebuchet MS",sans-serif;font-weight:800;line-he
 .selo-beta{display:inline-block;vertical-align:middle;margin-left:6px;font-family:"Baloo 2",sans-serif;font-size:14px;font-weight:800;background:var(--sol);color:var(--tinta);padding:3px 12px;border-radius:99px;letter-spacing:.02em}
 .selo{display:inline-block;margin-top:8px;font-size:14px;font-weight:800;font-family:"Baloo 2",sans-serif;padding:5px 12px;border-radius:99px;background:var(--verde-claro);color:var(--verde-ok)}
 .selo.vazio{background:#EEF1EE;color:var(--tinta-fraca)}
+.barra{margin-top:9px;height:8px;border-radius:99px;background:#E7EBE7;overflow:hidden}
+.barra i{display:block;height:100%;border-radius:99px;background:var(--verde-ok);transition:width .4s ease}
+.barra.completa i{background:linear-gradient(90deg,var(--verde-ok),#F5B301)}
 .medalha{font-size:19px;margin-left:6px;vertical-align:-2px}
 .divisor{display:flex;align-items:center;gap:10px;margin:24px 0 12px}
 .divisor span{font-size:15px;font-weight:800;font-family:"Baloo 2",sans-serif;color:var(--tinta-fraca);white-space:nowrap}
@@ -1168,10 +1171,12 @@ function telaEstante(){
       const selo = feitas
         ? `<span class="selo">${feitas} de ${totalRod} rodadas jogadas</span>${medOuro?`<span class="medalha">🥇 ${medOuro}</span>`:""}`
         : `<span class="selo vazio">Ainda não começou</span>`;
+      const pct = totalRod ? Math.round(100 * feitas / totalRod) : 0;
+      const barra = `<span class="barra ${pct===100?"completa":""}" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100" aria-label="${feitas} de ${totalRod} rodadas jogadas"><i style="width:${pct}%"></i></span>`;
       html += `<button class="cartao item" data-quiz="${q.id}">
           <span class="icone">${q.emoji||"📘"}</span>
-          <span><h3>${dominada(q)?"⭐ ":""}${q.materia}</h3>
-            <p class="desc">${q.bimestre} · ${q.tema}</p>${selo}</span>
+          <span style="flex:1;min-width:0"><h3>${dominada(q)?"⭐ ":""}${q.materia}</h3>
+            <p class="desc">${q.bimestre} · ${q.tema}</p>${selo}${barra}</span>
         </button>`;
     });
   }
